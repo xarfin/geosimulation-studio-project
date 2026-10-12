@@ -1,0 +1,7 @@
+node_modules/
+dist/
+.env.local
+*.log
+public/cesiumStatic/
+public/data/background/luchtfoto/available-tiles.json
+public/data/elevation/ahn/available-tiles.json

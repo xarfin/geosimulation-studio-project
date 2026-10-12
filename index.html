@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rotterdam layers</title>
+  </head>
+  <body>
+    <main id="cesiumContainer" aria-label="Interactive study-area map"></main>
+    <aside class="panel">
+      <h1>Rotterdam layers</h1>
+      <label for="layerSelect">Layer</label>
+      <select id="layerSelect" disabled></select>
+      <nav aria-label="Layer slides">
+        <button id="previous" type="button" disabled>Previous</button>
+        <span id="counter"></span>
+        <button id="next" type="button" disabled>Next</button>
+      </nav>
+      <p id="description"></p>
+      <button id="resetView" type="button">Reset view</button>
+      <p id="status" role="status">Loading study area…</p>
+      <small>Drag to move · Scroll to zoom<br>Ctrl + drag to tilt</small>
+    </aside>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
