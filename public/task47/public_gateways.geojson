@@ -1,0 +1,10 @@
+{
+"type": "FeatureCollection",
+"name": "public_gateways",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "name": "West", "cell_id": 392, "context_route_distance_m": 3.8284805998631426, "status": "Proposed public interface; crossing feasibility unverified" }, "geometry": { "type": "Point", "coordinates": [ 4.451807138121192, 51.902861748425906 ] } },
+{ "type": "Feature", "properties": { "name": "East", "cell_id": 1528, "context_route_distance_m": 3.6153842448549836, "status": "Proposed public interface; crossing feasibility unverified" }, "geometry": { "type": "Point", "coordinates": [ 4.458257666312142, 51.903632021857376 ] } },
+{ "type": "Feature", "properties": { "name": "North", "cell_id": 1534, "context_route_distance_m": 3.5169242903543481, "status": "Proposed public interface; crossing feasibility unverified" }, "geometry": { "type": "Point", "coordinates": [ 4.454842374630519, 51.903649917221124 ] } }
+]
+}

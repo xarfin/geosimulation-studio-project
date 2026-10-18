@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Schiehaven Noord | Land-use scenarios</title></head>
+<body>
+<main id="cesiumContainer" aria-label="Interactive land-use scenario map"></main>
+<aside class="model-panel">
+ <a href="/">← Rotterdam layers</a>
+ <p class="eyebrow">SCHIEHAVEN NOORD · TASK 4.7</p>
+ <h1>Explore the layout</h1>
+ <p>Compare a cellular automaton’s suggestions with the supplied proposal.</p>
+ <label for="scenario">Scenario</label>
+ <select id="scenario" disabled><option value="access">A · Public connections · 600 homes</option><option value="green">B · Connected park · 600 homes</option><option value="supplied">Supplied proposal · reference</option><option value="current">Existing land use</option></select>
+ <div class="buttons"><button id="plan">Plan view</button><button id="massing">3D allocation</button><button id="reset">Reset view</button></div>
+ <label class="check"><input type="checkbox" id="context"> Show background 3D buildings</label>
+ <label class="check"><input type="checkbox" id="original"> Show original 3D proposal instead of its cells</label>
+ <label class="check"><input type="checkbox" id="trees" checked> Show illustrative planting positions</label>
+ <label class="check"><input type="checkbox" id="roofs" checked> Show green roofs in 3D</label>
+ <section id="evolution"><label for="iteration">Allocation round <output id="round"></output></label><input id="iteration" type="range" min="0" value="0" max="1"><button id="play">Play growth</button><p class="muted">Rounds show allocation, not years. The public spine and sports reserve are placed first, then housing and park growth.</p></section>
+ <div id="metrics" aria-live="polite"></div>
+ <details><summary>Map legend</summary><div id="legend"></div></details>
+ <p class="notice">Full-site redevelopment experiment. Existing buildings and internal routes may change. Public sports and paths are shared with surrounding neighbourhoods. Gateway crossings still need feasibility checks.</p>
+ <p class="muted">600 homes assumes 75 m² usable area per home, 80% floor efficiency and 10 storeys. Green roofs are separate from ground-level park space. Buildings and trees are schematic; the base is flat.</p>
+ <p id="status" role="status">Loading model outputs…</p>
+</aside>
+<script type="module" src="/src/task47.js"></script>
+</body></html>
