@@ -6,6 +6,7 @@ const $=(id)=>document.getElementById(id);
 const viewer=new Viewer('cesiumContainer',{baseLayer:false,baseLayerPicker:false,geocoder:false,animation:false,timeline:false,homeButton:false,sceneModePicker:false,navigationHelpButton:false,requestRenderMode:true});
 viewer.scene.globe.baseColor=Color.fromCssColorString('#e5e9e3');
 const cache=new Map(); let summary,baseline,active,centre,tilted=false,version=0,timer,context,original,treeLayer,roofLayer,gatewayLayer,siteRings=[];
+const cellVisuals=new WeakMap(),roofVisuals=new WeakMap(),treeVisuals=new WeakMap();
 async function json(url){const r=await fetch(url);if(!r.ok)throw Error(`${url}: ${r.status}`);return r.json();}
 function status(message){$('status').textContent=message;}
 function stop(){clearInterval(timer);timer=undefined;$('play').textContent='Play growth';}
@@ -30,25 +31,40 @@ function paint(){
   if(!e.polygon)continue;
   const id=property(e,'cell_id'),birth=property(e,'birth_iteration');
   let code=property(e,'land_use');if(isRun&&birth>round)code=baseline.get(id);
-  e.show=!($('original').checked&&key==='supplied'&&code===7);
-  e.polygon.material=Color.fromCssColorString(summary.colors[code]).withAlpha(.90);
-  e.polygon.height=.2;e.polygon.heightReference=HeightReference.NONE;e.polygon.perPositionHeight=false;
-  const height=code===7?30:(code===14?6:0);
-  e.polygon.extrudedHeight=tilted?.2+height:.2;e.polygon.outline=false;
+  const visible=!($('original').checked&&key==='supplied'&&code===7);
+  let state=cellVisuals.get(e);
+  if(!state){state={};cellVisuals.set(e,state);}
+  const codeChanged=state.code!==code;
+  if(codeChanged){e.polygon.material=Color.fromCssColorString(summary.colors[code]).withAlpha(.90);state.code=code;}
+  if(state.visible!==visible){e.show=visible;state.visible=visible;}
+  if(state.tilted!==tilted||state.heightCode!==code){
+   const height=code===7?30:(code===14?6:0);
+   e.polygon.height=.2;e.polygon.heightReference=HeightReference.NONE;e.polygon.perPositionHeight=false;
+   e.polygon.extrudedHeight=tilted?.2+height:.2;e.polygon.outline=false;state.tilted=tilted;state.heightCode=code;
+  }
  }
  if(gatewayLayer)gatewayLayer.show=isRun;
  if(roofLayer){
   roofLayer.show=isRun&&tilted&&$('roofs').checked;
-  for(const e of roofLayer.entities.values)if(e.polygon){e.show=round>=Number(property(e,'birth_iteration'));e.polygon.height=30.25;e.polygon.perPositionHeight=false;e.polygon.material=Color.fromCssColorString('#5b9b68');e.polygon.outline=false;}
+  for(const e of roofLayer.entities.values)if(e.polygon){
+   const visible=round>=Number(property(e,'birth_iteration'));
+   let state=roofVisuals.get(e);
+   if(!state){state={};roofVisuals.set(e,state);}
+   if(state.visible!==visible){e.show=visible;state.visible=visible;}
+   if(!state.styled){e.polygon.height=30.25;e.polygon.perPositionHeight=false;e.polygon.material=Color.fromCssColorString('#5b9b68');e.polygon.outline=false;state.styled=true;}
+  }
  }
  if(treeLayer){
   treeLayer.show=isRun&&$('trees').checked&&round>=Number($('iteration').max);
   for(const e of treeLayer.entities.values){
    if(!e.position)continue;
-   if(!e._plantCarto)e._plantCarto=Cartographic.fromCartesian(e.position.getValue(viewer.clock.currentTime));
-   const c=e._plantCarto;e.position=Cartesian3.fromRadians(c.longitude,c.latitude,tilted?4.5:.7);e.billboard=undefined;
-   e.point={show:!tilted,pixelSize:5,color:Color.fromCssColorString('#235c3c'),outlineColor:Color.WHITE,outlineWidth:.5};
-   e.ellipsoid={show:tilted,radii:new Cartesian3(3,3,3.5),material:Color.fromCssColorString('#3e7f4f').withAlpha(.9)};
+   let state=treeVisuals.get(e);
+   if(!state){state={carto:Cartographic.fromCartesian(e.position.getValue(viewer.clock.currentTime))};treeVisuals.set(e,state);}
+   if(state.tilted!==tilted){
+    const c=state.carto;e.position=Cartesian3.fromRadians(c.longitude,c.latitude,tilted?4.5:.7);e.billboard=undefined;
+    e.point={show:!tilted,pixelSize:5,color:Color.fromCssColorString('#235c3c'),outlineColor:Color.WHITE,outlineWidth:.5};
+    e.ellipsoid={show:tilted,radii:new Cartesian3(3,3,3.5),material:Color.fromCssColorString('#3e7f4f').withAlpha(.9)};state.tilted=tilted;
+   }
   }
  }
  if(context?.clippingPolygons)context.clippingPolygons.enabled=isRun;
