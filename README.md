@@ -1,5 +1,8 @@
 # Rotterdam layer viewer
 
+Task 4.4a: open `/weather.html` for the KNMI weather dashboard. See
+`WEATHER_SETUP.md` to configure the server-only EDR key and run the live data API.
+
 A barebones CesiumJS viewer for the supplied study-area exports.
 
 ## Run in VS Code

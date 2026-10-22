@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Schiehaven Noord | KNMI weather</title>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/">SCHIEHAVEN NOORD</a>
+    <nav aria-label="Project pages"><a href="/">Layers</a><a href="/task47.html">Land-use scenarios</a><a href="/weather.html" aria-current="page">Weather</a></nav>
+  </header>
+  <main class="workspace">
+    <section class="map-pane" aria-label="Study area and weather station">
+      <div id="weatherMap" aria-label="Interactive Cesium weather map"></div>
+      <div class="map-tools"><button id="siteView" type="button">Study area</button><button id="regionView" type="button">Station + site</button><button id="tiltView" type="button">3D view</button></div>
+      <div class="map-layers"><label><input id="contextBuildings" type="checkbox"> Existing 3D buildings</label><label><input id="proposalBuildings" type="checkbox"> Proposed complex</label><p id="mapStatus" role="status">Loading your study-area layers…</p></div>
+      <div class="map-caption"><span class="legend-dot site-dot"></span> Study area <span class="legend-dot station-dot"></span> KNMI station 344</div>
+    </section>
+    <aside class="dashboard" aria-label="KNMI weather dashboard">
+      <p class="eyebrow">TASK 4.4a · KNMI OBSERVATIONS</p>
+      <h1>Weather around Schiehaven</h1>
+      <p class="intro">Rotterdam Airport · station 344 <span id="distance"></span></p>
+      <div class="live-heading"><span id="freshness" class="badge">Connecting</span><button id="refresh" type="button">Refresh data</button></div>
+      <p id="liveStatus" class="status" role="status">Requesting the latest 24 hours from KNMI…</p>
+      <section class="cards" aria-label="Latest available observations">
+        <article class="metric"><h2>Temperature</h2><p><strong id="temperature">—</strong><span> °C</span></p><small id="temperatureTime">Awaiting data</small></article>
+        <article class="metric"><h2>Wind speed</h2><p><strong id="windSpeed">—</strong><span> m/s</span></p><small id="windSpeedTime">Awaiting data</small></article>
+        <article class="metric"><h2>Wind from</h2><p><strong id="windDirection">—</strong></p><small id="windDirectionTime">Awaiting data</small></article>
+      </section>
+      <p id="observationNote" class="muted">Readings refresh automatically every 10 minutes while this page is open.</p>
+      <div class="tabs" role="tablist" aria-label="Weather charts">
+        <button id="recentTab" type="button" role="tab" aria-selected="true" aria-controls="recentPanel">Past 24 hours</button>
+        <button id="historyTab" type="button" role="tab" aria-selected="false" aria-controls="historyPanel" tabindex="-1">Historical summaries</button>
+      </div>
+      <section id="recentPanel" role="tabpanel" aria-labelledby="recentTab">
+        <figure><figcaption>Air temperature <span>°C · 1-minute mean</span></figcaption><div id="temperatureChart" class="chart"><p class="empty">Waiting for observations</p></div></figure>
+        <figure><figcaption>Wind speed <span>m/s · 10-minute mean</span></figcaption><div id="windChart" class="chart"><p class="empty">Waiting for observations</p></div></figure>
+        <p id="recentCoverage" class="muted"></p>
+        <details><summary>Observation table</summary><div class="table-wrap"><table><caption>Latest 24 hours. Observation times in Europe/Amsterdam.</caption><thead><tr><th scope="col">Time</th><th scope="col">°C</th><th scope="col">m/s</th><th scope="col">Wind from °</th></tr></thead><tbody id="recentRows"></tbody></table></div></details>
+      </section>
+      <section id="historyPanel" role="tabpanel" aria-labelledby="historyTab" hidden>
+        <div class="history-controls"><label for="historyYear">Complete year</label><select id="historyYear"><option value="2025">2025</option><option value="2024">2024</option><option value="2023">2023</option></select></div>
+        <p id="historyStatus" class="status" role="status">Requesting validated historical observations…</p>
+        <figure><figcaption>Monthly mean temperature <span>°C</span></figcaption><div id="monthlyTemperatureChart" class="chart"><p class="empty">Waiting for historical data</p></div></figure>
+        <figure><figcaption>Monthly mean wind speed <span>m/s</span></figcaption><div id="monthlyWindChart" class="chart"><p class="empty">Waiting for historical data</p></div></figure>
+        <details open><summary>Monthly values and completeness</summary><div class="table-wrap"><table><caption>Mean of available daily means. Counts show valid days / days in month.</caption><thead><tr><th scope="col">Month</th><th scope="col">°C</th><th scope="col">Days</th><th scope="col">m/s</th><th scope="col">Days</th></tr></thead><tbody id="monthlyRows"></tbody></table></div></details>
+        <p class="muted">Our project rule: show a monthly mean only if at least 80% of days have valid data for that variable. Otherwise show “Insufficient data”. Missing values are never replaced with zero. A single year is not a long-term climate normal.</p>
+      </section>
+      <details class="method"><summary>Sources, interpretation and limits</summary>
+        <p><strong>Regional conditions.</strong> These observations come from Rotterdam Airport, not from sensors at our site. Buildings, vegetation and waterfront exposure can change pedestrian-level wind and local temperatures. Use the wind simulation to assess the effects of the designs.</p>
+        <p><strong>Live readings.</strong> KNMI near-real-time 10-minute observations are provisional. Temperature is the preceding 1-minute mean at 1.5 m; wind speed is the preceding 10-minute mean representative of 10 m. Direction describes where wind comes from. The latest valid reading is shown separately for each variable, with its own time.</p>
+        <p><strong>Historical summaries.</strong> Validated daily TG and FG are already in °C and m/s. Their timestamps describe the end of the preceding UTC day. We assign each value to that day before computing monthly means. Daily aggregation stays in UTC; live display times use Europe/Amsterdam.</p>
+        <p><strong>Updates.</strong> The page polls every 10 minutes. The server caches live requests for 10 minutes and historical requests for 24 hours. “Delayed” means a valid observation is over 30 minutes old. On a failed update, retained values are clearly marked.</p>
+        <p><a href="https://dataplatform.knmi.nl/dataset/docs/10-minute-in-situ-meteorological-observations-1-0" target="_blank" rel="noreferrer">KNMI live data documentation</a> · <a href="https://dataplatform.knmi.nl/dataset/docs/daily-in-situ-meteorological-observations-validated-1-0" target="_blank" rel="noreferrer">KNMI validated daily data</a></p>
+      </details>
+    </aside>
+  </main>
+  <script type="module" src="/src/weather.js"></script>
+</body>
+</html>
