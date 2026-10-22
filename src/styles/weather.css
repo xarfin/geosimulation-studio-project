@@ -1,0 +1,301 @@
+.intro span {
+  white-space: nowrap;
+}
+
+.map-tools {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding-right: 55px;
+}
+
+.map-layers {
+  position: absolute;
+  top: 70px;
+  left: 16px;
+  width: 245px;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  padding: 12px;
+  background: #fffffff2;
+  font-size: 12px;
+}
+
+.map-layers label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+.map-layers p {
+  margin: 8px 0 0;
+  color: #53685e;
+  font-size: 12px;
+}
+
+.map-caption {
+  position: absolute;
+  bottom: 45px;
+  left: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 5px;
+  padding: 10px 12px;
+  background: #fffffff0;
+  font-size: 12px;
+}
+
+.legend-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.site-dot {
+  background: #d8a942;
+}
+
+.station-dot {
+  margin-left: 8px;
+  background: #167e9a;
+}
+
+.live-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.badge {
+  border-radius: 20px;
+  padding: 6px 10px;
+  color: #3a654e;
+  background: #e6eee5;
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.badge.warning {
+  color: #805208;
+  background: #fff0d3;
+}
+
+.badge.error {
+  color: #833b2f;
+  background: #f6e3df;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin: 16px 0 12px;
+}
+
+.metric {
+  border: 1px solid #dbe3d9;
+  border-radius: 7px;
+  padding: 14px 11px;
+  background: #fff;
+}
+
+.metric h2 {
+  margin: 0 0 12px;
+  color: #5e7265;
+  font-size: 11px;
+  font-weight: 400;
+}
+
+.metric p {
+  margin: 0 0 7px;
+  white-space: nowrap;
+}
+
+.metric strong {
+  font-size: 27px;
+  font-weight: 500;
+  letter-spacing: -1px;
+}
+
+.metric p span {
+  color: #5e7265;
+  font-size: 11px;
+}
+
+.metric small {
+  display: block;
+  min-height: 27px;
+  color: #65766c;
+  font-size: 10px;
+  line-height: 1.4;
+}
+
+.metric.delayed {
+  border-color: #d2ad69;
+}
+
+.tabs {
+  display: flex;
+  gap: 22px;
+  margin: 22px 0 12px;
+  border-bottom: 1px solid #cfd9cf;
+}
+
+.tabs button {
+  border: 0;
+  border-radius: 0;
+  padding: 10px 0;
+  color: #64776b;
+  background: none;
+}
+
+.tabs button[aria-selected='true'] {
+  border-bottom: 2px solid #224f3e;
+  color: #224f3e;
+  font-weight: 700;
+}
+
+.weather-panel figure {
+  margin: 20px 0 12px;
+}
+
+.weather-panel figcaption {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.weather-panel figcaption span {
+  color: #6b7c70;
+  font-size: 10px;
+  font-weight: 400;
+}
+
+.chart {
+  overflow: hidden;
+  border: 1px solid #e0e6dc;
+  border-radius: 5px;
+  background: #fff;
+}
+
+.chart svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.chart text {
+  fill: #6a7c6e;
+  font: 12px system-ui, sans-serif;
+}
+
+.chart .gridline {
+  stroke: #e4eae2;
+  stroke-width: 1;
+}
+
+.empty {
+  padding: 32px 14px;
+  color: #7a877e;
+  font-size: 12px;
+  text-align: center;
+}
+
+.history-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-top: 10px;
+}
+
+.history-controls select {
+  padding: 6px 14px;
+}
+
+.table-wrap {
+  overflow: auto;
+  max-height: 290px;
+  margin-top: 12px;
+}
+
+.weather-panel table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  font-size: 11px;
+  text-align: right;
+}
+
+.weather-panel caption {
+  padding-bottom: 10px;
+  color: #677b6c;
+  font-size: 10px;
+  text-align: left;
+}
+
+.weather-panel th,
+.weather-panel td {
+  border-bottom: 1px solid #e3e8de;
+  padding: 9px 7px;
+  white-space: nowrap;
+}
+
+.weather-panel th {
+  position: sticky;
+  top: 0;
+  background: #eff3eb;
+  font-weight: 600;
+}
+
+.weather-panel th:first-child,
+.weather-panel td:first-child {
+  text-align: left;
+}
+
+@media (min-width: 1500px) {
+  .metric strong {
+    font-size: 30px;
+  }
+}
+
+@media (max-width: 950px) {
+  .metric {
+    padding: 12px 9px;
+  }
+
+  .metric strong {
+    font-size: 24px;
+  }
+
+  .map-layers {
+    top: 108px;
+    width: 210px;
+  }
+}
+
+@media (max-width: 740px) {
+  .map-layers {
+    top: 65px;
+    width: 230px;
+  }
+
+  .map-caption {
+    bottom: 35px;
+    font-size: 10px;
+  }
+
+  .map-tools button {
+    padding: 7px 9px;
+    font-size: 11px;
+  }
+}

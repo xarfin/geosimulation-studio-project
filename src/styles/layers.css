@@ -1,0 +1,28 @@
+.layers-panel label {
+  display: block;
+  margin-bottom: 6px;
+}
+
+.layers-panel select {
+  width: 100%;
+}
+
+.layer-slides {
+  justify-content: space-between;
+}
+
+#counter {
+  color: var(--color-muted);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+#description {
+  margin: 20px 0;
+}
+
+.map-help {
+  margin-top: 24px;
+  border-top: 1px solid var(--color-border);
+  padding-top: 16px;
+}

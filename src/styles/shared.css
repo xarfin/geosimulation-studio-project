@@ -1,0 +1,294 @@
+:root {
+  font: 14px/1.5 system-ui, sans-serif;
+  font-synthesis: none;
+  color: #233833;
+  background: #f8f9f5;
+  --color-accent: #196d61;
+  --color-muted: #637268;
+  --color-border: #d3ded3;
+  --color-panel: #f8f9f5;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  height: 100dvh;
+  margin: 0;
+}
+
+a {
+  color: var(--color-accent);
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+button,
+select {
+  border: 1px solid #c6d3cb;
+  border-radius: 5px;
+  padding: 8px 12px;
+  color: #24483e;
+  background: #fff;
+  font: inherit;
+  font-size: 12px;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:hover:enabled {
+  background: #edf3ed;
+}
+
+button:disabled,
+select:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+:is(button, a, select, input, summary):focus-visible {
+  outline: 3px solid #c98b32;
+  outline-offset: 3px;
+}
+
+input {
+  accent-color: var(--color-accent);
+}
+
+label {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+h1 {
+  margin: 0 0 10px;
+  font-size: 27px;
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.6px;
+}
+
+p {
+  font-size: 13px;
+}
+
+.skip-link {
+  position: fixed;
+  top: 8px;
+  left: 16px;
+  z-index: 10;
+  padding: 8px 12px;
+  transform: translateY(-150%);
+  color: #173f36;
+  background: #fff;
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 0 24px;
+  color: #fff;
+  background: #173f36;
+}
+
+.brand {
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.topbar nav {
+  display: flex;
+  gap: 24px;
+}
+
+.topbar nav a {
+  display: flex;
+  align-items: center;
+  min-height: 62px;
+  border-bottom: 3px solid transparent;
+  padding: 16px 0 13px;
+  color: #c9dad1;
+  font-size: 13px;
+  text-decoration: none;
+}
+
+.topbar nav a:hover {
+  color: #fff;
+}
+
+.topbar nav a[aria-current='page'] {
+  border-bottom-color: #dcb86a;
+  color: #fff;
+}
+
+.workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 510px;
+  min-height: 0;
+}
+
+.map-pane {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  background: #dce5dd;
+}
+
+.map-canvas {
+  width: 100%;
+  height: 100%;
+}
+
+.app-panel {
+  min-width: 0;
+  overflow-y: auto;
+  border-left: 1px solid var(--color-border);
+  padding: 28px 25px 35px;
+  background: var(--color-panel);
+}
+
+.eyebrow {
+  margin: 0 0 12px;
+  color: #527565;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+}
+
+.intro {
+  margin: 0 0 20px;
+  color: var(--color-muted);
+  font-size: 13px;
+}
+
+.muted,
+.status {
+  color: var(--color-muted);
+  font-size: 12px;
+  line-height: 1.65;
+}
+
+.status {
+  overflow-wrap: anywhere;
+}
+
+.status.error {
+  color: #9b3e2f;
+}
+
+.button-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 12px 0;
+}
+
+details {
+  margin-top: 18px;
+  border-top: 1px solid #dce3d8;
+  padding-top: 13px;
+}
+
+summary {
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.cesium-viewer-bottom {
+  max-width: 90%;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+@media (min-width: 1500px) {
+  .workspace {
+    grid-template-columns: minmax(0, 1fr) 570px;
+  }
+
+  .app-panel {
+    padding: 32px;
+  }
+}
+
+@media (max-width: 950px) {
+  .workspace {
+    grid-template-columns: minmax(0, 1fr) 440px;
+  }
+
+  .app-panel {
+    padding: 22px 18px;
+  }
+
+  .topbar {
+    padding: 0 16px;
+  }
+
+  .topbar nav {
+    gap: 18px;
+  }
+}
+
+@media (max-width: 740px) {
+  body {
+    height: auto;
+    min-height: 100dvh;
+  }
+
+  .topbar {
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 14px 16px 0;
+  }
+
+  .topbar nav {
+    width: 100%;
+    gap: 20px;
+  }
+
+  .topbar nav a {
+    min-height: 44px;
+    padding: 8px 0;
+    font-size: 12px;
+    white-space: nowrap;
+  }
+
+  .workspace {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .map-pane {
+    height: 48dvh;
+    min-height: 300px;
+  }
+
+  .app-panel {
+    overflow: visible;
+    border-top: 1px solid var(--color-border);
+    border-left: 0;
+    padding: 24px 18px;
+  }
+}

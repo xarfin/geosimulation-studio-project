@@ -3,8 +3,11 @@ import {
   Rectangle, UrlTemplateImageryProvider, GeoJsonDataSource, Cesium3DTileset,
 } from 'cesium';
 import 'cesium/Build/Cesium/Widgets/widgets.css';
-import './style.css';
+import { renderNavigation } from './ui/navigation.js';
+import './styles/layers.css';
 import { layers } from './layers.js';
+
+renderNavigation('layers');
 
 const viewer = new Viewer('cesiumContainer', {
   baseLayer: false, baseLayerPicker: false, geocoder: false,

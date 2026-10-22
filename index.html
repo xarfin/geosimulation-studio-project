@@ -1,28 +1,38 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Rotterdam layers</title>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Schiehaven Noord | Layers</title>
   </head>
   <body>
-    <main id="cesiumContainer" aria-label="Interactive study-area map"></main>
-    <aside class="panel">
-      <h1>Rotterdam layers</h1>
-      <p><a href="/task47.html">Task 4.7: compare land-use scenarios</a></p>
-      <p><a href="/weather.html">Task 4.4a: live weather dashboard</a></p>
-      <label for="layerSelect">Layer</label>
-      <select id="layerSelect" disabled></select>
-      <nav aria-label="Layer slides">
-        <button id="previous" type="button" disabled>Previous</button>
-        <span id="counter"></span>
-        <button id="next" type="button" disabled>Next</button>
-      </nav>
-      <p id="description"></p>
-      <button id="resetView" type="button">Reset view</button>
-      <p id="status" role="status">Loading study area…</p>
-      <small>Drag to move · Scroll to zoom<br>Ctrl + drag to tilt</small>
-    </aside>
-    <script type="module" src="/src/main.js"></script>
+    <a class="skip-link" href="#pagePanel">Skip to layer controls</a>
+    <header class="topbar" id="projectHeader"></header>
+    <main class="workspace">
+      <section aria-label="Study-area layers" class="map-pane">
+        <div aria-label="Interactive study-area map" class="map-canvas" id="cesiumContainer"></div>
+      </section>
+      <aside aria-labelledby="pageTitle" class="app-panel layers-panel" id="pagePanel" tabindex="-1">
+        <p class="eyebrow">Study-area layers</p>
+        <h1 id="pageTitle">Layers</h1>
+        <p class="intro">Explore the study area's imagery, land use and 3D buildings.</p>
+        <label for="layerSelect">Layer</label>
+        <select disabled="" id="layerSelect"></select>
+        <nav aria-label="Layer slides" class="button-group layer-slides">
+          <button disabled="" id="previous" type="button">Previous</button>
+          <span id="counter"></span>
+          <button disabled="" id="next" type="button">Next</button>
+        </nav>
+        <p id="description"></p>
+        <button id="resetView" type="button">Reset view</button>
+        <p class="status" id="status" role="status">Loading study area…</p>
+        <p class="muted map-help">
+          Drag to move · Scroll to zoom
+          <br/>
+          Ctrl + drag to tilt
+        </p>
+      </aside>
+    </main>
+    <script src="/src/main.js" type="module"></script>
   </body>
 </html>

@@ -1,9 +1,12 @@
-# Rotterdam layer viewer
+# Schiehaven Noord viewer
 
 Task 4.4a: open `/weather.html` for the KNMI weather dashboard. See
 `WEATHER_SETUP.md` to configure the server-only EDR key and run the live data API.
 
-A barebones CesiumJS viewer for the supplied study-area exports.
+A CesiumJS application with three pages: Layers, Land-use scenarios and KNMI data.
+Use the shared top navigation to switch pages. Each page uses the same map and
+sidebar layout, typography and controls. On smaller screens, the sidebar sits
+below the map.
 
 ## Run in VS Code
 
@@ -21,9 +24,18 @@ Use the dropdown or Previous/Next buttons to browse nine layers: aerial image, s
 
 ```text
 src/
-  main.js                     Viewer and loading logic
+  main.js                     Layers page and loading logic
   layers.js                   Layer titles, file paths, colours
-  style.css                   Basic page styling
+  task47.js                   Land-use scenario controls and rendering
+  weather.js                  KNMI dashboard and station map
+  weather-charts.js           Weather chart rendering
+  ui/
+    navigation.js             Shared page links and current-page indicator
+  styles/
+    shared.css                Layout, navigation, typography and controls
+    layers.css                Layer browser controls
+    scenarios.css             Scenario controls, metrics and legend
+    weather.css               Weather cards, charts and tables
 public/
   models/proposed-complex/    Proposed building 3D Tiles
   data/
@@ -38,6 +50,9 @@ public/
     buildings/rotterdam/     Existing building 3D Tiles
   cesiumStatic/              Generated Cesium supporting files
   ASSETS.md                  Sources and replacement instructions
+  task47/                    Land-use scenarios and model summaries
+server/                      KNMI API, parsing and Vite middleware
+tests/                       Weather parsing and API tests
 scripts/
   copy-cesium-assets.js       Copies Cesium's supporting files
   index-imagery.js            Lists available tiles in the clipped exports
@@ -48,5 +63,7 @@ dist/                        Generated website for hosting
 ## Build
 
 Run `npm.cmd run build` to create dist, then `npm.cmd run preview` to preview the build. Building does not publish anything. All study data is included in dist. The present configuration expects deployment at the website root; subfolder deployment requires adjusting the asset URLs.
+
+Run `npm.cmd run test:weather` for the weather parsing and API tests.
 
 The dataset exports do not include complete provider/licence details. Add the original source attribution before public deployment.

@@ -1,0 +1,77 @@
+.scenarios-panel > label {
+  display: block;
+  margin: 12px 0 6px;
+}
+
+.scenarios-panel select {
+  width: 100%;
+}
+
+.scenarios-panel .check {
+  font-weight: 400;
+}
+
+.check input {
+  margin-right: 4px;
+  vertical-align: middle;
+}
+
+#evolution {
+  margin-top: 20px;
+  border-top: 1px solid var(--color-border);
+  padding-top: 16px;
+}
+
+#evolution label {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+#iteration {
+  width: 100%;
+  margin: 12px 0;
+}
+
+#metrics {
+  margin: 24px 0;
+}
+
+#metrics dl {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px 12px;
+  font-size: 12px;
+}
+
+#metrics dt,
+#metrics dd {
+  margin: 0;
+}
+
+#metrics dd {
+  font-weight: 600;
+  text-align: right;
+}
+
+#legend {
+  display: grid;
+  grid-template-columns: 14px 1fr;
+  gap: 6px 8px;
+  margin-top: 12px;
+  font-size: 12px;
+}
+
+#legend i {
+  height: 12px;
+  margin-top: 3px;
+  border-radius: 2px;
+}
+
+.notice {
+  border: 1px solid #dbe3d9;
+  border-radius: 6px;
+  padding: 12px;
+  background: #edf3ed;
+  font-size: 12px;
+}
