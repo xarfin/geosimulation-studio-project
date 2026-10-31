@@ -1,6 +1,7 @@
 node_modules/
 .vite-cache/
 dist/
+local-data-backups/
 .env.local
 *.log
 public/cesiumStatic/

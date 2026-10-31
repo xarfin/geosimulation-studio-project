@@ -127,6 +127,7 @@ p {
   color: #c9dad1;
   font-size: 13px;
   text-decoration: none;
+  white-space: nowrap;
 }
 
 .topbar nav a:hover {
@@ -265,7 +266,9 @@ summary {
 
   .topbar nav {
     width: 100%;
+    flex-wrap: wrap;
     gap: 20px;
+    row-gap: 0;
   }
 
   .topbar nav a {

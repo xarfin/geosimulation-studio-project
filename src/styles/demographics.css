@@ -1,0 +1,208 @@
+.demographics-panel > label {
+  display: block;
+  margin-bottom: 6px;
+}
+
+.demographics-panel > select {
+  width: 100%;
+}
+
+.demographics-map-legend {
+  position: absolute;
+  left: 16px;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  padding: 12px;
+  background: #fffffff2;
+  bottom: 42px;
+  width: auto;
+  max-width: calc(100% - 32px);
+  font-size: 11px;
+}
+
+.demographics-map-legend p {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 8px 0 0;
+  font-size: 11px;
+}
+
+.demographics-map-legend i {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+}
+
+.study-outline-key::before {
+  content: '';
+  width: 10px;
+  height: 10px;
+  border: 2px solid #d8a942;
+}
+
+.neighbourhood-cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin: 20px 0 24px;
+}
+
+.neighbourhood-card {
+  border: 1px solid var(--color-border);
+  border-top: 3px solid var(--neighbourhood-color);
+  border-radius: 6px;
+  padding: 14px 12px;
+  background: #fff;
+}
+
+.neighbourhood-card h2 {
+  margin: 0;
+  color: var(--neighbourhood-color);
+  font-size: 15px;
+}
+
+.neighbourhood-card small {
+  color: var(--color-muted);
+  font-size: 10px;
+}
+
+.neighbourhood-card > p {
+  margin: 14px 0;
+  font-size: 11px;
+}
+
+.neighbourhood-card strong {
+  display: block;
+  font-size: 26px;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.neighbourhood-card dl {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 6px;
+  margin: 0;
+  font-size: 11px;
+}
+
+.neighbourhood-card dt,
+.neighbourhood-card dd {
+  margin: 0;
+}
+
+.neighbourhood-card dd {
+  font-weight: 600;
+}
+
+.demographics-panel > section:not(.neighbourhood-cards) {
+  margin-top: 24px;
+  border-top: 1px solid var(--color-border);
+  padding-top: 16px;
+}
+
+.demographics-panel > section > h2 {
+  margin: 0 0 14px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.demographics-panel figure {
+  margin: 22px 0 16px;
+}
+
+.demographics-panel figcaption {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.demographics-panel figcaption span {
+  color: var(--color-muted);
+  font-size: 10px;
+  font-weight: 400;
+}
+
+.chart-image-link {
+  display: block;
+  margin-top: 8px;
+  overflow: hidden;
+  border: 1px solid #dbe3d9;
+  border-radius: 6px;
+  background: #fff;
+}
+
+.chart-image-link img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.demographics-panel .is-muted {
+  opacity: 0.55;
+}
+
+.demographics-table-wrap {
+  max-height: 450px;
+  overflow: auto;
+  margin-top: 12px;
+}
+
+.demographics-panel table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  font-size: 11px;
+  text-align: right;
+}
+
+.demographics-panel caption {
+  padding-bottom: 12px;
+  color: var(--color-muted);
+  text-align: left;
+}
+
+.demographics-panel th,
+.demographics-panel td {
+  border-bottom: 1px solid #e3e8de;
+  padding: 8px;
+}
+
+.demographics-panel thead th {
+  position: sticky;
+  top: 0;
+  background: #eff3eb;
+}
+
+.demographics-panel th:first-child {
+  text-align: left;
+}
+
+.demographics-panel tbody th {
+  font-weight: 400;
+}
+
+.demographics-source {
+  margin-top: 24px;
+}
+
+@media (max-width: 950px) {
+  .neighbourhood-card dl {
+    grid-template-columns: 1fr;
+    gap: 2px;
+  }
+
+  .neighbourhood-card dd + dt {
+    margin-top: 5px;
+  }
+}
+
+@media (max-width: 740px) {
+  .demographics-map-legend {
+    display: none;
+  }
+}

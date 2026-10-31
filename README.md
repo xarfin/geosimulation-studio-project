@@ -3,10 +3,18 @@
 Task 4.4a: open `/weather.html` for the KNMI weather dashboard. See
 `WEATHER_SETUP.md` to configure the server-only EDR key and run the live data API.
 
-A CesiumJS application with three pages: Layers, Land-use scenarios and KNMI data.
+A CesiumJS application with four pages: Layers, Land-use scenarios, KNMI data
+and Socio-demographics.
 Use the shared top navigation to switch pages. Each page uses the same map and
 sidebar layout, typography and controls. On smaller screens, the sidebar sits
 below the map.
+
+Open `/demographics.html` to compare Delfshaven and Schiemond using the supplied
+CBS 2025 data. Select a neighbourhood or click its map boundary to focus on it.
+The dashboard compares age, households, housing, social assistance and service
+distances using the original chart images from the supplied folder. Select a
+chart to view it full size, or expand the source table to view every indicator
+and download the CSV. Map controls are in the sidebar.
 
 ## Run in VS Code
 
@@ -29,6 +37,10 @@ src/
   task47.js                   Land-use scenario controls and rendering
   weather.js                  KNMI dashboard and station map
   weather-charts.js           Weather chart rendering
+  demographics.js            Socio-demographic page and controls
+  demographics/
+    indicators.js             Indicator labels, units and number formatting
+    map.js                    Neighbourhood boundaries and map interaction
   ui/
     navigation.js             Shared page links and current-page indicator
   styles/
@@ -36,6 +48,7 @@ src/
     layers.css                Layer browser controls
     scenarios.css             Scenario controls, metrics and legend
     weather.css               Weather cards, charts and tables
+    demographics.css          Neighbourhood cards, charts and table
 public/
   models/proposed-complex/    Proposed building 3D Tiles
   data/
@@ -48,6 +61,7 @@ public/
     elevation/ahn/           AHN image tiles and metadata
     background/luchtfoto/    Aerial image tiles and metadata
     buildings/rotterdam/     Existing building 3D Tiles
+    demographics/            Two-neighbourhood CBS data, chart images and provenance
   cesiumStatic/              Generated Cesium supporting files
   ASSETS.md                  Sources and replacement instructions
   task47/                    Land-use scenarios and model summaries
@@ -57,6 +71,7 @@ scripts/
   copy-cesium-assets.js       Copies Cesium's supporting files
   index-imagery.js            Lists available tiles in the clipped exports
   prepare-assets.js          Runs both preparation steps
+  prepare-demographics.py    Prepares the supplied two-neighbourhood archive
 dist/                        Generated website for hosting
 ```
 
