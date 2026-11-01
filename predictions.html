@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Schiehaven Noord | Weather predictions</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#pagePanel">Skip to prediction controls</a>
+    <header id="projectHeader" class="topbar"></header>
+    <main class="workspace predictions-workspace">
+      <section class="prediction-stage" aria-labelledby="chartTitle">
+        <div class="chart-heading">
+          <div><p class="eyebrow" id="chartCategory">Experimental forecast</p><h2 id="chartTitle">Twelve-month forecast · 2026</h2></div>
+          <a id="fullChart" href="/data/predictions/charts/02b_twelve_month_predictions.png" target="_blank" rel="noreferrer">Open full size ↗</a>
+        </div>
+        <figure class="prediction-figure">
+          <a id="chartLink" href="/data/predictions/charts/02b_twelve_month_predictions.png" target="_blank" rel="noreferrer" aria-label="Open the selected chart full size">
+            <img id="predictionChart" src="/data/predictions/charts/02b_twelve_month_predictions.png" alt="Monthly LSTM predictions for temperature, rainfall and wind speed in 2026.">
+          </a>
+          <figcaption id="chartCaption">Monthly predictions made from observations ending in December 2025.</figcaption>
+        </figure>
+        <p id="chartStatus" class="status" role="status"></p>
+        <div class="chart-footer"><span>Rotterdam Airport · Station 344</span><span>Supplied task 4.4b results</span></div>
+      </section>
+      <aside id="pagePanel" class="app-panel predictions-panel" aria-labelledby="pageTitle" tabindex="-1">
+        <p class="eyebrow">Task 4.4b · Machine learning</p>
+        <h1 id="pageTitle">Weather predictions</h1>
+        <p class="intro">Temperature, rainfall and wind from monthly KNMI observations, 1974–2025.</p>
+        <label for="chartSelect">Explore the results</label>
+        <select id="chartSelect"></select>
+        <div class="button-group"><button id="previousChart" type="button">← Previous</button><button id="nextChart" type="button">Next →</button><span id="chartCounter" class="muted"></span></div>
+        <p class="prediction-note">The LSTM forecasts are an experiment based on data through 2025. They describe station conditions, not local flood risk or wind between buildings.</p>
+        <p id="dataStatus" class="status" role="status">Loading prediction results.</p>
+        <section aria-labelledby="comparisonTitle">
+          <h2 id="comparisonTitle">Five-year outlook</h2>
+          <p class="muted">Measured 2021–2025 compared with the experimental 2026–2030 forecast. Rainfall is an average annual total.</p>
+          <div id="comparisonCards" class="prediction-cards"></div>
+        </section>
+        <section aria-labelledby="accuracyTitle">
+          <h2 id="accuracyTitle">How accurate was the model?</h2>
+          <p class="muted">Historical tests at 20 forecast starts in 2016–2020. Lower error is better. The baseline uses the training period’s average for each calendar month.</p>
+          <div class="accuracy-controls">
+            <label for="horizonSelect">Months ahead<select id="horizonSelect" disabled><option value="1">1 month</option><option value="12" selected>12 months</option><option value="60">60 months</option></select></label>
+            <label for="metricSelect">Error measure<select id="metricSelect" disabled><option value="MAE">MAE</option><option value="RMSE">RMSE</option></select></label>
+          </div>
+          <div class="prediction-table-wrap"><table><caption id="accuracyCaption">Mean absolute error at 12 months ahead</caption><thead><tr><th scope="col">Indicator</th><th scope="col">LSTM</th><th scope="col">Baseline</th></tr></thead><tbody id="accuracyRows"></tbody></table></div>
+          <p class="muted">Errors refer to the selected month ahead, not an average over the forecast horizon. The test periods overlap.</p>
+        </section>
+        <details><summary>Model and design connections</summary>
+          <p>A separate LSTM with 32 units and one output is trained for each indicator. It learns seasonal anomalies from a 60-month window; longer forecasts reuse its previous predictions.</p>
+          <p>Historical testing uses training data through 2012 and validation in 2013–2015. The final forecast uses training through 2022 and validation in 2023–2025.</p>
+          <ul><li>Temperature: shade, trees and green areas.</li><li>Rainfall: rain gardens, permeable surfaces and water storage.</li><li>Wind: test building layouts and outdoor comfort with local wind simulations.</li></ul>
+          <p>The supplied KNMI’23 chart shows separate national scenarios for 2050, relative to 1991–2020. These are distinct from the LSTM output.</p>
+        </details>
+        <details><summary>Annual forecast and source files</summary>
+          <div class="prediction-table-wrap"><table><caption>Experimental annual forecast; rainfall in mm/year</caption><thead><tr><th scope="col">Year</th><th scope="col">°C</th><th scope="col">mm/year</th><th scope="col">m/s</th></tr></thead><tbody id="annualRows"></tbody></table></div>
+          <ul class="download-links">
+            <li><a href="/data/predictions/results/06_forecast_monthly_2026_2030.csv" download>Monthly forecast (CSV)</a></li>
+            <li><a href="/data/predictions/results/07_forecast_annual_2026_2030.csv" download>Annual forecast (CSV)</a></li>
+            <li><a href="/data/predictions/results/01_accuracy_1_12_60_months.csv" download>Historical accuracy (CSV)</a></li>
+            <li><a href="/data/predictions/task44b-source.zip" download>Original package: notebook, data and charts (ZIP)</a></li>
+          </ul>
+        </details>
+        <p class="muted">Source: teammate’s task 4.4b analysis of KNMI station 344. Charts and model results are displayed as supplied.</p>
+      </aside>
+    </main>
+    <script type="module" src="/src/predictions.js"></script>
+  </body>
+</html>

@@ -1,0 +1,230 @@
+{
+  "station": "Rotterdam Airport (344)",
+  "observations": "1974–2025",
+  "forecastPeriod": "2026–2030",
+  "comparison": [
+    {
+      "indicator": "Temperature",
+      "measured_2021_2025": 11.726357333333334,
+      "forecast_2026_2030": 10.944878871508694,
+      "change": -0.7814784618246406,
+      "historical_5year_MAE": 0.8258589168006211,
+      "unit": "°C",
+      "design_connection": "Shade and green areas"
+    },
+    {
+      "indicator": "Rainfall",
+      "measured_2021_2025": 872.2499999999998,
+      "forecast_2026_2030": 857.4223507614901,
+      "change": -14.827649238509707,
+      "historical_5year_MAE": 36.57410318538838,
+      "unit": "mm/year",
+      "design_connection": "Rain gardens and drainage"
+    },
+    {
+      "indicator": "Wind speed",
+      "measured_2021_2025": 4.204488166666667,
+      "forecast_2026_2030": 4.3571095742208605,
+      "change": 0.15262140755419384,
+      "historical_5year_MAE": 0.1255064251935925,
+      "unit": "m/s",
+      "design_connection": "Building layout and outdoor comfort"
+    }
+  ],
+  "accuracy": [
+    {
+      "indicator": "mean_wind_ms",
+      "months_ahead": 1.0,
+      "model": "LSTM",
+      "MAE": 0.4741763068791629,
+      "RMSE": 0.6364392561915598,
+      "unit": "m/s",
+      "forecast_starts": 20.0
+    },
+    {
+      "indicator": "mean_wind_ms",
+      "months_ahead": 1.0,
+      "model": "Seasonal baseline",
+      "MAE": 0.6792554102564102,
+      "RMSE": 0.8331944993342126,
+      "unit": "m/s",
+      "forecast_starts": 20.0
+    },
+    {
+      "indicator": "mean_wind_ms",
+      "months_ahead": 12.0,
+      "model": "LSTM",
+      "MAE": 0.3727722028433389,
+      "RMSE": 0.49051722850117585,
+      "unit": "m/s",
+      "forecast_starts": 20.0
+    },
+    {
+      "indicator": "mean_wind_ms",
+      "months_ahead": 12.0,
+      "model": "Seasonal baseline",
+      "MAE": 0.5384423974358971,
+      "RMSE": 0.638440323182901,
+      "unit": "m/s",
+      "forecast_starts": 20.0
+    },
+    {
+      "indicator": "mean_wind_ms",
+      "months_ahead": 60.0,
+      "model": "LSTM",
+      "MAE": 0.626027251057944,
+      "RMSE": 0.769613588015637,
+      "unit": "m/s",
+      "forecast_starts": 20.0
+    },
+    {
+      "indicator": "mean_wind_ms",
+      "months_ahead": 60.0,
+      "model": "Seasonal baseline",
+      "MAE": 0.8254487948717945,
+      "RMSE": 0.952026756735127,
+      "unit": "m/s",
+      "forecast_starts": 20.0
+    },
+    {
+      "indicator": "rain_mm",
+      "months_ahead": 1.0,
+      "model": "LSTM",
+      "MAE": 30.98609882675627,
+      "RMSE": 39.27427446444161,
+      "unit": "mm/month",
+      "forecast_starts": 20.0
+    },
+    {
+      "indicator": "rain_mm",
+      "months_ahead": 1.0,
+      "model": "Seasonal baseline",
+      "MAE": 29.98913461538462,
+      "RMSE": 38.85807753582995,
+      "unit": "mm/month",
+      "forecast_starts": 20.0
+    },
+    {
+      "indicator": "rain_mm",
+      "months_ahead": 12.0,
+      "model": "LSTM",
+      "MAE": 30.000084677813447,
+      "RMSE": 40.80102809213645,
+      "unit": "mm/month",
+      "forecast_starts": 20.0
+    },
+    {
+      "indicator": "rain_mm",
+      "months_ahead": 12.0,
+      "model": "Seasonal baseline",
+      "MAE": 30.43439102564102,
+      "RMSE": 40.820107188333395,
+      "unit": "mm/month",
+      "forecast_starts": 20.0
+    },
+    {
+      "indicator": "rain_mm",
+      "months_ahead": 60.0,
+      "model": "LSTM",
+      "MAE": 34.06387593065857,
+      "RMSE": 41.773708778188904,
+      "unit": "mm/month",
+      "forecast_starts": 20.0
+    },
+    {
+      "indicator": "rain_mm",
+      "months_ahead": 60.0,
+      "model": "Seasonal baseline",
+      "MAE": 33.88375,
+      "RMSE": 41.457655589248795,
+      "unit": "mm/month",
+      "forecast_starts": 20.0
+    },
+    {
+      "indicator": "temperature_c",
+      "months_ahead": 1.0,
+      "model": "LSTM",
+      "MAE": 1.1507029790211927,
+      "RMSE": 1.4339025925481805,
+      "unit": "°C",
+      "forecast_starts": 20.0
+    },
+    {
+      "indicator": "temperature_c",
+      "months_ahead": 1.0,
+      "model": "Seasonal baseline",
+      "MAE": 1.4147798205128208,
+      "RMSE": 1.7347037892685018,
+      "unit": "°C",
+      "forecast_starts": 20.0
+    },
+    {
+      "indicator": "temperature_c",
+      "months_ahead": 12.0,
+      "model": "LSTM",
+      "MAE": 1.1519830028871094,
+      "RMSE": 1.3759595147227155,
+      "unit": "°C",
+      "forecast_starts": 20.0
+    },
+    {
+      "indicator": "temperature_c",
+      "months_ahead": 12.0,
+      "model": "Seasonal baseline",
+      "MAE": 1.5007921282051282,
+      "RMSE": 1.6942142302412893,
+      "unit": "°C",
+      "forecast_starts": 20.0
+    },
+    {
+      "indicator": "temperature_c",
+      "months_ahead": 60.0,
+      "model": "LSTM",
+      "MAE": 1.3804905925500734,
+      "RMSE": 1.710416929902597,
+      "unit": "°C",
+      "forecast_starts": 20.0
+    },
+    {
+      "indicator": "temperature_c",
+      "months_ahead": 60.0,
+      "model": "Seasonal baseline",
+      "MAE": 1.7928607948717954,
+      "RMSE": 2.0835311365782516,
+      "unit": "°C",
+      "forecast_starts": 20.0
+    }
+  ],
+  "annual": [
+    {
+      "year": 2026.0,
+      "temperature_c": 11.2497801554822,
+      "rain_mm": 846.6899004951338,
+      "mean_wind_ms": 4.3460843026669504
+    },
+    {
+      "year": 2027.0,
+      "temperature_c": 11.017796272141581,
+      "rain_mm": 859.0102051444567,
+      "mean_wind_ms": 4.366234212787436
+    },
+    {
+      "year": 2028.0,
+      "temperature_c": 10.88687421982074,
+      "rain_mm": 860.2636587324961,
+      "mean_wind_ms": 4.36010362493633
+    },
+    {
+      "year": 2029.0,
+      "temperature_c": 10.808684794827974,
+      "rain_mm": 860.5694464411389,
+      "mean_wind_ms": 4.356857240836937
+    },
+    {
+      "year": 2030.0,
+      "temperature_c": 10.76125891527098,
+      "rain_mm": 860.5785429942242,
+      "mean_wind_ms": 4.35626848987665
+    }
+  ]
+}

@@ -3,11 +3,27 @@
 Task 4.4a: open `/weather.html` for the KNMI weather dashboard. See
 `WEATHER_SETUP.md` to configure the server-only EDR key and run the live data API.
 
-A CesiumJS application with four pages: Layers, Land-use scenarios, KNMI data
-and Socio-demographics.
+A CesiumJS application with five pages: Layers, Land-use scenarios, KNMI data,
+Weather predictions and Socio-demographics.
 Use the shared top navigation to switch pages. Each page uses the same map and
 sidebar layout, typography and controls. On smaller screens, the sidebar sits
 below the map.
+
+Open `/predictions.html` for task 4.4b. Browse the supplied LSTM charts, compare
+the 1-, 12- and 60-month historical errors (MAE or RMSE), and view the experimental
+2026–2030 forecasts for temperature, rainfall and wind. The original charts are
+shown at a readable size with full-size links. KNMI’23 climate scenarios have
+their own chart and are labelled separately from the LSTM experiment.
+The page works without a KNMI API key or Python server; it reads saved results.
+Download the monthly/annual forecast CSVs or the unchanged original ZIP from
+the source-files section. The archive's notebook is supplied as received and
+is not executed by the application.
+
+To reimport the same archive structure, run
+`python scripts/prepare-predictions.py "path/to/predictions.zip"`.
+This copies the source charts and CSVs and prepares `summary.json`; it does not
+retrain or change the model. Temperature and wind are annual means; rainfall
+is summed by year and reported as mm/year in the five-year comparison.
 
 Open `/demographics.html` to compare Delfshaven and Schiemond using the supplied
 CBS 2025 data. Select a neighbourhood or click its map boundary to focus on it.
@@ -38,6 +54,8 @@ src/
   weather.js                  KNMI dashboard and station map
   weather-charts.js           Weather chart rendering
   demographics.js            Socio-demographic page and controls
+  predictions.js             Forecast charts, comparison cards and accuracy controls
+  predictions/charts.js      Supplied chart catalogue and captions
   demographics/
     indicators.js             Indicator labels, units and number formatting
     map.js                    Neighbourhood boundaries and map interaction
@@ -49,6 +67,7 @@ src/
     scenarios.css             Scenario controls, metrics and legend
     weather.css               Weather cards, charts and tables
     demographics.css          Neighbourhood cards, charts and table
+    predictions.css           Forecast chart stage, cards and result tables
 public/
   models/proposed-complex/    Proposed building 3D Tiles
   data/
@@ -62,6 +81,7 @@ public/
     background/luchtfoto/    Aerial image tiles and metadata
     buildings/rotterdam/     Existing building 3D Tiles
     demographics/            Two-neighbourhood CBS data, chart images and provenance
+    predictions/             Task 4.4b charts, CSVs, summary and original archive
   cesiumStatic/              Generated Cesium supporting files
   ASSETS.md                  Sources and replacement instructions
   task47/                    Land-use scenarios and model summaries
@@ -72,6 +92,7 @@ scripts/
   index-imagery.js            Lists available tiles in the clipped exports
   prepare-assets.js          Runs both preparation steps
   prepare-demographics.py    Prepares the supplied two-neighbourhood archive
+  prepare-predictions.py     Imports the supplied task 4.4b result archive
 dist/                        Generated website for hosting
 ```
 

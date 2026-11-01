@@ -252,6 +252,20 @@ summary {
   }
 }
 
+@media (min-width: 741px) and (max-width: 1150px) {
+  .topbar {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 0;
+    padding-top: 12px;
+  }
+
+  .topbar nav {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+}
+
 @media (max-width: 740px) {
   body {
     height: auto;

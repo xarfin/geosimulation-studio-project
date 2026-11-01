@@ -4,6 +4,7 @@ const pages = [
   { id: 'layers', label: 'Layers', href: '/' },
   { id: 'scenarios', label: 'Land-use scenarios', href: '/task47.html' },
   { id: 'weather', label: 'KNMI data', href: '/weather.html' },
+  { id: 'predictions', label: 'Weather predictions', href: '/predictions.html' },
   { id: 'demographics', label: 'Socio-demographics', href: '/demographics.html' },
 ];
 

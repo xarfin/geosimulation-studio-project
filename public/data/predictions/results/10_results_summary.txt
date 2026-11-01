@@ -1,0 +1,32 @@
+4.4.b — KNMI WEATHER PREDICTION WITH LSTM
+Station: Rotterdam Airport (344)
+Observed data: 1974–2025 (monthly)
+Model: LSTM(32) + Dense(1), adapted from the IoT laboratory
+Tests: 1, 12 and 60 months ahead; 20 rolling forecast starts (2016–2020)
+
+HISTORICAL FORECAST ERRORS (MAE)
+Temperature:
+   1 months: LSTM 1.15; seasonal baseline 1.41 °C
+  12 months: LSTM 1.15; seasonal baseline 1.50 °C
+  60 months: LSTM 1.38; seasonal baseline 1.79 °C
+  Error is higher after five years than after one month.
+Rainfall:
+   1 months: LSTM 30.99; seasonal baseline 29.99 mm/month
+  12 months: LSTM 30.00; seasonal baseline 30.43 mm/month
+  60 months: LSTM 34.06; seasonal baseline 33.88 mm/month
+  Error is higher after five years than after one month.
+Wind speed:
+   1 months: LSTM 0.47; seasonal baseline 0.68 m/s
+  12 months: LSTM 0.37; seasonal baseline 0.54 m/s
+  60 months: LSTM 0.63; seasonal baseline 0.83 m/s
+  Error is higher after five years than after one month.
+
+EXPERIMENTAL 2026–2030 FORECAST (five-year averages)
+Temperature: measured 11.73, forecast 10.94, change -0.78 °C
+Rainfall: measured 872.25, forecast 857.42, change -14.83 mm/year
+Wind speed: measured 4.20, forecast 4.36, change +0.15 m/s
+
+DESIGN CONNECTION
+Temperature: shade and trees; Rainfall: rainwater storage; Wind: outdoor comfort.
+These are experimental station-level forecasts, not exact local climate or flood projections.
+Forecasts from the same starting dates overlap, so their errors are not independent.

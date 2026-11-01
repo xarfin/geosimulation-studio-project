@@ -1,0 +1,7 @@
+indicator,model,MAE_5year_average,RMSE_5year_average,unit,forecast_starts
+mean_wind_ms,LSTM,0.1255064251935925,0.13419846693050883,m/s,20
+mean_wind_ms,Seasonal baseline,0.4582023566239313,0.4603389633778246,m/s,20
+rain_mm,LSTM,36.57410318538838,43.8465644434095,mm/year,20
+rain_mm,Seasonal baseline,45.69652564102561,55.88712233477044,mm/year,20
+temperature_c,LSTM,0.8258589168006211,0.8398854620611569,°C,20
+temperature_c,Seasonal baseline,1.2976182433760695,1.306284747682493,°C,20
