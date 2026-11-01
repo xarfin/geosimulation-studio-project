@@ -3,11 +3,36 @@
 Task 4.4a: open `/weather.html` for the KNMI weather dashboard. See
 `WEATHER_SETUP.md` to configure the server-only EDR key and run the live data API.
 
-A CesiumJS application with five pages: Layers, Land-use scenarios, KNMI data,
-Weather predictions and Socio-demographics.
+A CesiumJS application with six pages: Layers, Land-use scenarios, Wind & noise,
+KNMI data, Weather predictions and Socio-demographics.
 Use the shared top navigation to switch pages. Each page uses the same map and
 sidebar layout, typography and controls. On smaller screens, the sidebar sits
 below the map.
+
+Open `/environment.html` for task 4.5. Compare the baseline, Design A and Design B
+wind simulations over the aerial image, adjust opacity, and click for wind speed.
+The overlays show the final saved OpenFOAM velocity fields at 1.5 m above model
+ground, sampled on a 2 m grid and restored to real-world coordinates using the
+offset documented in the cases. All scenarios use the same colour scale. The
+summary cards describe open-air samples inside the development site, excluding
+buildings. Download each geographic wind GeoTIFF or view the supplied wind PDF.
+
+The noise layer preserves the supplied image's `Lw (dB)` scale of 0–9. Its
+placement is approximate: the plotted axes were interpreted as EPSG:3857 and
+checked against the building footprints. No numeric noise raster, confirmed CRS,
+receiver height or separate design noise results were supplied. Both analyses
+are clipped to the study area; the original noise image remains available.
+
+The saved overlays work without Python or ParaView. To regenerate them, install
+NumPy, rasterio, Pillow and matplotlib in a Python environment, then run:
+
+```powershell
+python scripts/prepare-wind-noise.py "path/to/task45.zip" --pvpython "C:\Program Files\ParaView 6.2.0\bin\pvpython.exe"
+```
+
+The importer reads the existing simulation results; it does not rerun the solver.
+Intermediate meshes and samples stay under the ignored `local-data-backups/`
+directory. The browser uses only the prepared PNGs, numeric grids and metadata.
 
 Open `/predictions.html` for task 4.4b. Browse the supplied LSTM charts, compare
 the 1-, 12- and 60-month historical errors (MAE or RMSE), and view the experimental
@@ -55,6 +80,10 @@ src/
   weather-charts.js           Weather chart rendering
   demographics.js            Socio-demographic page and controls
   predictions.js             Forecast charts, comparison cards and accuracy controls
+  environment.js             Wind/noise selection, legend, statistics and downloads
+  environment/
+    map.js                    Georeferenced overlays, opacity and map interaction
+    values.js                 Numeric wind grid decoding and coordinate sampling
   predictions/charts.js      Supplied chart catalogue and captions
   demographics/
     indicators.js             Indicator labels, units and number formatting
@@ -68,6 +97,7 @@ src/
     weather.css               Weather cards, charts and tables
     demographics.css          Neighbourhood cards, charts and table
     predictions.css           Forecast chart stage, cards and result tables
+    environment.css           Analysis controls, legend and wind statistics
 public/
   models/proposed-complex/    Proposed building 3D Tiles
   data/
@@ -82,6 +112,7 @@ public/
     buildings/rotterdam/     Existing building 3D Tiles
     demographics/            Two-neighbourhood CBS data, chart images and provenance
     predictions/             Task 4.4b charts, CSVs, summary and original archive
+    environment/             Task 4.5 overlays, wind values, GeoTIFFs and source figures
   cesiumStatic/              Generated Cesium supporting files
   ASSETS.md                  Sources and replacement instructions
   task47/                    Land-use scenarios and model summaries
@@ -93,6 +124,8 @@ scripts/
   prepare-assets.js          Runs both preparation steps
   prepare-demographics.py    Prepares the supplied two-neighbourhood archive
   prepare-predictions.py     Imports the supplied task 4.4b result archive
+  prepare-wind-noise.py      Imports task 4.5 results and restores geographic coordinates
+  sample-wind.py             Samples OpenFOAM horizontal slices using ParaView's Python
 dist/                        Generated website for hosting
 ```
 
@@ -101,5 +134,6 @@ dist/                        Generated website for hosting
 Run `npm.cmd run build` to create dist, then `npm.cmd run preview` to preview the build. Building does not publish anything. All study data is included in dist. The present configuration expects deployment at the website root; subfolder deployment requires adjusting the asset URLs.
 
 Run `npm.cmd run test:weather` for the weather parsing and API tests.
+Run `npm.cmd run test:environment` for wind sampling, data registration and noise metadata checks.
 
 The dataset exports do not include complete provider/licence details. Add the original source attribution before public deployment.

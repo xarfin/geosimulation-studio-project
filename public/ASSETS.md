@@ -28,6 +28,28 @@ AHN is supplied as rendered image tiles, not a height field or quantized-mesh te
 
 The 3D models retain their exported transforms and height coordinates. No manual shifts, scale changes, terrain adjustments, or datum corrections are applied. Their placement has not been validated against surveyed control points.
 
+## Wind and noise results (task 4.5)
+
+`data/environment/` is derived from `4.5 Wind and Noise simulation-20261101T154518Z-1-001.zip`.
+Wind uses the final saved `U` fields: baseline 741, Design A 776 and Design B 774.
+The cases document `local = EPSG:28992 source - (90980, 435560, 0)`. A horizontal
+slice at 1.5 m is sampled after cell-to-point interpolation and transformed to
+EPSG:4326. The PNGs and little-endian float32 grids have identical extents and
+dimensions; NaN represents missing data, including building interiors. The
+GeoTIFFs retain the numeric speeds in m/s. All displayed overlays are clipped to
+the supplied study boundary. Site statistics use the 2 m source grid inside the
+development boundary, excluding building interiors, so open-air sample counts
+differ between designs. A 2 m sample spacing does not imply a uniform 2 m CFD mesh.
+
+Noise is an image overlay derived from `Output_Noise_Simulation.png`. Axis ticks
+were used to place its map rectangle under an inferred EPSG:3857 coordinate
+system, then checked against the supplied footprints. The source does not state
+its CRS, so the interface labels the alignment approximate. The original
+`Lw (dB)` scale (0–9) is preserved; the app does not infer dB(A), a noise metric,
+receiver height or numeric readings from those colours. There is one supplied
+noise image, not a separate result for each design. The unchanged source image
+and three wind PDFs are in `sources/`; `summary.json` records the conversion.
+
 ## Shared work
 
 Commit the source files, package.json, package-lock.json, and the project data/models to your shared repository. node_modules, dist, cesiumStatic, and generated imagery indexes are recreated locally and excluded from Git. The imagery contains thousands of small files; keep that size in mind when selecting hosting.

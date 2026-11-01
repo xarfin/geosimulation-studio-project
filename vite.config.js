@@ -11,6 +11,7 @@ export default defineConfig({
       input: {
         main: resolve(import.meta.dirname, 'index.html'),
         task47: resolve(import.meta.dirname, 'task47.html'),
+        environment: resolve(import.meta.dirname, 'environment.html'),
         weather: resolve(import.meta.dirname, 'weather.html'),
         predictions: resolve(import.meta.dirname, 'predictions.html'),
         demographics: resolve(import.meta.dirname, 'demographics.html'),

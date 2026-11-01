@@ -1,0 +1,227 @@
+{
+  "sourceArchive": "4.5 Wind and Noise simulation-20261101T154518Z-1-001.zip",
+  "sourceCrs": "EPSG:28992",
+  "localOffset": [
+    90980,
+    435560,
+    0
+  ],
+  "heightMetres": 1.5,
+  "referenceWind": {
+    "speed": 10,
+    "height": 10,
+    "direction": [
+      1,
+      0,
+      0
+    ]
+  },
+  "displayClippedToStudyArea": true,
+  "sampleSpacingMetres": 2,
+  "valueFormat": "little-endian float32, north-to-south rows; NaN means no sample",
+  "method": "Latest saved simpleFoam U field; cell-to-point interpolation; triangulated horizontal slice at z=1.5 m sampled on a 2 m grid; bilinear reprojection to EPSG:4326, with a nearest-neighbour validity mask.",
+  "statisticsArea": "Open-air samples within the development site; building interiors excluded.",
+  "legend": {
+    "label": "Wind speed (m/s)",
+    "minimum": 0,
+    "maximum": 20,
+    "stops": [
+      {
+        "value": 0.0,
+        "color": "#30123b"
+      },
+      {
+        "value": 1.6666666666666667,
+        "color": "#434eba"
+      },
+      {
+        "value": 3.3333333333333335,
+        "color": "#4584f9"
+      },
+      {
+        "value": 5.0,
+        "color": "#28bbeb"
+      },
+      {
+        "value": 6.666666666666667,
+        "color": "#1ae4b6"
+      },
+      {
+        "value": 8.333333333333334,
+        "color": "#55fa76"
+      },
+      {
+        "value": 10.0,
+        "color": "#a4fc3b"
+      },
+      {
+        "value": 11.666666666666668,
+        "color": "#d8e335"
+      },
+      {
+        "value": 13.333333333333334,
+        "color": "#f9ba38"
+      },
+      {
+        "value": 15.0,
+        "color": "#fa7d20"
+      },
+      {
+        "value": 16.666666666666668,
+        "color": "#e3440a"
+      },
+      {
+        "value": 18.333333333333336,
+        "color": "#b91e01"
+      },
+      {
+        "value": 20.0,
+        "color": "#7a0402"
+      }
+    ]
+  },
+  "scenarios": [
+    {
+      "id": "baseline",
+      "title": "Baseline",
+      "timestep": 741,
+      "image": "baseline.png",
+      "values": "baseline.bin",
+      "geotiff": "baseline.tif",
+      "report": "sources/Baseline_Windsimulation2.pdf",
+      "width": 790,
+      "height": 352,
+      "bounds": [
+        4.446636297991273,
+        51.90028774065804,
+        4.467156513629174,
+        51.90943092534733
+      ],
+      "statistics": {
+        "mean": 3.1554195880889893,
+        "p95": 4.187340259552002,
+        "max": 6.638530254364014,
+        "samples": 10684
+      }
+    },
+    {
+      "id": "design-a",
+      "title": "Design A",
+      "timestep": 776,
+      "image": "design-a.png",
+      "values": "design-a.bin",
+      "geotiff": "design-a.tif",
+      "report": "sources/DesignA_Windsimulation.pdf",
+      "width": 790,
+      "height": 352,
+      "bounds": [
+        4.446636297991273,
+        51.90028774065804,
+        4.467156513629174,
+        51.90943092534733
+      ],
+      "statistics": {
+        "mean": 2.5218029022216797,
+        "p95": 4.8120341300964355,
+        "max": 7.552888870239258,
+        "samples": 9583
+      }
+    },
+    {
+      "id": "design-b",
+      "title": "Design B",
+      "timestep": 774,
+      "image": "design-b.png",
+      "values": "design-b.bin",
+      "geotiff": "design-b.tif",
+      "report": "sources/DesignB_Windsimulation.pdf",
+      "width": 790,
+      "height": 352,
+      "bounds": [
+        4.446636297991273,
+        51.90028774065804,
+        4.467156513629174,
+        51.90943092534733
+      ],
+      "statistics": {
+        "mean": 2.4049625396728516,
+        "p95": 4.739971160888672,
+        "max": 7.729373931884766,
+        "samples": 9525
+      }
+    }
+  ],
+  "noise": {
+    "image": "noise.png",
+    "source": "sources/Output_Noise_Simulation.png",
+    "bounds": [
+      4.445338887559734,
+      51.90103805073137,
+      4.4657050671197505,
+      51.90921280891588
+    ],
+    "legend": {
+      "label": "Lw (dB)",
+      "minimum": 0,
+      "maximum": 9,
+      "stops": [
+        {
+          "value": 0,
+          "color": "#333399"
+        },
+        {
+          "value": 1,
+          "color": "#0c80e6"
+        },
+        {
+          "value": 2,
+          "color": "#00bf8f"
+        },
+        {
+          "value": 3,
+          "color": "#55dd77"
+        },
+        {
+          "value": 4,
+          "color": "#c5f38d"
+        },
+        {
+          "value": 5,
+          "color": "#e4dc8a"
+        },
+        {
+          "value": 6,
+          "color": "#ac956c"
+        },
+        {
+          "value": 7,
+          "color": "#8d6d66"
+        },
+        {
+          "value": 8,
+          "color": "#c5b5b1"
+        },
+        {
+          "value": 9,
+          "color": "#fdfcfc"
+        }
+      ]
+    },
+    "alignment": "Approximate: calibrated from image axes, assuming EPSG:3857; checked against supplied building footprints.",
+    "sourceCrs": "EPSG:3857 (inferred)",
+    "sourceBounds": [
+      494852.8613666868,
+      6782252.844039348,
+      497119.2446847828,
+      6783726.582781507
+    ],
+    "sourceCropPixels": [
+      119,
+      119,
+      769,
+      542
+    ],
+    "numericValuesAvailable": false,
+    "scenario": "Single supplied result; no separate baseline/design noise layers were included."
+  }
+}
