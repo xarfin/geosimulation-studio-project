@@ -5,8 +5,6 @@ import {
   HeadingPitchRange,
   Matrix4,
   Math as CMath,
-  Rectangle,
-  UrlTemplateImageryProvider,
   GeoJsonDataSource,
   Cesium3DTileset,
   HeightReference,
@@ -15,7 +13,9 @@ import {
   ClippingPolygonCollection,
 } from "cesium";
 import "cesium/Build/Cesium/Widgets/widgets.css";
-import { renderNavigation } from "./ui/navigation.js";
+import { renderNavigation, setStudyAreaFocus } from "./ui/navigation.js";
+import { focusOnStudyArea } from './map/study-area.js';
+import { addStudyAreaImagery } from './map/imagery.js';
 import "./styles/scenarios.css";
 
 renderNavigation("scenarios");
@@ -33,6 +33,7 @@ const viewer = new Viewer("cesiumContainer", {
   requestRenderMode: true
 });
 viewer.scene.globe.baseColor = Color.fromCssColorString("#e5e9e3");
+setStudyAreaFocus(() => focusOnStudyArea(viewer));
 const cache = new Map();
 let summary, baseline, active, centre, tilted = false, version = 0, timer, context, original, treeLayer, roofLayer, gatewayLayer, siteRings = [];
 const cellVisuals = new WeakMap(), roofVisuals = new WeakMap(), treeVisuals = new WeakMap();
@@ -58,23 +59,6 @@ function camera() {
   viewer.camera.lookAt(centre, new HeadingPitchRange(0, CMath.toRadians(tilted ? -42 : -90), tilted ? 900 : 760));
   viewer.camera.lookAtTransform(Matrix4.IDENTITY);
   viewer.scene.requestRender();
-}
-
-async function aerial() {
-  const url = "/data/background/luchtfoto";
-  const [m, paths] = await Promise.all([json(url + "/tiles.json"), json(url + "/available-tiles.json")]);
-  const p = new UrlTemplateImageryProvider({
-    url: url + "/{z}/{x}/{reverseY}.png",
-    rectangle: Rectangle.fromDegrees(...m.bounds),
-    minimumLevel: m.minzoom,
-    maximumLevel: m.maxzoom,
-    credit: "Supplied aerial imagery"
-  });
-  const available = new Set(paths), blank = document.createElement("canvas");
-  blank.width = blank.height = 256;
-  const request = p.requestImage.bind(p);
-  p.requestImage = (x, y, z, r) => available.has(`${z}/${x}/${2 ** z - y - 1}.png`) ? request(x, y, z, r) : Promise.resolve(blank);
-  viewer.imageryLayers.addImageryProvider(p);
 }
 
 async function layer(name) {
@@ -340,7 +324,7 @@ async function start() {
   };
   await select();
   camera();
-  aerial().catch((e) => {
+  addStudyAreaImagery(viewer).catch((e) => {
     console.error(e);
     status("Model ready. Aerial imagery unavailable; check the original aerial folder.");
   });

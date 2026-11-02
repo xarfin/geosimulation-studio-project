@@ -1,9 +1,12 @@
 import {
   Viewer, Color, Cartesian3, Cartographic, Rectangle, HeadingPitchRange, Matrix4,
-  GeoJsonDataSource, UrlTemplateImageryProvider, SingleTileImageryProvider,
+  GeoJsonDataSource, SingleTileImageryProvider,
   ScreenSpaceEventHandler, ScreenSpaceEventType, Math as CesiumMath,
 } from 'cesium';
 import { readWindValues, sampleWind } from './values.js';
+import { setStudyAreaFocus } from '../ui/navigation.js';
+import { focusOnStudyArea } from '../map/study-area.js';
+import { addStudyAreaImagery } from '../map/imagery.js';
 
 const base = '/data/environment/';
 
@@ -11,26 +14,6 @@ async function json(url) {
   const response = await fetch(url);
   if (!response.ok) throw new Error(`${url}: HTTP ${response.status}`);
   return response.json();
-}
-
-async function addAerial(viewer) {
-  const url = '/data/background/luchtfoto';
-  const [metadata, paths] = await Promise.all([json(`${url}/tiles.json`), json(`${url}/available-tiles.json`)]);
-  const provider = new UrlTemplateImageryProvider({
-    url: `${url}/{z}/{x}/{reverseY}.png`,
-    rectangle: Rectangle.fromDegrees(...metadata.bounds),
-    minimumLevel: metadata.minzoom, maximumLevel: metadata.maxzoom,
-    credit: 'Supplied study-area aerial imagery',
-  });
-  const available = new Set(paths);
-  const blank = document.createElement('canvas');
-  blank.width = blank.height = 256;
-  const request = provider.requestImage.bind(provider);
-  provider.requestImage = (x, y, level, pending) => {
-    const path = `${level}/${x}/${2 ** level - y - 1}.png`;
-    return available.has(path) ? request(x, y, level, pending) : Promise.resolve(blank);
-  };
-  viewer.imageryLayers.addImageryProvider(provider);
 }
 
 async function addBoundary(viewer, url, color) {
@@ -57,9 +40,10 @@ export async function createAnalysisMap(onRead) {
     infoBox: false, selectionIndicator: false, requestRenderMode: true,
   });
   viewer.scene.globe.baseColor = Color.fromCssColorString('#dfe6dd');
+  setStudyAreaFocus(() => focusOnStudyArea(viewer));
   viewer.scene.screenSpaceCameraController.enableTilt = false;
   viewer.scene.screenSpaceCameraController.enableLook = false;
-  await addAerial(viewer);
+  await addStudyAreaImagery(viewer);
   const boundaries = await Promise.all([
     addBoundary(viewer, '/task47/study_area.geojson', '#e9c257'),
     addBoundary(viewer, '/task47/development_site.geojson', '#ff60dd'),

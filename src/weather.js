@@ -7,14 +7,15 @@ import {
   Math as CMath,
   HeadingPitchRange,
   Matrix4,
-  UrlTemplateImageryProvider,
   GeoJsonDataSource,
   Cesium3DTileset,
   LabelStyle,
   PolylineDashMaterialProperty,
 } from "cesium";
 import "cesium/Build/Cesium/Widgets/widgets.css";
-import { renderNavigation } from "./ui/navigation.js";
+import { renderNavigation, setStudyAreaFocus } from "./ui/navigation.js";
+import { focusOnStudyArea } from './map/study-area.js';
+import { addStudyAreaImagery } from './map/imagery.js';
 import "./styles/weather.css";
 import { lineChart } from "./weather-charts.js";
 
@@ -325,24 +326,6 @@ function geoCoords(geo) {
   return coords;
 }
 
-async function aerial() {
-  const url = "/data/background/luchtfoto";
-  const [metadata, available] = await Promise.all([json(`${url}/tiles.json`), json(`${url}/available-tiles.json`)]);
-  const provider = new UrlTemplateImageryProvider({
-    url: `${url}/{z}/{x}/{reverseY}.png`,
-    rectangle: Rectangle.fromDegrees(...metadata.bounds),
-    minimumLevel: metadata.minzoom,
-    maximumLevel: metadata.maxzoom,
-    credit: "Supplied study-area aerial imagery"
-  });
-  const paths = new Set(available), blank = document.createElement("canvas");
-  blank.width = blank.height = 256;
-  const request = provider.requestImage.bind(provider);
-  provider.requestImage = (x, y, z, r) => paths.has(`${z}/${x}/${2 ** z - y - 1}.png`) ? request(x, y, z, r) : Promise.resolve(blank);
-  provider.errorEvent.addEventListener(() => setStatus("mapStatus", "Some aerial tiles could not load. Station and boundary remain available."));
-  map.imageryLayers.addImageryProvider(provider);
-}
-
 async function boundary(url, color, width = 2) {
   const data = await GeoJsonDataSource.load(url, { clampToGround: true });
   for (const e of data.entities.values) if (e.polygon) {
@@ -397,6 +380,10 @@ async function startMap() {
     requestRenderMode: true
   });
   map.scene.globe.baseColor = Color.fromCssColorString("#dfe6dd");
+  setStudyAreaFocus(() => {
+    if (link) link.show = false;
+    return focusOnStudyArea(map);
+  });
   const geo = await json("/data/landUse/study-area/doc.geojson");
   const coords = geoCoords(geo);
   const rectangle = Rectangle.fromCartographicArray(coords.map(([lon, lat]) => ({
@@ -473,7 +460,7 @@ async function startMap() {
   cameraSite();
   if (liveData) renderLive();
   const results = await Promise.allSettled([
-    aerial(),
+    addStudyAreaImagery(map, { onError: () => setStatus("mapStatus", "Some aerial tiles could not load. Station and boundary remain available.") }),
     boundary(geo, "#d8a942", 3),
     boundary("/data/landUse/development-site/doc.geojson", "#db668e")
   ]);

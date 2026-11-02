@@ -1,0 +1,16 @@
+{
+  "source": "https://www.3drotterdam.nl/datasource-data/8b5d0ded-a222-4e44-bc70-2992bc2192fc/tileset.json",
+  "provider": "Gemeente Rotterdam - Rotterdam in 3D",
+  "lod": 2,
+  "downloadedAt": "2026-11-02T18:52:52.773637+00:00",
+  "tileCount": 35,
+  "studyBoundary": "/data/landUse/study-area/doc.geojson",
+  "selection": "Tiles intersecting the study polygon; complete tile geometry is preserved, including buildings at the boundary.",
+  "geographicBounds": [
+    4.434626412842101,
+    51.89927338723954,
+    4.471351517819719,
+    51.911354316941434
+  ],
+  "bytes": 18046992
+}

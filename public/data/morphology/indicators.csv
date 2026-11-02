@@ -1,0 +1,7 @@
+scenario,zone,land_area_m2,n_buildings,footprint_m2,GSI,FSI,OSR,L_avg_floors,height_mean_m,height_std_m,height_max_m,height_cv,SVF_mean_buildings,SVF_mean,SVF_p10,share_open_SVF_below_0_5,HW_median,green_share,green_roof_m2,landuse_mix_entropy,landuse_mix_with_retail_plinth
+baseline,study_area,461906,502,129631,0.281,2.457,0.293,8.8,26.2,18.4,73.4,0.7,0.754,0.603,0.208,0.33,1.03,0.182,0,0.778,0.778
+baseline,development_site,44459,4,2040,0.046,0.238,4.008,5.2,14.4,6.1,19.7,0.42,0.941,0.846,0.596,0.063,0.34,0.109,0,0.437,0.437
+design_A,study_area,461906,505,134092,0.29,2.561,0.277,8.8,26.4,18.1,73.4,0.69,0.732,0.571,0.181,0.364,1.04,0.216,0,0.759,0.763
+design_A,development_site,44459,7,6502,0.146,1.319,0.647,9.0,26.9,7.8,30.0,0.29,0.805,0.619,0.23,0.315,0.91,0.462,3375,0.08,0.21
+design_B,study_area,461906,505,134092,0.29,2.561,0.277,8.8,26.4,18.1,73.4,0.69,0.734,0.571,0.183,0.363,1.04,0.225,0,0.759,0.763
+design_B,development_site,44459,7,6502,0.146,1.319,0.647,9.0,26.9,7.8,30.0,0.29,0.814,0.614,0.246,0.31,0.88,0.564,4500,0.08,0.21

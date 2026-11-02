@@ -3,36 +3,42 @@
   <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>Schiehaven Noord | Layers</title>
+    <meta name="description" content="Explore Schiehaven Noord in Rotterdam and compare the proposed development designs." />
+    <title>Schiehaven Noord | Introduction</title>
   </head>
   <body>
-    <a class="skip-link" href="#pagePanel">Skip to layer controls</a>
+    <a class="skip-link" href="#pagePanel">Skip to introduction</a>
     <header class="topbar" id="projectHeader"></header>
-    <main class="workspace">
-      <section aria-label="Study-area layers" class="map-pane">
-        <div aria-label="Interactive study-area map" class="map-canvas" id="cesiumContainer"></div>
+    <main class="workspace introduction-workspace">
+      <section class="map-pane" aria-label="Project location">
+        <div class="map-canvas" id="introductionMap" aria-label="Interactive map of the Netherlands and Schiehaven Noord"></div>
+        <div class="basemap-switch" role="group" aria-label="Map background">
+          <button type="button" id="streetMap" aria-pressed="true">Map</button>
+          <button type="button" id="satelliteMap" aria-pressed="false">Satellite</button>
+        </div>
       </section>
-      <aside aria-labelledby="pageTitle" class="app-panel layers-panel" id="pagePanel" tabindex="-1">
-        <p class="eyebrow">Study-area layers</p>
-        <h1 id="pageTitle">Layers</h1>
-        <p class="intro">Explore the study area's imagery, land use and 3D buildings.</p>
-        <label for="layerSelect">Layer</label>
-        <select disabled="" id="layerSelect"></select>
-        <nav aria-label="Layer slides" class="button-group layer-slides">
-          <button disabled="" id="previous" type="button">Previous</button>
-          <span id="counter"></span>
-          <button disabled="" id="next" type="button">Next</button>
-        </nav>
-        <p id="description"></p>
-        <button id="resetView" type="button">Reset view</button>
-        <p class="status" id="status" role="status">Loading study area…</p>
-        <p class="muted map-help">
+      <aside class="app-panel introduction-panel" id="pagePanel" aria-labelledby="pageTitle" tabindex="-1">
+        <p class="eyebrow">Geosimulation Studio · Rotterdam</p>
+        <h1 id="pageTitle">Schiehaven Noord</h1>
+        <p class="introduction-lead">A closer look at a changing part of Rotterdam.</p>
+        <p class="intro">Explore the study area, compare two proposed layouts, and see how they affect the surrounding urban environment.</p>
+        <div class="location-controls">
+          <button class="primary-button" id="focusNeighbourhood" type="button" disabled>Focus on neighbourhood</button>
+          <button id="countryView" type="button">Netherlands overview</button>
+        </div>
+        <p class="status" id="mapStatus" role="status">Loading the study boundary.</p>
+        <section class="introduction-section" aria-labelledby="studyHeading">
+          <h2 id="studyHeading">The study area</h2>
+          <p>Our study focuses on Schiehaven Noord and its surroundings. The gold outline marks the study boundary; the pink outline marks the development site.</p>
+          <p>Use Map to see the streets and surrounding neighbourhoods, or Satellite for a closer look at the site.</p>
+        </section>
+        <p class="muted introduction-help">
           Drag to move · Scroll to zoom
           <br/>
-          Ctrl + drag to tilt
+          The street map and imagery outside the study area load online.
         </p>
       </aside>
     </main>
-    <script src="/src/main.js" type="module"></script>
+    <script src="/src/introduction.js" type="module"></script>
   </body>
 </html>

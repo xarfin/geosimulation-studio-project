@@ -1,7 +1,7 @@
 import { readdirSync, writeFileSync } from 'node:fs';
 
 // Rebuilt on start/build, so replacing an export refreshes the tile index.
-for (const relative of ['data/background/luchtfoto', 'data/elevation/ahn']) {
+for (const relative of ['data/background/luchtfoto', 'data/background/study-area', 'data/elevation/ahn']) {
   const directory = new URL('../public/' + relative + '/', import.meta.url);
   const tiles = readdirSync(directory, { recursive: true })
     .map((path) => path.replaceAll('\\', '/'))

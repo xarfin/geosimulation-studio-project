@@ -1,0 +1,27 @@
+{
+  "tilejson": "3.0.0",
+  "name": "Schiehaven Noord study-area aerial imagery",
+  "scheme": "tms",
+  "minzoom": 9,
+  "maxzoom": 19,
+  "tiles": [
+    "{z}/{x}/{y}.png"
+  ],
+  "bounds": [
+    4.448018728955931,
+    51.90102541066143,
+    4.466000957672022,
+    51.90859980339342
+  ],
+  "attribution": "Beeldmateriaal Nederland / PDOK - CC BY 4.0",
+  "source": {
+    "url": "https://service.pdok.nl/hwh/luchtfotorgb/wms/v1_0",
+    "layer": "2026_orthoHR",
+    "crs": "EPSG:3857",
+    "boundary": "/data/landUse/study-area/doc.geojson",
+    "licence": "https://creativecommons.org/licenses/by/4.0/",
+    "provider": "https://www.beeldmateriaal.nl/",
+    "downloadedAt": "2026-11-02T18:31:22.354253+00:00",
+    "groundResolutionMetres": 0.18421615641875771
+  }
+}

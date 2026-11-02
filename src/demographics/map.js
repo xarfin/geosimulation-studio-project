@@ -1,8 +1,11 @@
 import {
   Viewer, Color, Cartesian2, Cartesian3, Rectangle, HeadingPitchRange,
-  Matrix4, GeoJsonDataSource, UrlTemplateImageryProvider, LabelStyle,
+  Matrix4, GeoJsonDataSource, LabelStyle,
 } from 'cesium';
 import { formatValue, neighbourhoodStyles } from './indicators.js';
+import { setStudyAreaFocus } from '../ui/navigation.js';
+import { focusOnStudyArea } from '../map/study-area.js';
+import { addStudyAreaImagery } from '../map/imagery.js';
 
 async function readJson(url) {
   const response = await fetch(url);
@@ -23,29 +26,6 @@ function boundsOf(collection) {
   return Rectangle.fromCartesianArray(positions);
 }
 
-async function addAerial(viewer) {
-  const base = '/data/background/luchtfoto';
-  const [metadata, paths] = await Promise.all([
-    readJson(`${base}/tiles.json`), readJson(`${base}/available-tiles.json`),
-  ]);
-  const provider = new UrlTemplateImageryProvider({
-    url: `${base}/{z}/{x}/{reverseY}.png`,
-    rectangle: Rectangle.fromDegrees(...metadata.bounds),
-    minimumLevel: metadata.minzoom,
-    maximumLevel: metadata.maxzoom,
-    credit: 'Supplied study-area aerial imagery',
-  });
-  const available = new Set(paths);
-  const blank = document.createElement('canvas');
-  blank.width = blank.height = 256;
-  const request = provider.requestImage.bind(provider);
-  provider.requestImage = (x, y, level, pending) => {
-    const path = `${level}/${x}/${2 ** level - y - 1}.png`;
-    return available.has(path) ? request(x, y, level, pending) : Promise.resolve(blank);
-  };
-  viewer.imageryLayers.addImageryProvider(provider);
-}
-
 export async function createNeighbourhoodMap(collection, onSelect) {
   const viewer = new Viewer('demographicsMap', {
     baseLayer: false, baseLayerPicker: false, geocoder: false,
@@ -54,6 +34,7 @@ export async function createNeighbourhoodMap(collection, onSelect) {
     infoBox: false, selectionIndicator: false, requestRenderMode: true,
   });
   viewer.scene.globe.baseColor = Color.fromCssColorString('#dfe6dd');
+  setStudyAreaFocus(() => focusOnStudyArea(viewer));
 
   const areas = await GeoJsonDataSource.load(collection, { clampToGround: true });
   await viewer.dataSources.add(areas);
@@ -159,7 +140,7 @@ export async function createNeighbourhoodMap(collection, onSelect) {
 
   showBounds(fullBounds);
   const background = await Promise.allSettled([
-    addAerial(viewer),
+    addStudyAreaImagery(viewer),
     (async () => {
       const study = await readJson('/data/landUse/study-area/doc.geojson');
       studyBounds = boundsOf(study);

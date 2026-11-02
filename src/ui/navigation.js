@@ -1,13 +1,21 @@
 import '../styles/shared.css';
 
 const pages = [
-  { id: 'layers', label: 'Layers', href: '/' },
+  { id: 'introduction', label: 'Introduction', href: '/' },
+  { id: 'layers', label: 'Layers', href: '/layers.html' },
   { id: 'scenarios', label: 'Land-use scenarios', href: '/task47.html' },
+  { id: 'morphology', label: 'Urban morphology', href: '/morphology.html' },
   { id: 'environment', label: 'Wind & noise', href: '/environment.html' },
   { id: 'weather', label: 'KNMI data', href: '/weather.html' },
   { id: 'predictions', label: 'Weather predictions', href: '/predictions.html' },
   { id: 'demographics', label: 'Socio-demographics', href: '/demographics.html' },
 ];
+
+let focusStudyArea = () => window.location.assign('/?view=study-area');
+
+export function setStudyAreaFocus(action) {
+  focusStudyArea = action;
+}
 
 export function renderNavigation(currentPage) {
   const header = document.querySelector('#projectHeader');
@@ -27,5 +35,21 @@ export function renderNavigation(currentPage) {
     nav.append(link);
   }
 
-  header.replaceChildren(brand, nav);
+  const focusButton = document.createElement('button');
+  focusButton.type = 'button';
+  focusButton.className = 'header-focus';
+  focusButton.textContent = 'Focus on neighbourhood';
+  focusButton.addEventListener('click', async () => {
+    focusButton.disabled = true;
+    try {
+      await focusStudyArea();
+    } catch (error) {
+      console.error(error);
+      window.location.assign('/?view=study-area');
+    } finally {
+      focusButton.disabled = false;
+    }
+  });
+
+  header.replaceChildren(brand, nav, focusButton);
 }

@@ -10,7 +10,9 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: resolve(import.meta.dirname, 'index.html'),
+        layers: resolve(import.meta.dirname, 'layers.html'),
         task47: resolve(import.meta.dirname, 'task47.html'),
+        morphology: resolve(import.meta.dirname, 'morphology.html'),
         environment: resolve(import.meta.dirname, 'environment.html'),
         weather: resolve(import.meta.dirname, 'weather.html'),
         predictions: resolve(import.meta.dirname, 'predictions.html'),

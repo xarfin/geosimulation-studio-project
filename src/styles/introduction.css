@@ -1,0 +1,120 @@
+.introduction-workspace {
+  grid-template-columns: minmax(0, 1fr) 410px;
+}
+
+.introduction-panel {
+  padding-top: 38px;
+}
+
+.introduction-panel h1 {
+  max-width: 300px;
+  margin-bottom: 16px;
+  font-size: 38px;
+  line-height: 1.08;
+  letter-spacing: -1.1px;
+}
+
+.introduction-lead {
+  margin: 0 0 14px;
+  color: #37584b;
+  font-size: 18px;
+  line-height: 1.5;
+}
+
+.introduction-panel .intro {
+  line-height: 1.8;
+}
+
+.location-controls {
+  display: grid;
+  justify-items: start;
+  gap: 9px;
+  margin: 24px 0 12px;
+}
+
+.location-controls button {
+  min-height: 42px;
+  font-size: 13px;
+}
+
+.location-controls .primary-button {
+  border-color: var(--color-accent);
+  padding: 10px 18px;
+  color: #fff;
+  background: var(--color-accent);
+  font-weight: 600;
+}
+
+.location-controls .primary-button:hover:enabled {
+  background: #15594f;
+}
+
+.introduction-section {
+  margin-top: 28px;
+  border-top: 1px solid var(--color-border);
+  padding-top: 22px;
+}
+
+.introduction-section h2 {
+  margin: 0 0 12px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.introduction-section p {
+  color: var(--color-muted);
+  line-height: 1.8;
+}
+
+.introduction-help {
+  margin: 28px 0 0;
+}
+
+.basemap-switch {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  display: flex;
+  gap: 3px;
+  border: 1px solid #c6d3cb;
+  border-radius: 7px;
+  padding: 4px;
+  background: #fff;
+  box-shadow: 0 2px 8px #173f361a;
+}
+
+.basemap-switch button {
+  min-height: 38px;
+  border-color: transparent;
+  padding: 8px 18px;
+  font-size: 13px;
+}
+
+.basemap-switch button[aria-pressed='true'] {
+  color: #fff;
+  background: var(--color-accent);
+}
+
+@media (min-width: 1500px) {
+  .introduction-workspace {
+    grid-template-columns: minmax(0, 1fr) 450px;
+  }
+}
+
+@media (max-width: 950px) {
+  .introduction-workspace {
+    grid-template-columns: minmax(0, 1fr) 340px;
+  }
+}
+
+@media (max-width: 740px) {
+  .introduction-panel h1 {
+    max-width: none;
+    font-size: 32px;
+  }
+
+  .basemap-switch {
+    top: 12px;
+    left: 12px;
+  }
+}

@@ -1,0 +1,288 @@
+{
+  "sourceArchive": "4.3-20261101T154521Z-1-001.zip",
+  "sourceCrs": "EPSG:28992",
+  "overlayCrs": "EPSG:4326",
+  "observerHeightMetres": 1.5,
+  "sourceGridMetres": 1,
+  "floorHeightMetres": 3,
+  "numericRasterAvailable": false,
+  "scenarios": [
+    {
+      "id": "baseline",
+      "title": "Baseline",
+      "description": "Existing buildings and trees",
+      "buildings": "buildings_existing.geojson",
+      "layers": {
+        "svf": {
+          "image": "svf_baseline.png",
+          "bounds": [
+            4.447691041943822,
+            51.90074019272105,
+            4.462200791864851,
+            51.90803949823688
+          ]
+        },
+        "svfb": {
+          "image": "svfb_baseline.png",
+          "bounds": [
+            4.447691041943822,
+            51.90074019272105,
+            4.462200791864851,
+            51.90803949823688
+          ]
+        },
+        "hw": {
+          "image": "hw_baseline.png",
+          "bounds": [
+            4.447691041943822,
+            51.90074019272105,
+            4.462200791864851,
+            51.90803949823688
+          ]
+        }
+      }
+    },
+    {
+      "id": "design_A",
+      "title": "Design A",
+      "description": "Public connections",
+      "buildings": "buildings_design_A.geojson",
+      "layers": {
+        "svf": {
+          "image": "svf_design_A.png",
+          "bounds": [
+            4.447691041943822,
+            51.90074019272105,
+            4.462200791864851,
+            51.90803949823688
+          ]
+        },
+        "svfb": {
+          "image": "svfb_design_A.png",
+          "bounds": [
+            4.447691041943822,
+            51.90074019272105,
+            4.462200791864851,
+            51.90803949823688
+          ]
+        },
+        "hw": {
+          "image": "hw_design_A.png",
+          "bounds": [
+            4.447691041943822,
+            51.90074019272105,
+            4.462200791864851,
+            51.90803949823688
+          ]
+        }
+      }
+    },
+    {
+      "id": "design_B",
+      "title": "Design B",
+      "description": "Connected park",
+      "buildings": "buildings_design_B.geojson",
+      "layers": {
+        "svf": {
+          "image": "svf_design_B.png",
+          "bounds": [
+            4.447691041943822,
+            51.90074019272105,
+            4.462200791864851,
+            51.90803949823688
+          ]
+        },
+        "svfb": {
+          "image": "svfb_design_B.png",
+          "bounds": [
+            4.447691041943822,
+            51.90074019272105,
+            4.462200791864851,
+            51.90803949823688
+          ]
+        },
+        "hw": {
+          "image": "hw_design_B.png",
+          "bounds": [
+            4.447691041943822,
+            51.90074019272105,
+            4.462200791864851,
+            51.90803949823688
+          ]
+        }
+      }
+    }
+  ],
+  "indicators": [
+    {
+      "scenario": "baseline",
+      "zone": "study_area",
+      "land_area_m2": 461906.0,
+      "n_buildings": 502.0,
+      "footprint_m2": 129631.0,
+      "GSI": 0.281,
+      "FSI": 2.457,
+      "OSR": 0.293,
+      "L_avg_floors": 8.8,
+      "height_mean_m": 26.2,
+      "height_std_m": 18.4,
+      "height_max_m": 73.4,
+      "height_cv": 0.7,
+      "SVF_mean_buildings": 0.754,
+      "SVF_mean": 0.603,
+      "SVF_p10": 0.208,
+      "share_open_SVF_below_0_5": 0.33,
+      "HW_median": 1.03,
+      "green_share": 0.182,
+      "green_roof_m2": 0.0,
+      "landuse_mix_entropy": 0.778,
+      "landuse_mix_with_retail_plinth": 0.778
+    },
+    {
+      "scenario": "baseline",
+      "zone": "development_site",
+      "land_area_m2": 44459.0,
+      "n_buildings": 4.0,
+      "footprint_m2": 2040.0,
+      "GSI": 0.046,
+      "FSI": 0.238,
+      "OSR": 4.008,
+      "L_avg_floors": 5.2,
+      "height_mean_m": 14.4,
+      "height_std_m": 6.1,
+      "height_max_m": 19.7,
+      "height_cv": 0.42,
+      "SVF_mean_buildings": 0.941,
+      "SVF_mean": 0.846,
+      "SVF_p10": 0.596,
+      "share_open_SVF_below_0_5": 0.063,
+      "HW_median": 0.34,
+      "green_share": 0.109,
+      "green_roof_m2": 0.0,
+      "landuse_mix_entropy": 0.437,
+      "landuse_mix_with_retail_plinth": 0.437
+    },
+    {
+      "scenario": "design_A",
+      "zone": "study_area",
+      "land_area_m2": 461906.0,
+      "n_buildings": 505.0,
+      "footprint_m2": 134092.0,
+      "GSI": 0.29,
+      "FSI": 2.561,
+      "OSR": 0.277,
+      "L_avg_floors": 8.8,
+      "height_mean_m": 26.4,
+      "height_std_m": 18.1,
+      "height_max_m": 73.4,
+      "height_cv": 0.69,
+      "SVF_mean_buildings": 0.732,
+      "SVF_mean": 0.571,
+      "SVF_p10": 0.181,
+      "share_open_SVF_below_0_5": 0.364,
+      "HW_median": 1.04,
+      "green_share": 0.216,
+      "green_roof_m2": 0.0,
+      "landuse_mix_entropy": 0.759,
+      "landuse_mix_with_retail_plinth": 0.763
+    },
+    {
+      "scenario": "design_A",
+      "zone": "development_site",
+      "land_area_m2": 44459.0,
+      "n_buildings": 7.0,
+      "footprint_m2": 6502.0,
+      "GSI": 0.146,
+      "FSI": 1.319,
+      "OSR": 0.647,
+      "L_avg_floors": 9.0,
+      "height_mean_m": 26.9,
+      "height_std_m": 7.8,
+      "height_max_m": 30.0,
+      "height_cv": 0.29,
+      "SVF_mean_buildings": 0.805,
+      "SVF_mean": 0.619,
+      "SVF_p10": 0.23,
+      "share_open_SVF_below_0_5": 0.315,
+      "HW_median": 0.91,
+      "green_share": 0.462,
+      "green_roof_m2": 3375.0,
+      "landuse_mix_entropy": 0.08,
+      "landuse_mix_with_retail_plinth": 0.21
+    },
+    {
+      "scenario": "design_B",
+      "zone": "study_area",
+      "land_area_m2": 461906.0,
+      "n_buildings": 505.0,
+      "footprint_m2": 134092.0,
+      "GSI": 0.29,
+      "FSI": 2.561,
+      "OSR": 0.277,
+      "L_avg_floors": 8.8,
+      "height_mean_m": 26.4,
+      "height_std_m": 18.1,
+      "height_max_m": 73.4,
+      "height_cv": 0.69,
+      "SVF_mean_buildings": 0.734,
+      "SVF_mean": 0.571,
+      "SVF_p10": 0.183,
+      "share_open_SVF_below_0_5": 0.363,
+      "HW_median": 1.04,
+      "green_share": 0.225,
+      "green_roof_m2": 0.0,
+      "landuse_mix_entropy": 0.759,
+      "landuse_mix_with_retail_plinth": 0.763
+    },
+    {
+      "scenario": "design_B",
+      "zone": "development_site",
+      "land_area_m2": 44459.0,
+      "n_buildings": 7.0,
+      "footprint_m2": 6502.0,
+      "GSI": 0.146,
+      "FSI": 1.319,
+      "OSR": 0.647,
+      "L_avg_floors": 9.0,
+      "height_mean_m": 26.9,
+      "height_std_m": 7.8,
+      "height_max_m": 30.0,
+      "height_cv": 0.29,
+      "SVF_mean_buildings": 0.814,
+      "SVF_mean": 0.614,
+      "SVF_p10": 0.246,
+      "share_open_SVF_below_0_5": 0.31,
+      "HW_median": 0.88,
+      "green_share": 0.564,
+      "green_roof_m2": 4500.0,
+      "landuse_mix_entropy": 0.08,
+      "landuse_mix_with_retail_plinth": 0.21
+    }
+  ],
+  "figures": [
+    {
+      "file": "figures/morph_layouts.pdf",
+      "title": "Design layouts"
+    },
+    {
+      "file": "figures/morph_svf.pdf",
+      "title": "Sky-view factor comparison"
+    },
+    {
+      "file": "figures/morph_svf_change.pdf",
+      "title": "Sky-view change from baseline"
+    },
+    {
+      "file": "figures/morph_hw.pdf",
+      "title": "Height-to-width comparison"
+    },
+    {
+      "file": "figures/morph_indicators_site.pdf",
+      "title": "Development-site indicators"
+    },
+    {
+      "file": "figures/morph_indicators_study.pdf",
+      "title": "Study-area indicators"
+    }
+  ]
+}

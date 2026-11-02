@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Schiehaven Noord | Urban morphology</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#pagePanel">Skip to morphology controls</a>
+    <header class="topbar" id="projectHeader"></header>
+    <main class="workspace">
+      <section class="map-pane" aria-label="Urban morphology results over aerial imagery">
+        <div class="map-canvas" id="morphologyMap" aria-label="Interactive morphology map"></div>
+      </section>
+      <aside class="app-panel morphology-panel" id="pagePanel" aria-labelledby="pageTitle" tabindex="-1">
+        <p class="eyebrow">Urban analysis · Task 4.3</p>
+        <h1 id="pageTitle">Urban morphology</h1>
+        <p class="intro">Compare building density, sky visibility and green space across the existing site and both designs.</p>
+        <div class="morphology-controls">
+          <label for="scenarioSelect">Scenario</label>
+          <select id="scenarioSelect" disabled></select>
+          <p class="muted" id="scenarioDescription"></p>
+          <label for="metricSelect">Map layer</label>
+          <select id="metricSelect" disabled>
+            <option value="svf">Sky-view factor · buildings + trees</option>
+            <option value="svfb">Sky-view factor · buildings only</option>
+            <option value="hw">Height-to-width proxy (H/W)</option>
+          </select>
+          <div class="opacity-heading">
+            <label for="overlayOpacity">Overlay opacity</label>
+            <output for="overlayOpacity" id="opacityValue">75%</output>
+          </div>
+          <input id="overlayOpacity" type="range" min="0" max="100" value="75" disabled />
+          <div class="morphology-toggles">
+            <label><input id="showOverlay" type="checkbox" checked disabled /> Show result overlay</label>
+            <label><input id="showBuildings" type="checkbox" checked disabled /> Show buildings</label>
+            <label><input id="show3d" type="checkbox" disabled /> 3D view</label>
+            <label><input id="showBoundaries" type="checkbox" checked disabled /> Show boundaries</label>
+          </div>
+        </div>
+        <section class="morphology-legend" aria-labelledby="legendTitle">
+          <h2 id="legendTitle">Sky-view factor</h2>
+          <div id="legendGradient" class="morphology-gradient"></div>
+          <div id="legendTicks" class="morphology-ticks"></div>
+          <p id="legendDescription" class="muted"></p>
+          <p class="muted">Transparent gaps have no result: buildings, water or areas outside the study boundary.</p>
+          <p class="muted">Gold: study area · Pink: development site<br />Grey: existing buildings · Teal: proposed housing · Orange: proposed indoor sports</p>
+        </section>
+        <section aria-labelledby="indicatorsTitle">
+          <h2 id="indicatorsTitle">Morphology indicators</h2>
+          <label for="zoneSelect">Indicator area and map focus</label>
+          <select id="zoneSelect" disabled>
+            <option value="development_site">Development site</option>
+            <option value="study_area">Whole study area</option>
+          </select>
+          <div class="morphology-cards" id="indicatorCards"></div>
+          <p class="muted" id="indicatorContext"></p>
+          <details>
+            <summary>Compare all indicators</summary>
+            <div class="morphology-table-wrap" tabindex="0" role="region" aria-label="All morphology indicators">
+              <table class="morphology-table">
+                <caption id="comparisonCaption">Development-site indicators</caption>
+                <thead><tr><th scope="col">Indicator</th><th scope="col">Baseline</th><th scope="col">A</th><th scope="col">B</th></tr></thead>
+                <tbody id="indicatorTable"></tbody>
+              </table>
+            </div>
+          </details>
+        </section>
+        <div class="button-group"><button id="resetView" type="button" disabled>Reset view</button></div>
+        <p id="morphologyStatus" class="status" role="status">Loading morphology results.</p>
+        <details>
+          <summary>Source files and method</summary>
+          <p class="muted">The supplied 1 m analysis uses a flat-ground observer at 1.5 m, 36 sky-view directions and a 150 m search radius. The H/W layer is a proximity proxy. Building heights come from the supplied footprints; floor-area estimates assume 3 m per floor.</p>
+          <p class="muted">Overlay colours and geographic rectangles are preserved from the source. Numeric rasters were not supplied; values shown here are the source's area summaries. Green share includes ground vegetation and tree canopy; green roofs are reported separately for the development site.</p>
+          <div class="morphology-sources" id="figureLinks"></div>
+          <div class="morphology-sources">
+            <a href="/data/morphology/indicators.csv" download>Download indicators (CSV)</a>
+            <a id="downloadBuildings" download>Download scenario buildings (GeoJSON)</a>
+            <a id="downloadOverlay" download>Download selected overlay (PNG)</a>
+            <a href="/data/morphology/overlays_rectangles.json" download>Download overlay coordinates (JSON)</a>
+            <a href="/data/morphology/task43-source.zip" download>Download original task 4.3 ZIP</a>
+          </div>
+        </details>
+      </aside>
+    </main>
+    <script type="module" src="/src/morphology.js"></script>
+  </body>
+</html>

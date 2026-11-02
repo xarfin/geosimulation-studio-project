@@ -1,11 +1,13 @@
 import {
   Viewer, Color, Cartesian3, HeadingPitchRange, Matrix4, Math as CesiumMath,
-  Rectangle, UrlTemplateImageryProvider, GeoJsonDataSource, Cesium3DTileset,
+  Rectangle, GeoJsonDataSource, Cesium3DTileset, SingleTileImageryProvider, Resource, Credit,
 } from 'cesium';
 import 'cesium/Build/Cesium/Widgets/widgets.css';
-import { renderNavigation } from './ui/navigation.js';
+import { renderNavigation, setStudyAreaFocus } from './ui/navigation.js';
+import { focusOnStudyArea, readStudyArea, createStudyAreaClip } from './map/study-area.js';
 import './styles/layers.css';
 import { layers } from './layers.js';
+import { createLocalImageryProvider } from './map/imagery.js';
 
 renderNavigation('layers');
 
@@ -16,6 +18,7 @@ const viewer = new Viewer('cesiumContainer', {
 });
 viewer.scene.globe.baseColor = Color.fromCssColorString('#deded8');
 viewer.scene.globe.depthTestAgainstTerrain = false;
+setStudyAreaFocus(() => focusOnStudyArea(viewer));
 const select = document.querySelector('#layerSelect');
 const status = document.querySelector('#status');
 const objects = new Map();
@@ -31,29 +34,21 @@ async function readJson(url) {
   return response.json();
 }
 
-// Raster exports are TMS: tile rows count upwards from the south.
 async function loadImagery(layer) {
-  const [metadata, available] = await Promise.all([
-    readJson(layer.url + '/tiles.json'),
-    readJson(layer.url + '/available-tiles.json'),
-  ]);
-  const provider = new UrlTemplateImageryProvider({
-    url: layer.url + '/{z}/{x}/{reverseY}.png',
-    rectangle: Rectangle.fromDegrees(...metadata.bounds),
-    minimumLevel: metadata.minzoom, maximumLevel: metadata.maxzoom,
+  const provider = await createLocalImageryProvider(layer.url, {
     credit: layer.credit,
+    onError: () => { status.textContent = `Some ${layer.title} tiles could not load. Check the data folder.`; },
   });
-  // Clipped exports omit tiles outside their footprint. Leave those transparent.
-  const tilePaths = new Set(available);
-  const blank = document.createElement('canvas');
-  blank.width = blank.height = 256;
-  const requestImage = provider.requestImage.bind(provider);
-  provider.requestImage = (x, y, level, request) => {
-    const path = level + '/' + x + '/' + (2 ** level - y - 1) + '.png';
-    return tilePaths.has(path) ? requestImage(x, y, level, request) : Promise.resolve(blank);
-  };
-  provider.errorEvent.addEventListener(() => {
-    status.textContent = 'Some ' + layer.title + ' tiles could not load. Check the data folder.';
+  const imagery = viewer.imageryLayers.addImageryProvider(provider, layer.id === 'aerial' ? 0 : undefined);
+  imagery.show = false;
+  return imagery;
+}
+
+async function loadImage(layer) {
+  const metadata = await readJson(layer.metadataUrl);
+  const provider = await SingleTileImageryProvider.fromUrl(layer.url, {
+    rectangle: Rectangle.fromDegrees(...metadata.bounds),
+    credit: new Credit(layer.credit, true),
   });
   const imagery = viewer.imageryLayers.addImageryProvider(provider);
   imagery.show = false;
@@ -85,9 +80,16 @@ async function loadLayer(layer) {
   const task = (async () => {
     let object;
     if (layer.type === 'imagery') object = await loadImagery(layer);
+    else if (layer.type === 'image') object = await loadImage(layer);
     else if (layer.type === 'geojson') object = await loadGeoJson(layer);
     else {
-      object = await Cesium3DTileset.fromUrl(layer.url, { show: false });
+      const resource = new Resource({ url: layer.url, credits: layer.credit ? [new Credit(layer.credit, true)] : [] });
+      const options = { show: false, showCreditsOnScreen: true };
+      if (layer.clipToStudyArea) {
+        const study = await readStudyArea();
+        options.clippingPolygons = createStudyAreaClip(study.geojson);
+      }
+      object = await Cesium3DTileset.fromUrl(resource, options);
       viewer.scene.primitives.add(object);
       object.tileFailed.addEventListener(() => {
         status.textContent = 'Part of ' + layer.title + ' could not load. Check its tileset files.';
@@ -115,6 +117,14 @@ async function showLayer(index) {
   select.value = layer.id;
   document.querySelector('#counter').textContent = (index + 1) + ' / ' + layers.length;
   document.querySelector('#description').textContent = layer.description;
+  const legend = document.querySelector('#layerLegend');
+  legend.hidden = !layer.legend;
+  if (layer.legend) {
+    document.querySelector('#legendTitle').textContent = layer.legend.title;
+    document.querySelector('#legendGradient').style.background = `linear-gradient(to right, ${layer.legend.colours.join(', ')})`;
+    document.querySelector('#legendMinimum').textContent = layer.legend.minimum;
+    document.querySelector('#legendMaximum').textContent = layer.legend.maximum;
+  }
   document.querySelector('#previous').disabled = index === 0;
   document.querySelector('#next').disabled = index === layers.length - 1;
   status.textContent = 'Loading ' + layer.title + '…';
@@ -123,7 +133,7 @@ async function showLayer(index) {
   viewer.scene.requestRender();
   try {
     const visible = [layer];
-    if (layer.type !== 'imagery') visible.unshift(layers[0]);
+    if (layer.id !== 'aerial') visible.unshift(layers[0]);
     await Promise.all(visible.map(loadLayer));
     if (version !== selectionVersion) return; // A newer selection takes priority.
     for (const [id, object] of objects) object.show = visible.some((item) => item.id === id);
