@@ -26,4 +26,4 @@ const server = createServer((req, res) => api(req, res, () => {
   } catch {res.writeHead(404); res.end('Not found');}
 }));
 const port = Number(process.env.PORT || 4173);
-server.listen(port, '127.0.0.1', () => console.log(`Rotterdam application: http://127.0.0.1:${port}/`));
+server.listen(port, '0.0.0.0', () => console.log(`Rotterdam application listening on port ${port}`));
