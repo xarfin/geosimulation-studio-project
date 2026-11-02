@@ -4,8 +4,7 @@
   font-weight: 600;
 }
 
-.morphology-controls select,
-#zoneSelect {
+.morphology-controls select {
   width: 100%;
   margin: 5px 0 12px;
 }
@@ -87,56 +86,6 @@
   font-variant-numeric: tabular-nums;
 }
 
-.morphology-table-wrap {
-  overflow-x: auto;
-  margin-top: 12px;
-}
-
-.morphology-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 11px;
-}
-
-.morphology-table caption {
-  margin-bottom: 9px;
-  text-align: left;
-  color: var(--color-muted);
-}
-
-.morphology-table :is(th, td) {
-  border-bottom: 1px solid var(--color-border);
-  padding: 8px 5px;
-  text-align: right;
-  font-variant-numeric: tabular-nums;
-}
-
-.morphology-table th:first-child {
-  min-width: 155px;
-  text-align: left;
-  font-weight: 600;
-}
-
-.morphology-table small {
-  display: block;
-  margin-top: 3px;
-  color: var(--color-muted);
-  font-size: 10px;
-  font-weight: 400;
-}
-
-.morphology-table td {
-  white-space: nowrap;
-}
-
-.morphology-table .selected-scenario {
-  background: #e9f1eb;
-  font-weight: 600;
-}
-
-.morphology-sources {
-  display: grid;
-  gap: 9px;
-  margin-top: 16px;
-  font-size: 12px;
+.morphology-panel .method-section h2 {
+  margin-top: 0;
 }

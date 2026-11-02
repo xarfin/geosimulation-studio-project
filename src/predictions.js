@@ -19,14 +19,13 @@ function showChart(index) {
   select.value = String(index);
   document.querySelector('#chartTitle').textContent = chart.title;
   document.querySelector('#chartCategory').textContent = chart.category;
-  document.querySelector('#chartCaption').textContent = chart.caption;
   document.querySelector('#fullChart').href = url;
   document.querySelector('#chartLink').href = url;
   document.querySelector('#chartCounter').textContent = `${index + 1} / ${charts.length}`;
   document.querySelector('#previousChart').disabled = index === 0;
   document.querySelector('#nextChart').disabled = index === charts.length - 1;
   document.querySelector('#chartStatus').textContent = 'Loading chart.';
-  image.alt = `${chart.title}. ${chart.caption}`;
+  image.alt = chart.title;
   image.src = url;
   if (chart.horizon) {
     horizon.value = String(chart.horizon);
@@ -106,17 +105,13 @@ async function start() {
   results = await response.json();
   renderComparison();
   renderAccuracy();
-  document.querySelector('#annualRows').replaceChildren(...results.annual.map(row => tableRow([
-    String(row.year), format(row.temperature_c), format(row.rain_mm), format(row.mean_wind_ms),
-  ])));
   horizon.disabled = false;
   metric.disabled = false;
-  document.querySelector('#dataStatus').textContent = 'Saved model results · forecast starts January 2026.';
 }
 
 start().catch(error => {
   console.error(error);
   const status = document.querySelector('#dataStatus');
-  status.textContent = 'Could not load the result tables. The supplied charts and source downloads remain available.';
-  status.classList.add('error');
+  status.textContent = 'Could not load the result tables. Please refresh to retry.';
+  status.hidden = false;
 });

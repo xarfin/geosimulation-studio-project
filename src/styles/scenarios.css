@@ -34,7 +34,7 @@
 }
 
 #metrics {
-  margin: 24px 0;
+  margin: 12px 0 0;
 }
 
 #metrics dl {
@@ -68,10 +68,7 @@
   border-radius: 2px;
 }
 
-.notice {
-  border: 1px solid #dbe3d9;
-  border-radius: 6px;
-  padding: 12px;
-  background: #edf3ed;
-  font-size: 12px;
+#legendPanel,
+#finalLayout {
+  margin-top: 20px;
 }

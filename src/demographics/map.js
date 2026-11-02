@@ -41,7 +41,6 @@ export async function createNeighbourhoodMap(collection, onSelect) {
   const outlines = new Map();
   const labels = new Map();
   const fullBounds = boundsOf(collection);
-  let studyBounds;
 
   for (const entity of areas.entities.values) {
     const code = entity.properties.buurtcode.getValue();
@@ -143,7 +142,6 @@ export async function createNeighbourhoodMap(collection, onSelect) {
     addStudyAreaImagery(viewer),
     (async () => {
       const study = await readJson('/data/landUse/study-area/doc.geojson');
-      studyBounds = boundsOf(study);
       const boundary = await GeoJsonDataSource.load(study, { clampToGround: true });
       for (const entity of boundary.entities.values) {
         if (!entity.polygon) continue;
@@ -155,18 +153,17 @@ export async function createNeighbourhoodMap(collection, onSelect) {
         };
       }
       await viewer.dataSources.add(boundary);
-      document.querySelector('#studyView').disabled = false;
     })(),
   ]);
-  document.querySelector('#mapStatus').textContent = background.some(result => result.status === 'rejected')
-    ? 'Neighbourhoods ready. Some background layers could not load.'
-    : 'Click a neighbourhood to focus on it.';
+  const status = document.querySelector('#mapStatus');
+  const missingBackground = background.some(result => result.status === 'rejected');
+  status.textContent = missingBackground ? 'Some background layers could not load.' : '';
+  status.hidden = !missingBackground;
   viewer.scene.requestRender();
 
   setPopulationLabels();
 
   return {
     setFocus,
-    showStudyArea() { if (studyBounds) showBounds(studyBounds); },
   };
 }

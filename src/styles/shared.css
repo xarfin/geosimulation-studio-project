@@ -197,6 +197,34 @@ p {
   font-size: 13px;
 }
 
+.method-section {
+  margin-top: 28px;
+  border-top: 1px solid var(--color-border);
+  padding-top: 22px;
+}
+
+.method-section h2 {
+  margin: 0 0 12px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.method-section p,
+.method-sources {
+  color: var(--color-muted);
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+.method-sources {
+  margin: 14px 0 0;
+  padding-left: 18px;
+}
+
+.method-sources li + li {
+  margin-top: 12px;
+}
+
 .muted,
 .status {
   color: var(--color-muted);

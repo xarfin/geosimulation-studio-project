@@ -4,7 +4,7 @@ import {
 } from 'cesium';
 import { scenarioBuildings } from './indicators.js';
 import { setStudyAreaFocus } from '../ui/navigation.js';
-import { focusOnStudyArea } from '../map/study-area.js';
+import { createStudyAreaClip } from '../map/study-area.js';
 import { addStudyAreaImagery } from '../map/imagery.js';
 
 const base = '/data/morphology/';
@@ -41,13 +41,19 @@ export async function createMorphologyMap() {
     infoBox: false, selectionIndicator: false, requestRenderMode: true,
   });
   viewer.scene.globe.baseColor = Color.fromCssColorString('#dfe6dd');
-  setStudyAreaFocus(() => focusOnStudyArea(viewer));
+  viewer.scene.backgroundColor = Color.fromCssColorString('#dfe6dd');
+  viewer.scene.skyBox.show = false;
+  viewer.scene.skyAtmosphere.show = false;
+  viewer.scene.sun.show = false;
+  viewer.scene.moon.show = false;
   viewer.scene.screenSpaceCameraController.enableTilt = false;
   viewer.scene.screenSpaceCameraController.enableLook = false;
+  const coverage = await json(base + 'study-area.geojson');
+  viewer.scene.globe.clippingPolygons = createStudyAreaClip(coverage);
   const [study, site, existing] = await Promise.all([
-    addBoundary(viewer, '/task47/study_area.geojson', '#e9c257'),
+    addBoundary(viewer, coverage, '#e9c257'),
     addBoundary(viewer, '/task47/development_site.geojson', '#ff60dd'),
-    json(base + 'buildings_existing.geojson'),
+    json(base + 'clipped/buildings_existing.geojson'),
     addStudyAreaImagery(viewer),
   ]);
   const overlays = new Map();
@@ -58,10 +64,9 @@ export async function createMorphologyMap() {
   let overlayVisible = true;
   let buildingsVisible = true;
   let threeDimensional = false;
-  let zone = 'development_site';
 
   function resetView() {
-    const bounds = zone === 'development_site' ? site.bounds : study.bounds;
+    const bounds = study.bounds;
     const centre = Rectangle.center(bounds);
     const diagonal = Cartesian3.distance(
       Cartesian3.fromRadians(bounds.west, bounds.south),
@@ -92,7 +97,7 @@ export async function createMorphologyMap() {
   }
 
   async function loadBuildings(scenario) {
-    const proposed = scenario.id === 'baseline' ? null : await json(base + scenario.buildings);
+    const proposed = scenario.id === 'baseline' ? null : await json(base + 'clipped/' + scenario.buildings);
     const source = await GeoJsonDataSource.load(scenarioBuildings(existing, proposed, scenario.id));
     source.show = false;
     for (const entity of source.entities.values) {
@@ -138,10 +143,10 @@ export async function createMorphologyMap() {
     updateBuildings();
   }
 
+  setStudyAreaFocus(resetView);
   resetView();
   return {
     show, resetView,
-    setFocus(value) { zone = value; resetView(); },
     setAppearance(alpha, visible) {
       opacity = alpha;
       overlayVisible = visible;

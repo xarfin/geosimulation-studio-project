@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <meta name="description" content="Explore Schiehaven Noord in Rotterdam and compare the proposed development designs." />
+    <meta name="description" content="Study-area and development-area boundaries for Schiehaven Noord in Rotterdam." />
     <title>Schiehaven Noord | Introduction</title>
   </head>
   <body>
@@ -18,25 +18,23 @@
         </div>
       </section>
       <aside class="app-panel introduction-panel" id="pagePanel" aria-labelledby="pageTitle" tabindex="-1">
-        <p class="eyebrow">Geosimulation Studio · Rotterdam</p>
+        <p class="eyebrow">Introduction</p>
         <h1 id="pageTitle">Schiehaven Noord</h1>
-        <p class="introduction-lead">A closer look at a changing part of Rotterdam.</p>
-        <p class="intro">Explore the study area, compare two proposed layouts, and see how they affect the surrounding urban environment.</p>
-        <div class="location-controls">
-          <button class="primary-button" id="focusNeighbourhood" type="button" disabled>Focus on neighbourhood</button>
-          <button id="countryView" type="button">Netherlands overview</button>
-        </div>
-        <p class="status" id="mapStatus" role="status">Loading the study boundary.</p>
+        <p class="intro" id="pageDescription">You can see the boundaries of the study area and the development area. Use the buttons in the top-left corner to switch between the map and satellite views.</p>
+        <p class="status" id="mapStatus" role="status" hidden></p>
         <section class="introduction-section" aria-labelledby="studyHeading">
           <h2 id="studyHeading">The study area</h2>
-          <p>Our study focuses on Schiehaven Noord and its surroundings. The gold outline marks the study boundary; the pink outline marks the development site.</p>
-          <p>Use Map to see the streets and surrounding neighbourhoods, or Satellite for a closer look at the site.</p>
+          <p>Our study focuses on Schiehaven Noord and its surroundings in Rotterdam. The gold line shows the study area and the pink line shows the development area.</p>
         </section>
-        <p class="muted introduction-help">
-          Drag to move · Scroll to zoom
-          <br/>
-          The street map and imagery outside the study area load online.
-        </p>
+        <section class="introduction-section" aria-labelledby="methodHeading">
+          <h2 id="methodHeading">Method and Sources</h2>
+          <ul class="introduction-sources">
+            <li><a href="https://www.openstreetmap.org/about" target="_blank" rel="noopener noreferrer">OpenStreetMap</a> provides the street map.</li>
+            <li><a href="https://www.pdok.nl/introductie/-/article/pdok-luchtfoto-rgb-open-" target="_blank" rel="noopener noreferrer">PDOK / Beeldmateriaal Nederland</a> provides the aerial photos. We cropped the 2026 image to our study boundary and saved it in the app.</li>
+            <li>The <a href="/data/landUse/study-area/doc.geojson" download="study_area.geojson">study-area boundary</a> and <a href="/data/landUse/development-site/doc.geojson" download="development_area.geojson">development-area boundary</a> are the GeoJSON files prepared for this project.</li>
+            <li>The <a href="https://www.rotterdam.nl/schiehaven-noord" target="_blank" rel="noopener noreferrer">municipality's Schiehaven Noord page</a> gives background on the plans for the development area.</li>
+          </ul>
+        </section>
       </aside>
     </main>
     <script src="/src/introduction.js" type="module"></script>

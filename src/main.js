@@ -20,13 +20,18 @@ viewer.scene.globe.baseColor = Color.fromCssColorString('#deded8');
 viewer.scene.globe.depthTestAgainstTerrain = false;
 setStudyAreaFocus(() => focusOnStudyArea(viewer));
 const select = document.querySelector('#layerSelect');
-const status = document.querySelector('#status');
+const errorMessage = document.querySelector('#layerError');
 const objects = new Map();
 const pending = new Map();
 let selectedIndex = 0;
 let selectionVersion = 0;
 let studyCentre;
 let studyRange = 1800;
+
+function showError(message = '') {
+  errorMessage.textContent = message;
+  errorMessage.hidden = !message;
+}
 
 async function readJson(url) {
   const response = await fetch(url);
@@ -37,7 +42,7 @@ async function readJson(url) {
 async function loadImagery(layer) {
   const provider = await createLocalImageryProvider(layer.url, {
     credit: layer.credit,
-    onError: () => { status.textContent = `Some ${layer.title} tiles could not load. Check the data folder.`; },
+    onError: () => showError(`${layer.title} could not fully load. Please refresh the page.`),
   });
   const imagery = viewer.imageryLayers.addImageryProvider(provider, layer.id === 'aerial' ? 0 : undefined);
   imagery.show = false;
@@ -92,7 +97,7 @@ async function loadLayer(layer) {
       object = await Cesium3DTileset.fromUrl(resource, options);
       viewer.scene.primitives.add(object);
       object.tileFailed.addEventListener(() => {
-        status.textContent = 'Part of ' + layer.title + ' could not load. Check its tileset files.';
+        showError(`Part of ${layer.title} could not load. Please refresh the page.`);
       });
     }
     objects.set(layer.id, object);
@@ -116,18 +121,9 @@ async function showLayer(index) {
   const layer = layers[index];
   select.value = layer.id;
   document.querySelector('#counter').textContent = (index + 1) + ' / ' + layers.length;
-  document.querySelector('#description').textContent = layer.description;
-  const legend = document.querySelector('#layerLegend');
-  legend.hidden = !layer.legend;
-  if (layer.legend) {
-    document.querySelector('#legendTitle').textContent = layer.legend.title;
-    document.querySelector('#legendGradient').style.background = `linear-gradient(to right, ${layer.legend.colours.join(', ')})`;
-    document.querySelector('#legendMinimum').textContent = layer.legend.minimum;
-    document.querySelector('#legendMaximum').textContent = layer.legend.maximum;
-  }
   document.querySelector('#previous').disabled = index === 0;
   document.querySelector('#next').disabled = index === layers.length - 1;
-  status.textContent = 'Loading ' + layer.title + '…';
+  showError();
   viewer.selectedEntity = undefined;
   for (const object of objects.values()) object.show = false;
   viewer.scene.requestRender();
@@ -139,10 +135,9 @@ async function showLayer(index) {
     for (const [id, object] of objects) object.show = visible.some((item) => item.id === id);
     resetView();
     viewer.scene.requestRender();
-    status.textContent = layer.type === 'tileset' ? 'Ready. 3D tiles load as you zoom.' : 'Ready';
   } catch (error) {
     console.error(error);
-    if (version === selectionVersion) status.textContent = 'Could not load ' + layer.title + '. Check its files and refresh to retry.';
+    if (version === selectionVersion) showError(`${layer.title} could not load. Please refresh the page.`);
   }
 }
 
@@ -169,10 +164,9 @@ async function start() {
   select.addEventListener('change', () => showLayer(layers.findIndex((layer) => layer.id === select.value)));
   document.querySelector('#previous').addEventListener('click', () => showLayer(Math.max(0, selectedIndex - 1)));
   document.querySelector('#next').addEventListener('click', () => showLayer(Math.min(layers.length - 1, selectedIndex + 1)));
-  document.querySelector('#resetView').addEventListener('click', resetView);
   await showLayer(0);
 }
 start().catch((error) => {
   console.error(error);
-  status.textContent = 'Could not initialise the map. Check that the study-area GeoJSON is present.';
+  showError('The map could not load. Please refresh the page.');
 });

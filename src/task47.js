@@ -9,13 +9,14 @@ import {
   Cesium3DTileset,
   HeightReference,
   Cartographic,
-  ClippingPolygon,
-  ClippingPolygonCollection,
+  Resource,
+  Credit,
 } from "cesium";
 import "cesium/Build/Cesium/Widgets/widgets.css";
 import { renderNavigation, setStudyAreaFocus } from "./ui/navigation.js";
-import { focusOnStudyArea } from './map/study-area.js';
+import { focusOnStudyArea, readStudyArea, createStudyAreaClip } from './map/study-area.js';
 import { addStudyAreaImagery } from './map/imagery.js';
+import { studyBuildingsUrl, studyBuildingsCredit } from './map/buildings.js';
 import "./styles/scenarios.css";
 
 renderNavigation("scenarios");
@@ -35,17 +36,37 @@ const viewer = new Viewer("cesiumContainer", {
 viewer.scene.globe.baseColor = Color.fromCssColorString("#e5e9e3");
 setStudyAreaFocus(() => focusOnStudyArea(viewer));
 const cache = new Map();
-let summary, baseline, active, centre, tilted = false, version = 0, timer, context, original, treeLayer, roofLayer, gatewayLayer, siteRings = [];
+let summary, baseline, active, centre, studyArea, boundaryLayer;
+let context, contextRequest, contextClipMode, treeLayer, roofLayer, gatewayLayer;
+let tilted = false, version = 0, timer;
+const siteRings = [];
 const cellVisuals = new WeakMap(), roofVisuals = new WeakMap(), treeVisuals = new WeakMap();
 
-async function json(url) {
-  const r = await fetch(url);
-  if (!r.ok) throw Error(`${url}: ${r.status}`);
-  return r.json();
+function isGeneratedScenario(key = $("scenario").value) {
+  return key === "access" || key === "green";
 }
 
-function status(message) {
+function updateContext() {
+  if (!context) return;
+  const key = $("scenario").value;
+  const hideDevelopmentSite = isGeneratedScenario(key);
+  if (contextClipMode !== hideDevelopmentSite) {
+    context.clippingPolygons = createStudyAreaClip(studyArea, hideDevelopmentSite ? siteRings : []);
+    contextClipMode = hideDevelopmentSite;
+  }
+  context.show = $("context").checked && key !== "satellite";
+  viewer.scene.requestRender();
+}
+
+async function json(url) {
+  const response = await fetch(url);
+  if (!response.ok) throw Error(`${url}: ${response.status}`);
+  return response.json();
+}
+
+function status(message = "") {
   $("status").textContent = message;
+  $("status").hidden = !message;
 }
 
 function stop() {
@@ -63,10 +84,10 @@ function camera() {
 
 async function layer(name) {
   if (!cache.has(name)) cache.set(name, (async () => {
-    const d = await GeoJsonDataSource.load("/task47/" + name + ".geojson");
-    d.show = false;
-    await viewer.dataSources.add(d);
-    return d;
+    const data = await GeoJsonDataSource.load("/task47/" + name + ".geojson");
+    data.show = false;
+    await viewer.dataSources.add(data);
+    return data;
   })());
   try {
     return await cache.get(name);
@@ -82,14 +103,13 @@ function property(e, name) {
 
 function paint() {
   if (!active) return;
-  const key = $("scenario").value, round = Number($("iteration").value), isRun = ["access", "green"].includes(key);
+  const key = $("scenario").value, round = Number($("iteration").value), isRun = isGeneratedScenario(key);
   $("round").textContent = `${round} / ${$("iteration").max}`;
   for (const e of active.entities.values) {
     if (!e.polygon) continue;
     const id = property(e, "cell_id"), birth = property(e, "birth_iteration");
     let code = property(e, "land_use");
     if (isRun && birth > round) code = baseline.get(id);
-    const visible = !($("original").checked && key === "supplied" && code === 7);
     let state = cellVisuals.get(e);
     if (!state) {
       state = {};
@@ -99,10 +119,6 @@ function paint() {
     if (codeChanged) {
       e.polygon.material = Color.fromCssColorString(summary.colors[code]).withAlpha(.9);
       state.code = code;
-    }
-    if (state.visible !== visible) {
-      e.show = visible;
-      state.visible = visible;
     }
     if (state.tilted !== tilted || state.heightCode !== code) {
       const height = code === 7 ? 30 : code === 14 ? 6 : 0;
@@ -117,7 +133,7 @@ function paint() {
   }
   if (gatewayLayer) gatewayLayer.show = isRun;
   if (roofLayer) {
-    roofLayer.show = isRun && tilted && $("roofs").checked;
+    roofLayer.show = isRun && tilted;
     for (const e of roofLayer.entities.values) if (e.polygon) {
       const visible = round >= Number(property(e, "birth_iteration"));
       let state = roofVisuals.get(e);
@@ -167,14 +183,13 @@ function paint() {
       }
     }
   }
-  if (context?.clippingPolygons) context.clippingPolygons.enabled = isRun;
   viewer.scene.requestRender();
 }
 
 function metrics(key) {
   const m = summary.metrics.find((x) => x.scenario === ({ supplied: "supplied_proposal" }[key] || key));
   if (!m) {
-    $("metrics").textContent = "Existing land use. No new programme applied.";
+    $("metrics").textContent = "Existing use. No new programme applied.";
     return;
   }
   const value = (v) => v == null ? "Not supplied" : Number(v).toLocaleString("en-GB", { maximumFractionDigits: 1 });
@@ -190,75 +205,88 @@ function metrics(key) {
     ["Entrances reaching sports", m.sports_reachable_from_all_gateways ? "All three" : "Check required"],
     ["North entrance to sports", value(m.north_gate_to_sports_m) + " m"]
   ];
-  $("metrics").innerHTML = "<strong>Final layout</strong><dl>" + fields.map(([a, b]) => `<dt>${a}</dt><dd>${b}</dd>`).join("") + "</dl><p class=\"muted\">Housing capacity depends on floor-area assumptions. Public distances follow the proposed internal path graph; they do not confirm safe crossings outside the site. Indicators describe the final layout during playback.</p>";
+  $("metrics").innerHTML = "<dl>" + fields.map(([a, b]) => `<dt>${a}</dt><dd>${b}</dd>`).join("") + "</dl>";
 }
 
 async function select() {
   stop();
-  const v = ++version, key = $("scenario").value;
-  status("Loading scenario…");
+  const selectionVersion = ++version;
+  const key = $("scenario").value;
+  const satelliteOnly = key === "satellite";
+  const isRun = isGeneratedScenario(key);
+  viewer.selectedEntity = undefined;
+  for (const data of [active, treeLayer, roofLayer, gatewayLayer, boundaryLayer]) {
+    if (data) data.show = false;
+  }
+  active = treeLayer = roofLayer = undefined;
+  $("context").disabled = satelliteOnly;
+  $("trees").disabled = !isRun;
+  $("legendPanel").hidden = satelliteOnly;
+  $("finalLayout").hidden = satelliteOnly;
+  $("evolution").hidden = true;
   $("iteration").disabled = true;
   $("play").disabled = true;
-  $("original").checked = false;
-  $("original").disabled = key !== "supplied";
-  if (original) original.show = false;
-  if (treeLayer) treeLayer.show = false;
-  if (roofLayer) roofLayer.show = false;
+  updateContext();
+  viewer.scene.requestRender();
+  if (satelliteOnly) {
+    status("Satellite view.");
+    return;
+  }
+  status("Loading scenario…");
   try {
     const next = await layer(key);
     let nextTrees, nextRoofs;
-    if (["access", "green"].includes(key)) [nextTrees, nextRoofs] = await Promise.all([layer(key + "_trees"), layer(key + "_green_roofs")]);
-    if (v !== version) return;
+    if (isRun) {
+      [nextTrees, nextRoofs] = await Promise.all([layer(key + "_trees"), layer(key + "_green_roofs")]);
+    }
+    if (selectionVersion !== version) return;
     treeLayer = nextTrees;
     roofLayer = nextRoofs;
-    if (active) active.show = false;
     active = next;
     active.show = true;
-    const max = Math.max(0, ...active.entities.values.map((e) => Number(property(e, "birth_iteration")) || 0));
+    boundaryLayer.show = true;
+    const max = Math.max(0, ...active.entities.values.map(entity => Number(property(entity, "birth_iteration")) || 0));
     $("iteration").max = max;
     $("iteration").value = max;
-    $("evolution").hidden = !["access", "green"].includes(key);
-    $("iteration").disabled = false;
-    $("play").disabled = false;
+    $("evolution").hidden = !isRun;
+    $("iteration").disabled = !isRun;
+    $("play").disabled = !isRun;
     metrics(key);
     paint();
-    status("Ready. Click a cell to inspect its data.");
-  } catch (e) {
-    console.error(e);
-    if (v === version) status("Could not load the scenario. Check public/task47, then select it again.");
+    status();
+  } catch (error) {
+    console.error(error);
+    if (selectionVersion === version) status("Could not load the scenario. Please select it again.");
   }
 }
 
-async function tiles(checkbox, url, kind) {
+async function showContextBuildings() {
   try {
-    let obj = kind === "context" ? context : original;
-    if (!obj && checkbox.checked) {
-      obj = await Cesium3DTileset.fromUrl(url, { show: false });
-      viewer.scene.primitives.add(obj);
-      if (kind === "context") {
-        context = obj;
-        context.clippingPolygons = new ClippingPolygonCollection({
-          polygons: siteRings.map((r) => new ClippingPolygon({ positions: r.map(([lon, lat]) => Cartesian3.fromDegrees(lon, lat)) })),
-          enabled: ["access", "green"].includes($("scenario").value)
-        });
-      } else original = obj;
+    if (!context && $("context").checked) {
+      if (!contextRequest) contextRequest = (async () => {
+        const resource = new Resource({ url: studyBuildingsUrl, credits: [new Credit(studyBuildingsCredit, true)] });
+        const buildings = await Cesium3DTileset.fromUrl(resource, { show: false, showCreditsOnScreen: true });
+        viewer.scene.primitives.add(buildings);
+        context = buildings;
+        buildings.tileFailed.addEventListener(() => status("Some background buildings could not load. Please refresh the page."));
+      })();
+      await contextRequest;
     }
-    if (obj) obj.show = checkbox.checked && (kind !== "original" || $("scenario").value === "supplied");
-    paint();
-  } catch (e) {
-    console.error(e);
-    checkbox.checked = false;
-    paint();
-    status("3D reference could not load. Check the original model files.");
+    updateContext();
+  } catch (error) {
+    console.error(error);
+    contextRequest = undefined;
+    $("context").checked = false;
+    status("Background buildings could not load. Please try again.");
   }
 }
 
 async function start() {
   summary = await json("/task47/summary.json");
+  studyArea = (await readStudyArea()).geojson;
   const current = await layer("current");
   baseline = new Map(current.entities.values.map((e) => [property(e, "cell_id"), property(e, "land_use")]));
-  const b = await layer("development_site");
-  b.show = true;
+  boundaryLayer = await layer("development_site");
   const coords = [];
   const geo = await json("/task47/development_site.geojson");
   function collect(v) {
@@ -271,7 +299,7 @@ async function start() {
     polys.forEach((poly) => siteRings.push(poly[0].slice(0, -1)));
   });
   centre = Cartesian3.fromDegrees(coords.reduce((s, c) => s + c[0], 0) / coords.length, coords.reduce((s, c) => s + c[1], 0) / coords.length);
-  for (const e of b.entities.values) {
+  for (const e of boundaryLayer.entities.values) {
     e.polygon.fill = false;
     e.polygon.outline = true;
     e.polygon.outlineColor = Color.fromCssColorString("#203b3e");
@@ -288,7 +316,6 @@ async function start() {
     };
   }
   $("trees").onchange = paint;
-  $("roofs").onchange = paint;
   $("legend").innerHTML = Object.entries(summary.labels).map(([k, v]) => `<i style="background:${summary.colors[k]}"></i><span>${v}</span>`).join("");
   $("scenario").disabled = false;
   $("scenario").addEventListener("change", select);
@@ -307,8 +334,7 @@ async function start() {
     camera();
   };
   $("reset").onclick = camera;
-  $("context").onchange = () => tiles($("context"), "/data/buildings/rotterdam/tileset.json", "context");
-  $("original").onchange = () => tiles($("original"), "/models/proposed-complex/tileset.json", "original");
+  $("context").onchange = showContextBuildings;
   $("play").onclick = () => {
     if (timer) {
       stop();
@@ -326,7 +352,7 @@ async function start() {
   camera();
   addStudyAreaImagery(viewer).catch((e) => {
     console.error(e);
-    status("Model ready. Aerial imagery unavailable; check the original aerial folder.");
+    status("The satellite background could not load. Please refresh the page.");
   });
 }
 start().catch((e) => {

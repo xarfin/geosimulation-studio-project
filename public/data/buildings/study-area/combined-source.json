@@ -1,0 +1,224 @@
+{
+  "municipalTileCount": 35,
+  "tileCount": 36,
+  "gapBuildingCount": 14,
+  "unavailable": [],
+  "requestErrors": [
+    {
+      "id": "0599100010004882",
+      "error": "No cached response. Run the importer without --cached-only to retry."
+    },
+    {
+      "id": "0599100010033750",
+      "error": "No cached response. Run the importer without --cached-only to retry."
+    },
+    {
+      "id": "0599100110028383",
+      "error": "No cached response. Run the importer without --cached-only to retry."
+    },
+    {
+      "id": "0599100110021189",
+      "error": "No cached response. Run the importer without --cached-only to retry."
+    },
+    {
+      "id": "0599100110021188",
+      "error": "No cached response. Run the importer without --cached-only to retry."
+    },
+    {
+      "id": "0599100110021187",
+      "error": "No cached response. Run the importer without --cached-only to retry."
+    },
+    {
+      "id": "0599100110021186",
+      "error": "No cached response. Run the importer without --cached-only to retry."
+    },
+    {
+      "id": "0599100110021185",
+      "error": "No cached response. Run the importer without --cached-only to retry."
+    },
+    {
+      "id": "0599100110021184",
+      "error": "No cached response. Run the importer without --cached-only to retry."
+    },
+    {
+      "id": "0599100110021183",
+      "error": "No cached response. Run the importer without --cached-only to retry."
+    },
+    {
+      "id": "0599100110021182",
+      "error": "No cached response. Run the importer without --cached-only to retry."
+    },
+    {
+      "id": "0599100110015761",
+      "error": "No cached response. Run the importer without --cached-only to retry."
+    },
+    {
+      "id": "0599100110036400",
+      "error": "No cached response. Run the importer without --cached-only to retry."
+    },
+    {
+      "id": "0599100110036401",
+      "error": "No cached response. Run the importer without --cached-only to retry."
+    },
+    {
+      "id": "0599100110036422",
+      "error": "No cached response. Run the importer without --cached-only to retry."
+    },
+    {
+      "id": "0599100110036423",
+      "error": "No cached response. Run the importer without --cached-only to retry."
+    },
+    {
+      "id": "0599100110036418",
+      "error": "No cached response. Run the importer without --cached-only to retry."
+    },
+    {
+      "id": "0599100110036424",
+      "error": "No cached response. Run the importer without --cached-only to retry."
+    },
+    {
+      "id": "0599100110036425",
+      "error": "No cached response. Run the importer without --cached-only to retry."
+    },
+    {
+      "id": "0599100110036426",
+      "error": "No cached response. Run the importer without --cached-only to retry."
+    },
+    {
+      "id": "0599100110036501",
+      "error": "No cached response. Run the importer without --cached-only to retry."
+    },
+    {
+      "id": "0599100110036542",
+      "error": "No cached response. Run the importer without --cached-only to retry."
+    },
+    {
+      "id": "0599100110036527",
+      "error": "No cached response. Run the importer without --cached-only to retry."
+    },
+    {
+      "id": "0599100110036528",
+      "error": "No cached response. Run the importer without --cached-only to retry."
+    },
+    {
+      "id": "0599100110036529",
+      "error": "No cached response. Run the importer without --cached-only to retry."
+    },
+    {
+      "id": "0599100110036530",
+      "error": "No cached response. Run the importer without --cached-only to retry."
+    },
+    {
+      "id": "0599100110036569",
+      "error": "No cached response. Run the importer without --cached-only to retry."
+    },
+    {
+      "id": "0599100110036723",
+      "error": "No cached response. Run the importer without --cached-only to retry."
+    },
+    {
+      "id": "0599100110040585",
+      "error": "No cached response. Run the importer without --cached-only to retry."
+    },
+    {
+      "id": "0599100110040586",
+      "error": "No cached response. Run the importer without --cached-only to retry."
+    },
+    {
+      "id": "0599100110040650",
+      "error": "No cached response. Run the importer without --cached-only to retry."
+    },
+    {
+      "id": "0599100110040659",
+      "error": "No cached response. Run the importer without --cached-only to retry."
+    },
+    {
+      "id": "0599100110040698",
+      "error": "No cached response. Run the importer without --cached-only to retry."
+    },
+    {
+      "id": "0599100110040710",
+      "error": "No cached response. Run the importer without --cached-only to retry."
+    },
+    {
+      "id": "0599100110040711",
+      "error": "No cached response. Run the importer without --cached-only to retry."
+    },
+    {
+      "id": "0599100110040712",
+      "error": "No cached response. Run the importer without --cached-only to retry."
+    },
+    {
+      "id": "0599100110040713",
+      "error": "No cached response. Run the importer without --cached-only to retry."
+    },
+    {
+      "id": "0599100110040714",
+      "error": "No cached response. Run the importer without --cached-only to retry."
+    },
+    {
+      "id": "0599100110040762",
+      "error": "No cached response. Run the importer without --cached-only to retry."
+    },
+    {
+      "id": "0599100110040763",
+      "error": "No cached response. Run the importer without --cached-only to retry."
+    },
+    {
+      "id": "0599100110041216",
+      "error": "No cached response. Run the importer without --cached-only to retry."
+    },
+    {
+      "id": "0599100110041217",
+      "error": "No cached response. Run the importer without --cached-only to retry."
+    },
+    {
+      "id": "0599100110041224",
+      "error": "No cached response. Run the importer without --cached-only to retry."
+    },
+    {
+      "id": "0599100110041218",
+      "error": "No cached response. Run the importer without --cached-only to retry."
+    },
+    {
+      "id": "0599100110041219",
+      "error": "No cached response. Run the importer without --cached-only to retry."
+    },
+    {
+      "id": "0599100110041220",
+      "error": "No cached response. Run the importer without --cached-only to retry."
+    },
+    {
+      "id": "0599100110041225",
+      "error": "No cached response. Run the importer without --cached-only to retry."
+    },
+    {
+      "id": "0599100110041226",
+      "error": "No cached response. Run the importer without --cached-only to retry."
+    },
+    {
+      "id": "0599100110041227",
+      "error": "No cached response. Run the importer without --cached-only to retry."
+    },
+    {
+      "id": "0599100110041242",
+      "error": "No cached response. Run the importer without --cached-only to retry."
+    },
+    {
+      "id": "0599100110041243",
+      "error": "No cached response. Run the importer without --cached-only to retry."
+    },
+    {
+      "id": "0599100110041244",
+      "error": "No cached response. Run the importer without --cached-only to retry."
+    },
+    {
+      "id": "0599100110041245",
+      "error": "No cached response. Run the importer without --cached-only to retry."
+    },
+    {
+      "id": "0599100100019906",
+      "error": "No cached response. Run the importer without --cached-only to retry."
+    }
+  ]
+}

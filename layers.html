@@ -11,9 +11,10 @@
     <main class="workspace">
       <section aria-label="Study-area layers" class="map-pane">
         <div aria-label="Interactive study-area map" class="map-canvas" id="cesiumContainer"></div>
+        <p class="status error layer-error" id="layerError" role="alert" hidden></p>
       </section>
       <aside aria-labelledby="pageTitle" class="app-panel layers-panel" id="pagePanel" tabindex="-1">
-        <p class="eyebrow">Study-area layers</p>
+        <p class="eyebrow">Data layers . Task 4.2</p>
         <h1 id="pageTitle">Layers</h1>
         <p class="intro">Explore the study area's imagery, land use and 3D buildings.</p>
         <label for="layerSelect">Layer</label>
@@ -23,21 +24,18 @@
           <span id="counter"></span>
           <button disabled="" id="next" type="button">Next</button>
         </nav>
-        <p id="description"></p>
-        <div class="layer-legend" id="layerLegend" hidden>
-          <p id="legendTitle"></p>
-          <div class="legend-gradient" id="legendGradient"></div>
-          <div class="legend-endpoints"><span id="legendMinimum"></span><span id="legendMaximum"></span></div>
-          <a href="/data/elevation/study-area/ground-elevation.tif" download>Download elevation GeoTIFF</a>
-        </div>
-        <button id="resetView" type="button">Reset view</button>
-        <p class="boundary-download"><a href="/downloads/study_area.geojson" download>Download study-area GeoJSON</a></p>
-        <p class="status" id="status" role="status">Loading study area…</p>
-        <p class="muted map-help">
-          Drag to move · Scroll to zoom
-          <br/>
-          Ctrl + drag to tilt
-        </p>
+        <section class="method-section" aria-labelledby="methodHeading">
+          <h2 id="methodHeading">Method and Sources</h2>
+          <p>We placed the layers over the same satellite image and cropped the data to our study area. The 3D buildings use the same boundary, so buildings outside the image are hidden.</p>
+          <ul class="method-sources">
+            <li><a href="https://www.pdok.nl/introductie/-/article/pdok-luchtfoto-rgb-open-" target="_blank" rel="noopener noreferrer">PDOK / Beeldmateriaal Nederland</a> provides the satellite background. We used the 2026 aerial photos.</li>
+            <li>The <a href="/data/landUse/study-area/doc.geojson" download="study_area.geojson">study-area boundary</a> and <a href="/data/landUse/development-site/doc.geojson" download="development_area.geojson">development-area boundary</a> are the polygons prepared for this project.</li>
+            <li><a href="https://api.pdok.nl/kadaster/bag/ogc/v2" target="_blank" rel="noopener noreferrer">BAG via PDOK</a> provides the building footprints, including their construction year and use.</li>
+            <li><a href="https://www.pdok.nl/introductie/-/article/basisregistratie-grootschalige-topografie-bgt-" target="_blank" rel="noopener noreferrer">BGT via PDOK</a> provides the green-space and water polygons.</li>
+            <li><a href="https://www.pdok.nl/ogc-webservices/-/article/actueel-hoogtebestand-nederland-ahn3-" target="_blank" rel="noopener noreferrer">AHN via PDOK</a> provides the ground heights at 0.5 m resolution. We coloured these heights on a scale from -2 to 10 metres NAP.</li>
+            <li><a href="https://www.rotterdam.nl/rotterdam-in-3d" target="_blank" rel="noopener noreferrer">Rotterdam in 3D</a> provides the existing buildings in LoD2. We filled available gaps with <a href="https://3dbag.nl/" target="_blank" rel="noopener noreferrer">3DBAG</a> LoD2.2 models (CC BY 4.0). The two sources are from different surveys, so some recent buildings may still be missing.</li>
+          </ul>
+        </section>
       </aside>
     </main>
     <script src="/src/main.js" type="module"></script>

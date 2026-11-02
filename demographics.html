@@ -14,19 +14,11 @@
         <div id="mapLegend" class="demographics-map-legend" hidden></div>
       </section>
       <aside id="pagePanel" class="app-panel demographics-panel" aria-labelledby="pageTitle" tabindex="-1">
-        <p class="eyebrow">Task 4.6 · CBS neighbourhood data</p>
+        <p class="eyebrow">CBS neighbourhood data . Task 4.6</p>
         <h1 id="pageTitle">Socio-demographics</h1>
-        <p class="intro">Delfshaven and Schiemond · 2025</p>
-        <label for="neighbourhoodFocus">Focus on the map</label>
-        <select id="neighbourhoodFocus" disabled>
-          <option value="all">Compare both neighbourhoods</option>
-        </select>
-        <div class="button-group">
-          <button id="neighbourhoodView" type="button" disabled>Both neighbourhoods</button>
-          <button id="studyView" type="button" disabled>Study area</button>
-        </div>
-        <p id="mapStatus" class="status" role="status">Loading neighbourhood boundaries.</p>
-        <p id="dataStatus" class="status" role="status">Loading CBS figures.</p>
+        <p class="intro">Compare population, age groups, households and housing in Delfshaven and Schiemond using CBS data from 2025. The charts also show housing values, social assistance and average distances to services such as schools, supermarkets and GPs.</p>
+        <p id="mapStatus" class="status error" role="alert" hidden></p>
+        <p id="dataStatus" class="status error" role="alert" hidden></p>
         <section id="neighbourhoodCards" class="neighbourhood-cards" aria-label="Neighbourhood summaries"></section>
         <section class="demographics-distributions" aria-labelledby="distributionHeading">
           <h2 id="distributionHeading">Residents and households</h2>
@@ -74,18 +66,9 @@
             </a>
           </figure>
         </section>
-        <details>
-          <summary>All indicators and source data</summary>
-          <div class="demographics-table-wrap">
-            <table id="indicatorTable">
-              <caption>Published values for the complete CBS neighbourhoods, 2025.</caption>
-              <thead><tr><th scope="col">Indicator</th><th scope="col">Delfshaven</th><th scope="col">Schiemond</th></tr></thead>
-              <tbody id="indicatorRows"></tbody>
-            </table>
-          </div>
-          <p><a href="/data/demographics/cbs-2025.csv" download>Download source CSV</a></p>
-        </details>
-        <p class="muted demographics-source">Source: <a href="https://www.cbs.nl/nl-nl/maatwerk/2026/42/kerncijfers-wijken-en-buurten-2025" target="_blank" rel="noreferrer">CBS Kerncijfers wijken en buurten 2025</a> and Wijk- en Buurtkaart 2025. Figures describe the full neighbourhoods.</p>
+        <section class="method-section" aria-labelledby="methodHeading">
+          <h2 id="methodHeading">Method and Sources</h2>
+        </section>
       </aside>
     </main>
     <script type="module" src="/src/demographics.js"></script>

@@ -35,7 +35,7 @@
         </div>
       </section>
       <aside aria-labelledby="pageTitle" class="app-panel weather-panel" id="pagePanel" tabindex="-1">
-        <p class="eyebrow">TASK 4.4a · KNMI OBSERVATIONS</p>
+        <p class="eyebrow">KNMI observations . Task 4.4a</p>
         <h1 id="pageTitle">Weather around Schiehaven</h1>
         <p class="intro">
           Rotterdam Airport · station 344
@@ -158,6 +158,14 @@
               </table>
             </div>
           </details>
+        </section>
+        <section class="method-section" aria-labelledby="methodHeading">
+          <h2 id="methodHeading">Method and Sources</h2>
+          <p>We used KNMI station 344 at Rotterdam Airport for the weather around our study area. We request its observations through the <a href="https://developer.dataplatform.knmi.nl/edr-api" target="_blank" rel="noopener noreferrer">KNMI EDR API</a>.</p>
+          <p>The past 24 hours come from the <a href="https://dataplatform.knmi.nl/dataset/docs/10-minute-in-situ-meteorological-observations-1-0" target="_blank" rel="noopener noreferrer">10-minute observations</a>. Temperature is a 1-minute mean; wind speed and direction are 10-minute means, with speed representing 10 m height. We refresh every 10 minutes and use each variable's latest available reading. Missing values stay empty in the charts. Times are shown in Amsterdam time. We turn wind angles into compass directions, label speeds below 0.5 m/s as calm, and mark readings over 30 minutes old as delayed.</p>
+          <p>For the historical charts, we average the <a href="https://dataplatform.knmi.nl/dataset/docs/daily-in-situ-meteorological-observations-validated-1-0" target="_blank" rel="noopener noreferrer">validated daily observations</a> for each month. Daily end-times are moved back one UTC day to assign them to the correct month. We show an average only when at least 80% of that month's days are available for that variable. The table shows the day counts.</p>
+          <p>The server saves live responses for 10 minutes and historical responses for 24 hours. If an update fails, earlier readings can stay visible with a warning.</p>
+          <p>The map uses 2026 aerial photos from <a href="https://www.pdok.nl/introductie/-/article/pdok-luchtfoto-rgb-open-" target="_blank" rel="noopener noreferrer">PDOK / Beeldmateriaal Nederland</a>. The <a href="/data/landUse/study-area/doc.geojson" download="study_area.geojson">study boundary</a>, <a href="/data/landUse/development-site/doc.geojson" download="development_area.geojson">development boundary</a> and existing and proposed 3D models came from our project files. The station distance is calculated over the Earth's surface from the centre of the study-area bounds.</p>
         </section>
       </aside>
     </main>

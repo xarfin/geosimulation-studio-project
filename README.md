@@ -38,22 +38,31 @@ The building layer excludes demolished, unrealised and permit-only records. The 
 the current 0.5 m ground-elevation coverage, with a colour scale in metres NAP and a downloadable
 numeric GeoTIFF. Missing ground measurements stay transparent over the aerial image.
 
-Existing 3D buildings on Layers use a local subset of the municipality's LoD2 3D Tiles service.
+Existing 3D buildings on Layers and Task 4.7 use a local subset of the municipality's LoD2 3D Tiles service.
 Only intersecting tile branches and their embedded models are included. The map clips their display
 to the same polygon as the aerial image, hiding geometry outside the study boundary. Whole source
 tiles are preserved on disk. No external models or textures are requested when browsing this saved
-layer. The original supplied datasets remain available for the analysis pages.
+layer. Missing municipal BAG identifiers are checked against 3DBAG; available LoD2.2 models
+are saved locally in a supplement. Both pages use `combined-tileset.json`, which includes the
+municipal hierarchy and supplement. The original supplied datasets remain available for the analysis pages.
 
 Recreate these display layers with `python scripts/prepare-study-layers.py` (Pillow, NumPy, rasterio,
-pyproj and Shapely) and `python scripts/prepare-study-buildings.py` (Shapely). Source downloads are
+pyproj and Shapely), `python scripts/prepare-study-buildings.py` (Shapely), then
+`python scripts/prepare-building-gaps.py` (pyproj and the project's Node/Cesium dependencies). Source downloads are
 cached under `local-data-backups/`. The WGS 84 study boundary can be downloaded from Layers or
 directly from `/downloads/study_area.geojson`.
 
+Open `/task47.html` for task 4.7. Select None, Existing use, Supplied proposal, A or B.
+The satellite option hides all scenario overlays and background buildings. In A and B, green roofs
+appear automatically in 3D allocation view; the background model hides the existing development-site
+buildings to leave room for the new allocation. Map legend and Final layout are collapsible, and
+Method and Sources explains the supplied 5 m cellular automaton outputs and assumptions.
+
 Open `/morphology.html` for task 4.3. Compare the baseline and Designs A and B
 using the supplied sky-view factor layers (with or without trees) and H/W proxy
-over the aerial image. Choose the development site or whole study area for
-indicator summaries and map focus. The full comparison table includes every
-supplied indicator, with definitions. Toggle buildings, 3D view, boundaries and
+over the aerial image. The satellite background, boundary and displayed buildings are clipped to
+the original Task 4.3 analysis area within the current satellite coverage. Indicator cards describe
+the development site. Toggle buildings, 3D view, boundaries and
 overlay opacity. Design views remove existing buildings marked for clearance
 before adding the proposed footprints, extruded using their supplied heights.
 
@@ -64,13 +73,16 @@ the distance, within 30 m of buildings. Numeric rasters were not supplied, so
 the app shows the supplied area statistics rather than sampling image colours.
 Green share includes ground vegetation and tree canopy, excluding buildings;
 green roofs are separate. Source roof totals are only reported for the site,
-so the study-area comparison shows a dash for that indicator.
+so the app does not present a whole-study-area green-roof total.
 
-All six supplied PDF comparisons, the CSV, building GeoJSONs, PNGs and geographic
-rectangles can be downloaded. The unchanged original ZIP contains the source
-GIS packages and analysis scripts. Reimport with
+The original PDF comparisons, CSV, building GeoJSONs, PNGs and geographic rectangles remain
+in `public/data/morphology/`. Method and Sources is an empty section for the task author to fill in.
+The unchanged original ZIP contains the source GIS packages and analysis scripts. Reimport with
 `python scripts/prepare-morphology.py "path/to/task43.zip"`; this uses Python's
-standard library and does not rerun the analysis.
+standard library and does not rerun the analysis. Then run `python scripts/prepare-morphology-area.py`
+with pyproj and Shapely to regenerate the display crop. It reuses `analysis-area.geojson`, extracted
+from the original Task 4.1 package's Study Area layer. To extract that boundary again, pass the
+Task 4.1 ZIP as the script's argument. Original Task 4.3 exports and indicator values stay intact.
 
 Open `/environment.html` for task 4.5. Compare the baseline, Design A and Design B
 wind simulations over the aerial image, adjust opacity, and click for wind speed.
@@ -78,7 +90,8 @@ The overlays show the final saved OpenFOAM velocity fields at 1.5 m above model
 ground, sampled on a 2 m grid and restored to real-world coordinates using the
 offset documented in the cases. All scenarios use the same colour scale. The
 summary cards describe open-air samples inside the development site, excluding
-buildings. Download each geographic wind GeoTIFF or view the supplied wind PDF.
+buildings. Original wind GeoTIFFs and supplied PDFs remain in `public/data/environment/`.
+Method and Sources is an empty section for the task author to fill in.
 
 The noise layer preserves the supplied image's `Lw (dB)` scale of 0–9. Its
 placement is approximate: the plotted axes were interpreted as EPSG:3857 and
@@ -103,8 +116,8 @@ the 1-, 12- and 60-month historical errors (MAE or RMSE), and view the experimen
 shown at a readable size with full-size links. KNMI’23 climate scenarios have
 their own chart and are labelled separately from the LSTM experiment.
 The page works without a KNMI API key or Python server; it reads saved results.
-Download the monthly/annual forecast CSVs or the unchanged original ZIP from
-the source-files section. The archive's notebook is supplied as received and
+The monthly/annual forecast CSVs and unchanged original ZIP remain in
+`public/data/predictions/`. Method and Sources is an empty section for the task author to fill in. The archive's notebook is supplied as received and
 is not executed by the application.
 
 To reimport the same archive structure, run
@@ -114,11 +127,11 @@ retrain or change the model. Temperature and wind are annual means; rainfall
 is summed by year and reported as mm/year in the five-year comparison.
 
 Open `/demographics.html` to compare Delfshaven and Schiemond using the supplied
-CBS 2025 data. Select a neighbourhood or click its map boundary to focus on it.
+CBS 2025 data. Click a neighbourhood boundary to highlight it on the map and in the cards.
 The dashboard compares age, households, housing, social assistance and service
 distances using the original chart images from the supplied folder. Select a
-chart to view it full size, or expand the source table to view every indicator
-and download the CSV. Map controls are in the sidebar.
+chart to view it full size. The complete source CSV remains in `public/data/demographics/`.
+Method and Sources is an empty section for the task author to fill in.
 
 ## Run in VS Code
 
@@ -156,9 +169,9 @@ src/
   environment/
     map.js                    Georeferenced overlays, opacity and map interaction
     values.js                 Numeric wind grid decoding and coordinate sampling
-  predictions/charts.js      Supplied chart catalogue and captions
+  predictions/charts.js      Supplied chart catalogue
   demographics/
-    indicators.js             Indicator labels, units and number formatting
+    indicators.js             Neighbourhood colours and number formatting
     map.js                    Neighbourhood boundaries and map interaction
   ui/
     navigation.js             Shared page links, focus button and current-page indicator
@@ -168,7 +181,7 @@ src/
     layers.css                Layer browser controls
     scenarios.css             Scenario controls, metrics and legend
     weather.css               Weather cards, charts and tables
-    demographics.css          Neighbourhood cards, charts and table
+    demographics.css          Neighbourhood cards, charts and map legend
     predictions.css           Forecast chart stage, cards and result tables
     environment.css           Analysis controls, legend and wind statistics
     morphology.css            Morphology controls, cards and comparison table
@@ -220,6 +233,7 @@ Run `npm.cmd run build` to create dist, then `npm.cmd run preview` to preview th
 Run `npm.cmd run test:weather` for the weather parsing and API tests.
 Run `npm.cmd run test:environment` for wind sampling, data registration and noise metadata checks.
 Run `npm.cmd run test:morphology` for morphology registration, building replacement and indicator checks.
+Run `node --test tests/scenarios.test.mjs` for scenario visibility, green roofs and rapid switching.
 Run `npm.cmd run test:layers` for refreshed layer coverage, elevation registration and local 3D Tiles checks.
 
 The dataset exports do not include complete provider/licence details. Add the original source attribution before public deployment.

@@ -3,12 +3,12 @@ import '../styles/shared.css';
 const pages = [
   { id: 'introduction', label: 'Introduction', href: '/' },
   { id: 'layers', label: 'Layers', href: '/layers.html' },
-  { id: 'scenarios', label: 'Land-use scenarios', href: '/task47.html' },
   { id: 'morphology', label: 'Urban morphology', href: '/morphology.html' },
-  { id: 'environment', label: 'Wind & noise', href: '/environment.html' },
   { id: 'weather', label: 'KNMI data', href: '/weather.html' },
   { id: 'predictions', label: 'Weather predictions', href: '/predictions.html' },
+  { id: 'environment', label: 'Wind & noise', href: '/environment.html' },
   { id: 'demographics', label: 'Socio-demographics', href: '/demographics.html' },
+  { id: 'scenarios', label: 'Land-use scenarios', href: '/task47.html' },
 ];
 
 let focusStudyArea = () => window.location.assign('/?view=study-area');

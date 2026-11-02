@@ -4,6 +4,7 @@ import { readFile } from 'node:fs/promises';
 import { resolve, dirname, relative, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { layers } from '../src/layers.js';
+import { Cartesian3, Cartographic, Math as CesiumMath } from 'cesium';
 
 const publicDirectory = fileURLToPath(new URL('../public/', import.meta.url));
 const readJson = async path => JSON.parse(await readFile(resolve(publicDirectory, path), 'utf8'));
@@ -43,7 +44,7 @@ test('the refreshed polygons cover the eastern extension and contain no duplicat
   }
 });
 
-test('the AHN image is registered to the full study area and its legend matches the rendered height scale', async () => {
+test('the AHN image covers the full study area at the recorded source resolution', async () => {
   const layer = layers.find(layer => layer.id === 'ahn');
   const metadata = await readJson(layer.metadataUrl.slice(1));
   const studyBounds = boundsOf(study);
@@ -51,9 +52,6 @@ test('the AHN image is registered to the full study area and its legend matches 
   assert.equal(metadata.units, 'm NAP');
   assert.ok(metadata.bounds[0] <= studyBounds[0] && metadata.bounds[1] <= studyBounds[1]);
   assert.ok(metadata.bounds[2] >= studyBounds[2] && metadata.bounds[3] >= studyBounds[3]);
-  assert.deepEqual(layer.legend.colours, metadata.colourScale.colours);
-  assert.equal(layer.legend.minimum, metadata.colourScale.minimum);
-  assert.equal(layer.legend.maximum, metadata.colourScale.maximum);
   const image = await readFile(resolve(publicDirectory, layer.url.slice(1)));
   assert.ok(image.subarray(0, 8).equals(Buffer.from([137, 80, 78, 71, 13, 10, 26, 10])));
   assert.equal(image.readUInt32BE(16), metadata.width);
@@ -92,8 +90,10 @@ test('the LoD2 tileset is self-contained and its hierarchy references only exist
   }
   await inspect(resolve(publicDirectory, layer.url.slice(1)));
   const source = await readJson('data/buildings/study-area/source.json');
+  const combined = await readJson('data/buildings/study-area/combined-source.json');
   assert.equal(source.lod, 2);
-  assert.equal(models, source.tileCount);
+  assert.equal(combined.municipalTileCount, source.tileCount);
+  assert.equal(models, combined.tileCount);
   assert.ok(source.geographicBounds[2] > 4.4625);
 });
 
@@ -101,4 +101,59 @@ test('the downloadable GeoJSON uses the same geographic study boundary as the ma
   const download = await readJson('downloads/study_area.geojson');
   assert.equal(download.type, 'FeatureCollection');
   assert.deepEqual(boundsOf(download), boundsOf(study));
+});
+
+test('the 3DBAG supplement contains local triangulated models at their recorded geographic positions', async () => {
+  const source = await readJson('data/buildings/study-area/gaps/source.json');
+  const tileset = await readJson('data/buildings/study-area/gaps/tileset.json');
+  const tile = await readFile(resolve(publicDirectory, 'data/buildings/study-area/gaps/buildings.b3dm'));
+  const featureLength = tile.readUInt32LE(12);
+  const batchLength = tile.readUInt32LE(20);
+  const feature = JSON.parse(tile.subarray(28, 28 + featureLength));
+  const batch = JSON.parse(tile.subarray(28 + featureLength, 28 + featureLength + batchLength));
+  assert.equal(feature.BATCH_LENGTH, source.buildingCount);
+  assert.equal(new Set(batch.id).size, source.buildingCount);
+  assert.deepEqual(batch.id, source.identifiers.map(id => 'BAG_' + id));
+  assert.ok(source.identifiers.includes('0599100100020632'), 'The large missing waterfront block was omitted');
+
+  const glb = tile.subarray(28 + featureLength + batchLength);
+  assert.equal(glb.subarray(0, 4).toString(), 'glTF');
+  assert.equal(glb.readUInt32LE(8), glb.length);
+  const jsonLength = glb.readUInt32LE(12);
+  const model = JSON.parse(glb.subarray(20, 20 + jsonLength));
+  const binary = glb.subarray(28 + jsonLength);
+  assert.equal(model.buffers[0].byteLength, binary.length);
+  assert.ok(model.buffers.every(buffer => !buffer.uri));
+  const [west, south, east, north, low, high] = tileset.root.boundingVolume.region;
+  const seen = new Set();
+  function accessor(index) {
+    const definition = model.accessors[index];
+    const view = model.bufferViews[definition.bufferView];
+    return { ...definition, offset: (view.byteOffset || 0) + (definition.byteOffset || 0) };
+  }
+  for (const primitive of model.meshes[0].primitives) {
+    const positions = accessor(primitive.attributes.POSITION);
+    const batches = accessor(primitive.attributes._BATCHID);
+    const indices = accessor(primitive.indices);
+    assert.equal(indices.count % 3, 0);
+    for (let index = 0; index < indices.count; index++) {
+      assert.ok(binary.readUInt32LE(indices.offset + index * 4) < positions.count);
+    }
+    for (let index = 0; index < positions.count; index++) {
+      const offset = positions.offset + index * 12;
+      const x = binary.readFloatLE(offset), y = binary.readFloatLE(offset + 4), z = binary.readFloatLE(offset + 8);
+      // Undo glTF Y-up before restoring the ECEF tile centre.
+      const location = Cartographic.fromCartesian(new Cartesian3(
+        feature.RTC_CENTER[0] + x, feature.RTC_CENTER[1] - z, feature.RTC_CENTER[2] + y,
+      ));
+      assert.ok(location.longitude >= west - 1e-8 && location.longitude <= east + 1e-8);
+      assert.ok(location.latitude >= south - 1e-8 && location.latitude <= north + 1e-8);
+      assert.ok(location.height >= low - 0.02 && location.height <= high + 0.02);
+      assert.ok(CesiumMath.toDegrees(location.longitude) > 4.44);
+      const id = binary.readUInt16LE(batches.offset + index * 2);
+      assert.ok(id < source.buildingCount);
+      seen.add(id);
+    }
+  }
+  assert.equal(seen.size, source.buildingCount);
 });

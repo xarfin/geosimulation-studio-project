@@ -39,9 +39,11 @@ export function createBasemapControls(viewer, onStatus) {
     const satellite = layers.get('satellite');
     if (satellite) satellite.show = selected === 'satellite' && navigator.onLine;
     if (selected === 'satellite' && studyImagery && !studyImageryFailed) {
-      onStatus(!navigator.onLine || failed.has('satellite')
-        ? 'Saved study-area imagery is available. Imagery outside the study boundary needs an internet connection.'
-        : 'Aerial imagery - PDOK / Beeldmateriaal Nederland');
+      if (!navigator.onLine || failed.has('satellite')) {
+        onStatus('The study-area image is still available, but imagery further away could not load.', true);
+      } else {
+        onStatus('');
+      }
     } else if (selected === 'satellite' && studyImageryFailed) {
       onStatus('Some saved aerial tiles could not load. Refresh to try again.', true);
     } else if (!navigator.onLine) {
@@ -49,7 +51,7 @@ export function createBasemapControls(viewer, onStatus) {
     } else if (failed.has(selected)) {
       onStatus(`${basemaps[selected].name} could not fully load. Check your connection or try the other background.`, true);
     } else {
-      onStatus(selected === 'map' ? 'Street map · OpenStreetMap' : 'Aerial imagery · PDOK / Beeldmateriaal Nederland');
+      onStatus('');
     }
     viewer.scene.requestRender();
   }

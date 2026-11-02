@@ -13,15 +13,16 @@
         <div aria-label="Interactive land-use scenario map" class="map-canvas" id="cesiumContainer"></div>
       </section>
       <aside aria-labelledby="pageTitle" class="app-panel scenarios-panel" id="pagePanel" tabindex="-1">
-        <p class="eyebrow">SCHIEHAVEN NOORD · TASK 4.7</p>
+        <p class="eyebrow">Cellular Automata . Task 4.7</p>
         <h1 id="pageTitle">Land-use scenarios</h1>
         <p class="intro">Compare a cellular automaton's suggestions with the supplied proposal.</p>
         <label for="scenario">Scenario</label>
         <select disabled="" id="scenario">
+          <option value="satellite">None</option>
+          <option value="current">Existing use</option>
+          <option value="supplied">Supplied proposal</option>
           <option value="access">A · Public connections · 600 homes</option>
           <option value="green">B · Connected park · 600 homes</option>
-          <option value="supplied">Supplied proposal · reference</option>
-          <option value="current">Existing land use</option>
         </select>
         <div class="button-group">
           <button id="plan" type="button">Plan view</button>
@@ -33,34 +34,38 @@
           Show background 3D buildings
         </label>
         <label class="check">
-          <input id="original" type="checkbox"/>
-          Show original 3D proposal instead of its cells
-        </label>
-        <label class="check">
           <input checked="" id="trees" type="checkbox"/>
           Show illustrative planting positions
         </label>
-        <label class="check">
-          <input checked="" id="roofs" type="checkbox"/>
-          Show green roofs in 3D
-        </label>
-        <section id="evolution">
+        <details id="legendPanel">
+          <summary>Map legend</summary>
+          <div id="legend"></div>
+        </details>
+        <details id="finalLayout">
+          <summary>Final layout</summary>
+          <div aria-live="polite" id="metrics"></div>
+        </details>
+        <section id="evolution" hidden>
           <label for="iteration">
             Allocation round
             <output id="round"></output>
           </label>
           <input id="iteration" max="1" min="0" type="range" value="0"/>
           <button id="play">Play growth</button>
-          <p class="muted">Rounds show allocation, not years. The public spine and sports reserve are placed first, then housing and park growth.</p>
         </section>
-        <div aria-live="polite" id="metrics"></div>
-        <details>
-          <summary>Map legend</summary>
-          <div id="legend"></div>
-        </details>
-        <p class="notice">Full-site redevelopment experiment. Existing buildings and internal routes may change. Public sports and paths are shared with surrounding neighbourhoods. Gateway crossings still need feasibility checks.</p>
-        <p class="muted">600 homes assumes 75 m² usable area per home, 80% floor efficiency and 10 storeys. Green roofs are separate from ground-level park space. Buildings and trees are schematic; the base is flat.</p>
         <p class="status" id="status" role="status">Loading model outputs…</p>
+        <section class="method-section" aria-labelledby="methodHeading">
+          <h2 id="methodHeading">Method and Sources</h2>
+          <p>We divided the development area into 5-metre cells. A cellular automaton adds housing and green space step by step, using nearby cells, access, slope and distance from water. Scenario A gives more weight to public connections. Scenario B gives more space to a connected park. The rounds show the order of allocation.</p>
+          <p>Both scenarios aim for 600 homes. We assumed 75 m² per home, 80% usable floor area and 10 storeys. The blocks and trees are simple illustrations. Green roofs appear automatically in the 3D view and are counted separately from the park. The final figures describe the completed layout, including during playback.</p>
+          <ul class="method-sources">
+            <li>The <a href="/task47/summary.json" target="_blank" rel="noopener noreferrer">model settings and results</a> record the rules, assumptions and checks. The existing-use grid, proposal, terrain and slope inputs were supplied with the project. Missing terrain values were filled from the nearest available cell.</li>
+            <li><a href="https://www.rotterdam.nl/schiehaven-noord" target="_blank" rel="noopener noreferrer">Gemeente Rotterdam</a> and the <a href="https://rotterdamraad.bestuurlijkeinformatie.nl/Document/View/ffbf0e9b-abbe-47b8-893b-e3995e6503c0" target="_blank" rel="noopener noreferrer">Schiehaven Noord ambitions document</a> informed the housing, green-space and sports programme.</li>
+            <li><a href="https://www.pdok.nl/introductie/-/article/pdok-luchtfoto-rgb-open-" target="_blank" rel="noopener noreferrer">PDOK / Beeldmateriaal Nederland</a> supplies the 2026 aerial photos used as the satellite background.</li>
+            <li><a href="https://www.rotterdam.nl/rotterdam-in-3d" target="_blank" rel="noopener noreferrer">Rotterdam in 3D</a> supplies the LoD2 buildings. Available gaps are filled with <a href="https://3dbag.nl/" target="_blank" rel="noopener noreferrer">3DBAG</a> LoD2.2 models (CC BY 4.0). These are the same local models shown in Layers, cropped to the study boundary. For A and B, existing buildings inside the development area are hidden so the new layout is visible.</li>
+            <li>The <a href="/data/landUse/study-area/doc.geojson" download="study_area.geojson">study boundary</a> and <a href="/task47/development_site.geojson" download="development_area.geojson">development boundary</a> were prepared for this project. Tree positions and public paths are illustrative.</li>
+          </ul>
+        </section>
       </aside>
     </main>
     <script src="/src/task47.js" type="module"></script>

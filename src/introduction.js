@@ -11,12 +11,12 @@ import './styles/introduction.css';
 renderNavigation('introduction');
 
 const status = document.querySelector('#mapStatus');
-const focusButton = document.querySelector('#focusNeighbourhood');
 const mapButton = document.querySelector('#streetMap');
 const satelliteButton = document.querySelector('#satelliteMap');
 
-function setStatus(message, error = false) {
+function setStatus(message = '', error = false) {
   status.textContent = message;
+  status.hidden = !message;
   status.classList.toggle('error', error);
 }
 
@@ -58,7 +58,6 @@ async function start() {
   }
   mapButton.addEventListener('click', () => selectBackground('map'));
   satelliteButton.addEventListener('click', () => selectBackground('satellite'));
-  document.querySelector('#countryView').addEventListener('click', () => focusOnBounds(viewer, netherlandsBounds));
   selectBackground('map');
 
   const study = await readStudyArea();
@@ -87,8 +86,6 @@ async function start() {
   });
 
   const focusStudyArea = () => focusOnBounds(viewer, study.bounds);
-  focusButton.disabled = false;
-  focusButton.addEventListener('click', focusStudyArea);
   setStudyAreaFocus(focusStudyArea);
   if (new URLSearchParams(window.location.search).get('view') === 'study-area') {
     focusOnBounds(viewer, study.bounds, { animate: false });

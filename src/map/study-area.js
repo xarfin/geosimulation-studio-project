@@ -38,7 +38,7 @@ export function readStudyArea() {
   return studyAreaRequest;
 }
 
-export function createStudyAreaClip(geojson) {
+export function createStudyAreaClip(geojson, excludedRings = []) {
   function positionsOf(ring) {
     const first = ring[0];
     const last = ring[ring.length - 1];
@@ -50,7 +50,7 @@ export function createStudyAreaClip(geojson) {
       : geometry.type === 'MultiPolygon' ? geometry.coordinates : [];
     return parts.map(([outer, ...holes]) => new ClippingPolygon({
       positions: positionsOf(outer),
-      holes: holes.map(positionsOf),
+      holes: [...holes, ...excludedRings].map(positionsOf),
     }));
   });
   if (!polygons.length) throw new Error('The study boundary contains no polygons.');

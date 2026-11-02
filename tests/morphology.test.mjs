@@ -1,7 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { indicators, formatIndicator, scenarioBuildings } from '../src/morphology/indicators.js';
+import { runInNewContext, runInContext } from 'node:vm';
+import { indicators, metrics, formatIndicator, scenarioBuildings } from '../src/morphology/indicators.js';
 
 const base = new URL('../public/data/morphology/', import.meta.url);
 const readJson = async name => JSON.parse(await readFile(new URL(name, base), 'utf8'));
@@ -72,4 +73,48 @@ test('supplied PDF comparisons and original source archive remain available', as
   }
   const zip = await readFile(new URL('task43-source.zip', base));
   assert.equal(zip.subarray(0, 2).toString(), 'PK');
+});
+
+test('the simplified morphology page loads and changes results with development-site indicators', async () => {
+  const html = await readFile(new URL('../morphology.html', import.meta.url), 'utf8');
+  function element() {
+    return {
+      value: '', style: {}, children: [], disabled: true,
+      classList: { add() {}, remove() {} },
+      append(...children) { this.children.push(...children); },
+      replaceChildren(...children) { this.children = children; },
+      add(option) { if (!this.value) this.value = option.value; },
+      addEventListener(event, handler) { this[event] = handler; },
+    };
+  }
+  const elements = new Map([...html.matchAll(/\bid="([^"]+)"/g)].map(([, id]) => ['#' + id, element()]));
+  elements.get('#metricSelect').value = 'svf';
+  const displayed = [];
+  const map = {
+    async show(scenario, metric) { displayed.push([scenario.id, metric]); },
+    resetView() {}, setAppearance() {}, setBuildings() {}, set3d() {}, setBoundaries() {},
+  };
+  const sandbox = {
+    indicators, metrics, formatIndicator,
+    document: {
+      querySelector(selector) { assert.ok(elements.has(selector), `Missing control: ${selector}`); return elements.get(selector); },
+      querySelectorAll: () => [...elements.values()], createElement: element,
+    },
+    Option: function (text, value) { return { text, value }; },
+    fetch: async () => ({ ok: true, json: async () => summary }),
+    renderNavigation() {}, createMorphologyMap: async () => map,
+    console: { error(error) { throw error; } },
+  };
+  const source = await readFile(new URL('../src/morphology.js', import.meta.url), 'utf8');
+  const body = source.slice(source.indexOf("renderNavigation('morphology');"), source.lastIndexOf('start().catch('));
+  runInNewContext(body, sandbox);
+  await runInContext('start()', sandbox);
+  assert.deepEqual(displayed, [['baseline', 'svf']]);
+  elements.get('#scenarioSelect').value = 'design_A';
+  elements.get('#metricSelect').value = 'hw';
+  await elements.get('#scenarioSelect').change();
+  assert.deepEqual(displayed.at(-1), ['design_A', 'hw']);
+  const cards = elements.get('#indicatorCards').children;
+  assert.equal(cards.length, 6);
+  assert.equal(cards[0].children[1].textContent, '14.6%');
 });

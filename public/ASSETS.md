@@ -63,7 +63,7 @@ Clipping uses EPSG:28992; browser GeoJSON is transformed back to WGS 84.
 `https://service.pdok.nl/rws/ahn/wcs/v1_0`, clipped to the study area at its native 0.5 m resolution in
 EPSG:28992. Pixel values are metres NAP. `ground-elevation.png` is reprojected to EPSG:4326 for the
 map, with no-data pixels transparent. `metadata.json` records its image bounds, colour scale,
-height range and source. The visible legend uses the same -2 to 10 m scale. The original measured
+height range and source. Method and Sources describes the image's -2 to 10 m colour scale. The original measured
 values remain in the downloadable GeoTIFF. Heights are not inferred from the displayed colours.
 
 `data/buildings/study-area/` is a saved subset of the municipal LoD2 3D Tiles service linked from
@@ -71,11 +71,25 @@ values remain in the downloadable GeoTIFF. Heights are not inferred from the dis
 `https://www.3drotterdam.nl/datasource-data/8b5d0ded-a222-4e44-bc70-2992bc2192fc/tileset.json`.
 Only tile branches intersecting the study polygon are retained. Models keep their full geometry,
 embedded glTF, transforms and original height coordinates. The saved hierarchy uses relative
-local paths. On Layers, an inverted Cesium clipping polygon restricts their display to the same study
+local paths. On Layers and Task 4.7, an inverted Cesium clipping polygon restricts their display to the same study
 boundary used to clip the aerial image. Geometry outside the image is hidden at every tile detail
 level. `source.json` records provenance, tile count, size and download selection rules.
 
-Regenerate with `scripts/prepare-study-layers.py` and `scripts/prepare-study-buildings.py`. Source
+`combined-tileset.json` adds a local supplement from 3DBAG under `gaps/`. The importer compares
+current BAG footprints with all saved municipal tile identifiers, requests only absent identifiers
+from `https://api.3dbag.nl/collections/pand/items/NL.IMBAG.Pand.<identifier>`, and converts available
+CityJSON LoD2.2 roof and wall surfaces to embedded glTF in 3D Tiles. Horizontal coordinates are
+transformed from EPSG:28992 to WGS 84; the original NAP heights are retained for the app's flat
+base. The source metadata records included identifiers, unavailable models and request failures.
+No model is invented where the source has none. 3DBAG is distributed under CC BY 4.0:
+https://docs.3dbag.nl/en/ and https://creativecommons.org/licenses/by/4.0/.
+
+Layers and Task 4.7 share this combined model. Scenario A and B add the development boundary
+as a clipping hole to hide old buildings under the new allocation. Satellite only hides every model
+and GeoJSON overlay. This does not alter the original analysis inputs or scenario outputs.
+
+Regenerate with `scripts/prepare-study-layers.py`, `scripts/prepare-study-buildings.py`, then
+`python scripts/prepare-building-gaps.py` (pyproj plus Node and the project's Cesium dependency). Source
 responses are cached under the ignored `local-data-backups/` directory. These refreshed display
 layers do not replace the input geometry or results supplied for the separate analysis tasks.
 
@@ -118,10 +132,19 @@ buildings and one indoor sports building). Geographic coordinates and heights
 are preserved; extrusions use relative heights above a flat zero-height base.
 Green share is the union of ground vegetation and canopy, excluding buildings;
 green roofs are separate and reported by the source only for the development
-site. The study-area roof cells are shown as unavailable rather than zero.
+site. Whole-study-area roof totals are not displayed.
 Six original PDFs are in `figures/`. `task43-source.zip` preserves the entire
 archive, including GIS packages and source scripts. Reimport with
 `scripts/prepare-morphology.py` using only Python's standard library.
+
+Task 4.3 now displays `study-area.geojson`, the intersection of its original analysis boundary
+and the current satellite boundary. `analysis-area.geojson` preserves the source Study Area layer
+from `4.1 Area, Massing, Cesium2.zip` / `qgis/Study_Area_Package.gpkg` in WGS 84. This is the same
+layer read by the supplied morphology analysis script. `coverage.json` records provenance and areas.
+The globe is clipped to this polygon, and `clipped/` contains matching display-only copies of the
+three building layers. Original overlays, footprints, heights and CSV results remain available on disk.
+The cards use the supplied development-site statistics; the area selector and full table were removed.
+Regenerate this display crop with `python scripts/prepare-morphology-area.py` (pyproj and Shapely).
 
 ## Shared work
 
