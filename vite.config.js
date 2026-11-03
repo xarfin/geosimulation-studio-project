@@ -17,6 +17,7 @@ export default defineConfig({
         weather: resolve(import.meta.dirname, 'weather.html'),
         predictions: resolve(import.meta.dirname, 'predictions.html'),
         demographics: resolve(import.meta.dirname, 'demographics.html'),
+        roads: resolve(import.meta.dirname, 'roads.html'),
       },
     },
   },

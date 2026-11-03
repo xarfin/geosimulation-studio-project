@@ -12,28 +12,17 @@
   padding-right: 55px;
 }
 
-.map-layers {
+.weather-map-status {
   position: absolute;
   top: 70px;
   left: 16px;
   width: 245px;
+  max-width: calc(100% - 32px);
+  margin: 0;
   border: 1px solid var(--color-border);
   border-radius: 6px;
   padding: 12px;
   background: #fffffff2;
-  font-size: 12px;
-}
-
-.map-layers label {
-  display: block;
-  margin-bottom: 8px;
-  font-weight: 400;
-  line-height: 1.6;
-}
-
-.map-layers p {
-  margin: 8px 0 0;
-  color: #53685e;
   font-size: 12px;
 }
 
@@ -277,14 +266,14 @@
     font-size: 24px;
   }
 
-  .map-layers {
+  .weather-map-status {
     top: 108px;
     width: 210px;
   }
 }
 
 @media (max-width: 740px) {
-  .map-layers {
+  .weather-map-status {
     top: 65px;
     width: 230px;
   }

@@ -3,8 +3,8 @@
 Task 4.4a: open `/weather.html` for the KNMI weather dashboard. See
 `WEATHER_SETUP.md` to configure the server-only EDR key and run the live data API.
 
-A CesiumJS application with eight pages: Introduction, Layers, Land-use scenarios, Urban morphology,
-Wind & noise, KNMI data, Weather predictions and Socio-demographics.
+A CesiumJS application with nine pages: Introduction, Layers, Land-use scenarios, Urban morphology,
+Wind & noise, KNMI data, Weather predictions, Socio-demographics and Road networks.
 Use the shared top navigation to switch pages. Each page uses the same map and
 sidebar layout, typography and controls. On smaller screens, the sidebar sits
 below the map.
@@ -76,7 +76,7 @@ green roofs are separate. Source roof totals are only reported for the site,
 so the app does not present a whole-study-area green-roof total.
 
 The original PDF comparisons, CSV, building GeoJSONs, PNGs and geographic rectangles remain
-in `public/data/morphology/`. Method and Sources is an empty section for the task author to fill in.
+in `public/data/morphology/`. Method and Sources describes the supplied indicator calculations, data sources and modelling assumptions.
 The unchanged original ZIP contains the source GIS packages and analysis scripts. Reimport with
 `python scripts/prepare-morphology.py "path/to/task43.zip"`; this uses Python's
 standard library and does not rerun the analysis. Then run `python scripts/prepare-morphology-area.py`
@@ -91,7 +91,7 @@ ground, sampled on a 2 m grid and restored to real-world coordinates using the
 offset documented in the cases. All scenarios use the same colour scale. The
 summary cards describe open-air samples inside the development site, excluding
 buildings. Original wind GeoTIFFs and supplied PDFs remain in `public/data/environment/`.
-Method and Sources is an empty section for the task author to fill in.
+Method and Sources describes the supplied OpenFOAM and NoiseModelling workflows and data providers.
 
 The noise layer preserves the supplied image's `Lw (dB)` scale of 0–9. Its
 placement is approximate: the plotted axes were interpreted as EPSG:3857 and
@@ -117,7 +117,7 @@ shown at a readable size with full-size links. KNMI’23 climate scenarios have
 their own chart and are labelled separately from the LSTM experiment.
 The page works without a KNMI API key or Python server; it reads saved results.
 The monthly/annual forecast CSVs and unchanged original ZIP remain in
-`public/data/predictions/`. Method and Sources is an empty section for the task author to fill in. The archive's notebook is supplied as received and
+`public/data/predictions/`. Method and Sources explains the supplied analysis and its data sources. The archive's notebook is supplied as received and
 is not executed by the application.
 
 To reimport the same archive structure, run
@@ -131,7 +131,36 @@ CBS 2025 data. Click a neighbourhood boundary to highlight it on the map and in 
 The dashboard compares age, households, housing, social assistance and service
 distances using the original chart images from the supplied folder. Select a
 chart to view it full size. The complete source CSV remains in `public/data/demographics/`.
-Method and Sources is an empty section for the task author to fill in.
+Method and Sources explains the supplied analysis and its data sources.
+
+Open `/roads.html` for task 4.8. Accessibility and traffic flow share one page and
+the same Current/Proposed network selector. Both networks serve the supplied Design B buildings.
+Accessibility shows the six-building routes to five destinations, with a destination filter
+and walking-distance comparison. Traffic flow includes the proposed exit interventions,
+peak added road flow, mean modelled trip distance and demand at each exit. Solid flow lines
+use one width scale for both networks; unverified site-to-road connectors stay dashed.
+The map retains the complete supplied network, including routes outside the study boundary.
+Both traffic networks label the North, East, South and West destinations at their route
+endpoints, matching the supplied traffic figures.
+Only the development polygon has a green fill over the satellite base layer.
+Housing and sports colours match the land-use tab.
+Both analyses also show Design B's outdoor sports allocation from Task 4.7 and identify
+Building 2 as indoor sports by overlap with that allocation. Recreate this display context
+with `python scripts/prepare-roads-site.py` (Shapely and pyproj); the original Task 4.8
+building and route files remain unchanged. The full outdoor allocation is 3675 m²,
+including the 3000 m² reserve programme; the indoor allocation is 225 m².
+
+The supplied conceptual crossing P1 is about 51 m outside the development site and
+about 46 m from the nearest supplied walking route. It is displayed at its original
+coordinate with the label Crossing; no crossing geometry or connected route through it was supplied.
+The three conceptual pedestrian exits retain their original short line geometries.
+
+Walking statistics and peak traffic loads come from the GeoJSON properties. Mean modelled
+trip distances (2141/2213 m) and per-exit demands were transcribed from the two supplied
+comparison PNGs; their filenames are recorded in `summary.json`. The original PNGs,
+GeoJSONs and unchanged ZIP are in `public/data/roads/`. The data are modelled additional
+traffic, with both directions combined. Method and Sources explains the pedestrian-accessibility analysis and its data sources.
+Reimport with `python scripts/prepare-roads.py "path/to/task48.zip"`; no analysis is rerun.
 
 ## Run in VS Code
 
@@ -159,6 +188,7 @@ src/
   predictions.js             Forecast charts, comparison cards and accuracy controls
   environment.js             Wind/noise selection, legend, statistics and downloads
   morphology.js              Morphology controls, indicator cards and comparison table
+  roads.js                   Road-network selection, walking/traffic results and comparison tables
   map/
     study-area.js             Shared study boundary, geographic bounds and camera focus
     basemaps.js               Online OpenStreetMap and PDOK imagery providers
@@ -169,6 +199,9 @@ src/
   environment/
     map.js                    Georeferenced overlays, opacity and map interaction
     values.js                 Numeric wind grid decoding and coordinate sampling
+  roads/
+    map.js                    Routes, destinations, exits and conceptual interventions
+    results.js                Walking comparisons and shared traffic line-width scale
   predictions/charts.js      Supplied chart catalogue
   demographics/
     indicators.js             Neighbourhood colours and number formatting
@@ -185,6 +218,7 @@ src/
     predictions.css           Forecast chart stage, cards and result tables
     environment.css           Analysis controls, legend and wind statistics
     morphology.css            Morphology controls, cards and comparison table
+    roads.css                 Road-network controls, legends, cards and tables
 public/
   models/proposed-complex/    Proposed building 3D Tiles
   data/
@@ -198,13 +232,13 @@ public/
     elevation/study-area/    Full study-area AHN DTM GeoTIFF, image and geographic metadata
     background/luchtfoto/    Original clipped aerial export, preserved
     background/study-area/   Saved PDOK aerial tiles covering the full study polygon
-    buildings/rotterdam/     Existing building 3D Tiles
     buildings/study-area/    Full study-area subset of municipal LoD2 3D Tiles
     landUse/study-area-layers/ Current BAG/BGT polygons for the Layers page
     demographics/            Two-neighbourhood CBS data, chart images and provenance
     predictions/             Task 4.4b charts, CSVs, summary and original archive
     environment/             Task 4.5 overlays, wind values, GeoTIFFs and source figures
     morphology/              Task 4.3 overlays, buildings, indicators, PDFs and original ZIP
+    roads/                   Task 4.8 networks, comparison figures, summary and original ZIP
   cesiumStatic/              Generated Cesium supporting files
   ASSETS.md                  Sources and replacement instructions
   downloads/study_area.geojson Downloadable WGS 84 boundary for future exports
@@ -219,6 +253,7 @@ scripts/
   prepare-predictions.py     Imports the supplied task 4.4b result archive
   prepare-wind-noise.py      Imports task 4.5 results and restores geographic coordinates
   prepare-morphology.py      Imports the supplied task 4.3 archive without recalculation
+  prepare-roads.py           Imports the supplied task 4.8 networks and comparison results
   prepare-study-imagery.py   Downloads and clips the study-area aerial background
   prepare-study-layers.py    Downloads, filters and clips BAG, BGT and AHN display data
   prepare-study-buildings.py Saves a local spatial subset of Rotterdam's LoD2 buildings
@@ -235,5 +270,6 @@ Run `npm.cmd run test:environment` for wind sampling, data registration and nois
 Run `npm.cmd run test:morphology` for morphology registration, building replacement and indicator checks.
 Run `node --test tests/scenarios.test.mjs` for scenario visibility, green roofs and rapid switching.
 Run `npm.cmd run test:layers` for refreshed layer coverage, elevation registration and local 3D Tiles checks.
+Run `npm.cmd run test:roads` for source distances, traffic units, interventions and page switching.
 
 The dataset exports do not include complete provider/licence details. Add the original source attribution before public deployment.

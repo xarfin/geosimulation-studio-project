@@ -9,6 +9,7 @@ const pages = [
   { id: 'environment', label: 'Wind & noise', href: '/environment.html' },
   { id: 'demographics', label: 'Socio-demographics', href: '/demographics.html' },
   { id: 'scenarios', label: 'Land-use scenarios', href: '/task47.html' },
+  { id: 'roads', label: 'Road networks', href: '/roads.html' },
 ];
 
 let focusStudyArea = () => window.location.assign('/?view=study-area');

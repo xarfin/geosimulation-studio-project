@@ -5,7 +5,6 @@ These files were extracted from the nine ZIP exports in the supplied CesiumJS_as
 | Source archive | Project folder | Format |
 | --- | --- | --- |
 | Proposed_complex.zip | models/proposed-complex | Georeferenced 3D Tiles |
-| 3D Rotterdam.zip | data/buildings/rotterdam | Georeferenced 3D Tiles |
 | BuildingsGJ.zip | data/landUse/buildings | GeoJSON |
 | DevelopmentSiteGJ.zip | data/landUse/development-site | GeoJSON |
 | GreenGJ.zip | data/landUse/green | GeoJSON |
@@ -13,6 +12,8 @@ These files were extracted from the nine ZIP exports in the supplied CesiumJS_as
 | WaterGJ.zip | data/landUse/water | GeoJSON |
 | AHN_DTM_0,5m.zip | data/elevation/ahn | TMS PNG image tiles |
 | Luchtfoto_clipped.zip | data/background/luchtfoto | TMS PNG image tiles |
+
+The unused original `data/buildings/rotterdam/` export has been removed. Layers and Task 4.7 use the current models in `data/buildings/study-area/`.
 
 ## Replacing files
 

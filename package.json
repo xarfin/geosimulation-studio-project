@@ -9,6 +9,7 @@
     "test:environment": "node --test tests/environment.test.mjs",
     "test:morphology": "node --test tests/morphology.test.mjs",
     "test:layers": "node --test tests/layers.test.mjs",
+    "test:roads": "node --test tests/roads.test.mjs",
     "dev": "vite --host 127.0.0.1",
     "build": "vite build",
     "preview": "vite preview --host 127.0.0.1",

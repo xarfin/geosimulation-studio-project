@@ -60,6 +60,15 @@
         <p id="analysisStatus" class="status error" role="alert" hidden></p>
         <section class="method-section" aria-labelledby="methodHeading">
           <h2 id="methodHeading">Method and Sources</h2>
+          <p>To evaluate microclimatic wind conditions and environmental noise around Schiehaven Noord, we implemented numerical simulation workflows using OpenFOAM and NoiseModelling. The computational domains and baseline geometries were cropped to the study area to assess both local impacts and wider surrounding effects.</p>
+          <ul class="method-sources">
+            <li><a href="https://www.openfoam.com/news/main-news/openfoam-v2412" target="_blank" rel="noopener noreferrer">OpenFOAM (v2412)</a> supplies the Computational Fluid Dynamics (CFD) steady-state RANS framework using the standard k-ϵ turbulence model for atmospheric boundary layer (ABL) flows. The reference wind speed is set to 10 m/s at a 10 m reference height with an urban roughness length (z<sub>0</sub>) of 1.0 m.</li>
+            <li><a href="https://noise-planet.org/noisemodelling.html" target="_blank" rel="noopener noreferrer">NoiseModelling (v6.0.0)</a> calculates environmental road traffic noise propagation based on the European standard CNOSSOS-EU. Within this tool, roads extracted from OpenStreetMap serve as the primary noise sources to compute sound power levels (L<sub>w</sub>) and receiver grids for evaluating acoustic shielding and noise shadows behind the urban blocks.</li>
+            <li><a href="https://www.rotterdam.nl/rotterdam-in-3d" target="_blank" rel="noopener noreferrer">Rotterdam in 3D</a> provides the detailed 3D building geometries and closed volumetric envelopes for the CFD simulation domain, supplemented where needed with data from the official <a href="https://www.3drotterdam.nl/" target="_blank" rel="noopener noreferrer">3D Rotterdam portal</a>. Minor architectural details are simplified while preserving overall building heights and urban morphology.</li>
+            <li><a href="https://www.openstreetmap.org/" target="_blank" rel="noopener noreferrer">OpenStreetMap (OSM)</a>, extracted via the <a href="https://extract.bbbike.org/" target="_blank" rel="noopener noreferrer">BBBike tool</a>, supplies the geographical network data, providing building polygons as obstacles for sound reflection and absorption alongside road features that are designated as noise sources in NoiseModelling.</li>
+            <li><a href="https://www.pdok.nl/introductie/-/article/pdok-luchtfoto-rgb-open-" target="_blank" rel="noopener noreferrer">PDOK / Beeldmateriaal Nederland</a> supplies the 2026 aerial photographs used as the satellite background for spatial referencing.</li>
+            <li>The study boundary, development boundary, and the two proposed massing designs (Design A and Design B) were prepared specifically for this project to compare layout performance.</li>
+          </ul>
         </section>
       </aside>
     </main>

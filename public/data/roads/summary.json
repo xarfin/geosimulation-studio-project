@@ -1,0 +1,91 @@
+{
+  "sourceArchive": "Spatial Optimization for Road Networks-20261103T125127Z-1-001.zip",
+  "crs": "EPSG:4326",
+  "design": "Design B",
+  "trafficIsObserved": false,
+  "trafficDestinations": "traffic/destinations.geojson",
+  "trafficFigureValues": {
+    "meanTripDistanceM": "figures/Traffic Flow/03_TWO_VS_FOUR_COMPARISON.png",
+    "exitDemand": "figures/Traffic Flow/04_EXIT_DEMAND_COMPARISON.png"
+  },
+  "destinations": [
+    {
+      "id": "AH",
+      "label": "Supermarket",
+      "color": "#df8a2c",
+      "name": "AH Sint-Jobsweg"
+    },
+    {
+      "id": "SCHOOL",
+      "label": "School",
+      "color": "#9162b1",
+      "name": "Harbour Bilingual (Tweetalig Primair Onderwijs)"
+    },
+    {
+      "id": "DOCTOR",
+      "label": "Doctor",
+      "color": "#c74f6b",
+      "name": "Medisch Centrum Müllerpier"
+    },
+    {
+      "id": "TRAM",
+      "label": "Tram stop",
+      "color": "#337fb6",
+      "name": "Rotterdam Oostkousdijk"
+    },
+    {
+      "id": "PLAY",
+      "label": "Playground",
+      "color": "#258d6c",
+      "name": "Speeltuin Delfshaven"
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "current",
+      "title": "Current",
+      "routes": "accessibility/current-routes.geojson",
+      "flow": "traffic/current-flow.geojson",
+      "exits": "traffic/current-exits.geojson",
+      "meanWalkDistanceM": 414.91006015137293,
+      "walkingByDestination": {
+        "AH": 357.32398880011425,
+        "SCHOOL": 473.731025777933,
+        "DOCTOR": 631.5227641337311,
+        "TRAM": 174.04556761088125,
+        "PLAY": 437.9269544342051
+      },
+      "maxAddedVehiclesPerHour": 48.0,
+      "exitCount": 2,
+      "meanTripDistanceM": 2141,
+      "exitDemand": {
+        "E1": 12,
+        "E2": 48
+      }
+    },
+    {
+      "id": "proposed",
+      "title": "Proposed",
+      "routes": "accessibility/proposed-routes.geojson",
+      "flow": "traffic/proposed-flow.geojson",
+      "exits": "traffic/proposed-exits.geojson",
+      "meanWalkDistanceM": 407.3711529047045,
+      "walkingByDestination": {
+        "AH": 345.7783389833506,
+        "SCHOOL": 470.1936592466631,
+        "DOCTOR": 619.9771143169673,
+        "TRAM": 168.51263257660895,
+        "PLAY": 432.3940193999327
+      },
+      "maxAddedVehiclesPerHour": 30.0,
+      "exitCount": 4,
+      "meanTripDistanceM": 2213,
+      "exitDemand": {
+        "E1": 17,
+        "E2": 17,
+        "P1": 9,
+        "P2": 17
+      }
+    }
+  ]
+}

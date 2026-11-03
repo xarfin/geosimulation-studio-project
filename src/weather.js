@@ -8,7 +8,6 @@ import {
   HeadingPitchRange,
   Matrix4,
   GeoJsonDataSource,
-  Cesium3DTileset,
   LabelStyle,
   PolylineDashMaterialProperty,
 } from "cesium";
@@ -45,8 +44,6 @@ const monthLabel = (value) => new Intl.DateTimeFormat("en-GB", {
 const number = (value) => Number.isFinite(value) ? value.toFixed(2) : "—";
 let liveData, lastLiveError = false, historyVersion = 0;
 let map, studyCentre, studyRange = 1600, tilted = true, link;
-const mapLayers = new Map();
-const mapPending = new Map();
 
 async function json(url) {
   const response = await fetch(url, {
@@ -64,8 +61,10 @@ async function json(url) {
 }
 
 function setStatus(id, message, error = false) {
-  $(id).textContent = message;
-  $(id).classList.toggle("error", error);
+  const element = $(id);
+  element.textContent = message;
+  element.classList.toggle("error", error);
+  element.hidden = !message;
 }
 
 function latest(code) {
@@ -347,26 +346,6 @@ function distanceKm(a, b) {
   return 6371 * 2 * Math.atan2(Math.sqrt(h), Math.sqrt(1 - h));
 }
 
-async function toggleTiles(id, url) {
-  const box = $(id);
-  try {
-    if (!mapLayers.has(id) && box.checked) {
-      if (!mapPending.has(id)) mapPending.set(id, Cesium3DTileset.fromUrl(url, { show: false }).then((layer) => {
-        map.scene.primitives.add(layer);
-        mapLayers.set(id, layer);
-        return layer;
-      }).finally(() => mapPending.delete(id)));
-      await mapPending.get(id);
-    }
-    const layer = mapLayers.get(id);
-    if (layer) layer.show = box.checked;
-    map.scene.requestRender();
-  } catch {
-    box.checked = false;
-    setStatus("mapStatus", "Could not load that model. Check the original 3D Tiles files.");
-  }
-}
-
 async function startMap() {
   map = new Viewer("weatherMap", {
     baseLayer: false,
@@ -454,23 +433,21 @@ async function startMap() {
     link.show = true;
     map.camera.flyTo({ destination: Rectangle.fromDegrees(Math.min(site.longitude, STATION.longitude) - .035, Math.min(site.latitude, STATION.latitude) - .018, Math.max(site.longitude, STATION.longitude) + .035, Math.max(site.latitude, STATION.latitude) + .018) });
   });
-  $("contextBuildings").addEventListener("change", () => toggleTiles("contextBuildings", "/data/buildings/rotterdam/tileset.json"));
-  $("proposalBuildings").addEventListener("change", () => toggleTiles("proposalBuildings", "/models/proposed-complex/tileset.json"));
   $("tiltView").textContent = "Plan view";
   cameraSite();
   if (liveData) renderLive();
   const results = await Promise.allSettled([
-    addStudyAreaImagery(map, { onError: () => setStatus("mapStatus", "Some aerial tiles could not load. Station and boundary remain available.") }),
+    addStudyAreaImagery(map, { onError: () => setStatus("mapStatus", "Some aerial tiles could not load. Station and boundary remain available.", true) }),
     boundary(geo, "#d8a942", 3),
     boundary("/data/landUse/development-site/doc.geojson", "#db668e")
   ]);
   const missing = results.filter((result) => result.status === "rejected").length;
-  setStatus("mapStatus", missing ? "Some study layers could not load. Check the original public/data files." : "Study boundary in gold; development site in pink. Toggle the 3D models above.");
+  setStatus("mapStatus", missing ? "Some study layers could not load. Check the original public/data files." : "", missing > 0);
 }
 // Data retrieval and map loading are independent: one failure must not hide the other.
 startMap().catch((error) => {
   console.error(error);
-  setStatus("mapStatus", "Map unavailable. Check study-area files or WebGL support; weather remains usable.");
+  setStatus("mapStatus", "Map unavailable. Check study-area files or WebGL support; weather remains usable.", true);
 });
 refreshLive();
 refreshHistory();

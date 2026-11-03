@@ -1,0 +1,133 @@
+.roads-panel h2 {
+  margin: 20px 0 10px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.roads-controls select {
+  width: 100%;
+  margin: 5px 0 12px;
+}
+
+.roads-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  margin: 2px 0 18px;
+  color: var(--color-muted);
+  font-size: 11px;
+}
+
+.roads-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.road-swatch {
+  display: inline-block;
+  flex: 0 0 auto;
+  width: 20px;
+  border-top: 3px solid var(--swatch-color);
+}
+
+.road-swatch.dashed {
+  border-top-style: dashed;
+}
+
+.road-swatch.point {
+  width: 10px;
+  height: 10px;
+  border: 2px solid var(--swatch-color);
+  border-radius: 50%;
+  background: #fff;
+}
+
+.road-swatch.building {
+  width: 12px;
+  height: 10px;
+  border: 0;
+  background: var(--swatch-color);
+}
+
+.roads-cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 9px;
+}
+
+.roads-cards > div {
+  border: 1px solid var(--color-border);
+  border-radius: 5px;
+  padding: 10px 12px;
+  background: #fff;
+}
+
+.roads-cards span {
+  display: block;
+  color: var(--color-muted);
+  font-size: 11px;
+}
+
+.roads-cards strong {
+  display: block;
+  margin-top: 3px;
+  color: #24483e;
+  font-size: 21px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.roads-table-wrap {
+  overflow-x: auto;
+}
+
+.roads-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.roads-table caption {
+  padding: 6px 0 9px;
+  text-align: left;
+}
+
+.roads-table th,
+.roads-table td {
+  border-bottom: 1px solid var(--color-border);
+  padding: 9px 7px;
+  text-align: right;
+}
+
+.roads-table th:first-child {
+  text-align: left;
+}
+
+.roads-table tbody th {
+  font-weight: 500;
+}
+
+.roads-table .road-swatch {
+  width: 11px;
+  margin-right: 7px;
+  vertical-align: middle;
+}
+
+.roads-table .selected-network {
+  color: #173f36;
+  background: #e8efe7;
+  font-weight: 600;
+}
+
+.roads-reading {
+  border-left: 3px solid var(--color-accent);
+  padding-left: 12px;
+  color: #24483e;
+  font-size: 12px;
+}
+
+.roads-panel .method-section h2 {
+  margin-top: 0;
+}

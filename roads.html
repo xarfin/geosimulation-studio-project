@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Schiehaven Noord | Road networks</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#pagePanel">Skip to road-network controls</a>
+    <header class="topbar" id="projectHeader"></header>
+    <main class="workspace">
+      <section class="map-pane" aria-label="Road-network results over the Design B layout">
+        <div class="map-canvas" id="roadsMap" aria-label="Interactive road-network map"></div>
+      </section>
+      <aside class="app-panel roads-panel" id="pagePanel" aria-labelledby="pageTitle" tabindex="-1">
+        <p class="eyebrow">Spatial optimization · Task 4.8</p>
+        <h1 id="pageTitle">Road networks</h1>
+        <p class="intro">Accessibility and traffic flow for Design B.</p>
+        <div class="roads-controls">
+          <label for="analysisSelect">Analysis</label>
+          <select id="analysisSelect" disabled>
+            <option value="accessibility">Accessibility</option>
+            <option value="traffic">Traffic flow</option>
+          </select>
+          <label for="networkSelect">Network</label>
+          <select id="networkSelect" disabled>
+            <option value="current">Current</option>
+            <option value="proposed">Proposed</option>
+          </select>
+          <div id="destinationControl">
+            <label for="destinationSelect">Destination</label>
+            <select id="destinationSelect" disabled>
+              <option value="all">All destinations</option>
+            </select>
+          </div>
+        </div>
+        <div class="roads-legend" id="mapLegend" aria-label="Map legend"></div>
+        <section aria-labelledby="resultsHeading" aria-live="polite">
+          <h2 id="resultsHeading">Walking distances</h2>
+          <div class="roads-cards" id="resultCards"></div>
+          <p class="muted" id="resultContext">Mean shortest routes from the six building entrances.</p>
+          <div class="roads-table-wrap">
+            <table class="roads-table">
+              <caption class="muted" id="comparisonCaption">Mean walking distance by destination (m)</caption>
+              <thead>
+                <tr><th scope="col" id="comparisonLabel">Destination</th><th scope="col">Current</th><th scope="col">Proposed</th></tr>
+              </thead>
+              <tbody id="comparisonRows"></tbody>
+            </table>
+          </div>
+        </section>
+        <p class="roads-reading" id="mapReading" aria-live="polite" hidden></p>
+        <p id="roadsStatus" class="status error" role="alert" hidden></p>
+        <section class="method-section" aria-labelledby="methodHeading">
+          <h2 id="methodHeading">Method and Sources</h2>
+          <p><strong>Accessibility</strong></p>
+          <p>We analysed pedestrian accessibility from six residential buildings in Design B to five destinations: a supermarket, school, medical centre, tram stop and playground. The existing pedestrian network was compared with a proposed network containing additional conceptual pedestrian connections.</p>
+          <p>Using Python and NetworkX, Dijkstra's algorithm calculated the shortest walking paths through the connected network. Travel times were estimated at 80 metres per minute. Average walking distances were calculated across the six buildings and compared between both scenarios.</p>
+          <ul class="method-sources">
+            <li><a href="https://docs.overturemaps.org/guides/transportation/" target="_blank" rel="noopener noreferrer">Overture Maps Transportation</a> provided pedestrian network data.</li>
+            <li><a href="https://www.pdok.nl/" target="_blank" rel="noopener noreferrer">PDOK</a> supplied geographic reference layers.</li>
+            <li>Building locations and the development boundary were taken from the Design B project model.</li>
+          </ul>
+        </section>
+      </aside>
+    </main>
+    <script type="module" src="/src/roads.js"></script>
+  </body>
+</html>

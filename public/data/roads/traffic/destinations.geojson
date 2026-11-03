@@ -1,0 +1,62 @@
+{
+  "type": "FeatureCollection",
+  "sourceFigure": "figures/Traffic Flow/02_PROPOSED_FOUR_EXITS.png",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "type": "traffic_destination",
+        "name": "North destination"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.454656200767791,
+          51.91080800385867
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "type": "traffic_destination",
+        "name": "East destination"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.467047700779856,
+          51.9034127038541
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "type": "traffic_destination",
+        "name": "South destination"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.45541690076777,
+          51.895894803849245
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "type": "traffic_destination",
+        "name": "West destination"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.443128400755809,
+          51.903315303853894
+        ]
+      }
+    }
+  ]
+}

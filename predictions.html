@@ -43,6 +43,12 @@
         </section>
         <section class="method-section" aria-labelledby="methodHeading">
           <h2 id="methodHeading">Method and Sources</h2>
+          <p>We used 624 monthly weather observations from Rotterdam Airport (1974–2025). Three LSTM models with 32 units were trained in Python to predict temperature, rainfall and wind speed. Each model uses the previous 60 months to predict the next month, repeating the process for longer forecasts.</p>
+          <p>The models were trained by minimising Mean Squared Error (MSE). Accuracy was tested at 1, 12 and 60 months using 20 historical forecast starts. Python calculated Mean Absolute Error (MAE) and compared the results with seasonal averages. The five-year forecasts are experimental and do not represent exact local climate conditions.</p>
+          <ul class="method-sources">
+            <li><a href="https://www.knmi.nl/nederland-nu/klimatologie" target="_blank" rel="noopener noreferrer">KNMI</a> provided historical weather observations from Rotterdam Airport (station 344).</li>
+            <li><a href="https://www.knmi.nl/kennis-en-datacentrum/achtergrond/knmi-23-klimaatscenario-s" target="_blank" rel="noopener noreferrer">KNMI'23 Climate Scenarios</a> were used to interpret possible long-term climate changes.</li>
+          </ul>
         </section>
       </aside>
     </main>

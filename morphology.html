@@ -51,6 +51,18 @@
         <p id="morphologyStatus" class="status error" role="alert" hidden></p>
         <section class="method-section" aria-labelledby="methodHeading">
           <h2 id="methodHeading">Method and Sources</h2>
+          <p>We compare the current situation with Design A and Design B. In A and B, the three existing buildings inside the development area are removed and the new blocks and sports hall are added. Every indicator is calculated twice - once for the development site and once for the whole study area. Water is left out of all areas.</p>
+          <p>The sky view factor (SVF) shows how much sky a person sees at 1.5 m above the ground. We place all buildings, and optionally all tree crowns, on a 1 m grid and look 150 m out in 36 directions to find the highest obstruction in each. SVF runs from 0 (fully enclosed) to 1 (open sky). The H/W layer shows how enclosed a spot is: the height of the nearest building divided by twice the distance to it, shown up to 30 m from buildings. H/W values above 1 mean a narrow, canyon-like space.</p>
+          <p>Density follows the Spacematrix method: GSI is the share of land covered by buildings, FSI the floor area per m² of land, and OSR the open ground per m² of floor area. Floors are estimated as height divided by 3 m. Green share counts ground vegetation and tree canopy, without buildings; green roofs are counted separately. Land-use mix measures how varied the building uses are, from 0 (one use) to 1 (all uses equal), weighted by floor area.</p>
+          <p><strong>Sources:</strong></p>
+          <ul class="method-sources">
+            <li><a href="https://www.rotterdam.nl/rotterdam-in-3d" target="_blank" rel="noopener noreferrer">Rotterdam in 3D</a> – existing LoD2 buildings and street trees (height and crown size). We simplified each building to its footprint and highest roof point.</li>
+            <li><a href="https://api.pdok.nl/kadaster/bag/ogc/v2" target="_blank" rel="noopener noreferrer">BAG via PDOK</a> – building uses for the land-use mix.</li>
+            <li><a href="https://www.pdok.nl/introductie/-/article/basisregistratie-grootschalige-topografie-bgt-" target="_blank" rel="noopener noreferrer">BGT via PDOK</a> – green-space and water polygons.</li>
+            <li>Designs A and B – from the land-use model (Task 4.7): building footprints and heights, park, green roofs and planted trees.</li>
+            <li><a href="https://www.pdok.nl/introductie/-/article/pdok-luchtfoto-rgb-open-" target="_blank" rel="noopener noreferrer">PDOK / Beeldmateriaal Nederland</a> – 2026 aerial photos used as the background.</li>
+          </ul>
+          <p>The ground is treated as flat, and tree crowns are treated as solid all year, so the real SVF lies between the values with and without trees. Buildings outside the study area are not included, so SVF near the edge is slightly too high. The designs are simple blocks without balconies or ground-floor uses.</p>
         </section>
       </aside>
     </main>

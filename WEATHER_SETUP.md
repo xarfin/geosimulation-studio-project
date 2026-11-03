@@ -37,7 +37,7 @@ with `npm.cmd ci` first. Use Node.js 22.12+ or 24; the supplied project uses Vit
 
 - Temperature, wind speed and wind-from direction show values, with separate times.
 - The station/site button shows the actual airport location and study-area centre.
-- The study-area view uses your local aerial and boundary; 3D model toggles load your original models.
+- The map shows the local aerial background, study and development boundaries, and the airport station marker.
 - The 24-hour temperature and wind charts update automatically every ten minutes while open.
 - Historical summaries initially show 2025; year selection can also show the two preceding years.
 - The 2025 December table should show 31/31 days if KNMI returns the same complete data as your notebook.
