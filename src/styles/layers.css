@@ -11,6 +11,30 @@
   justify-content: space-between;
 }
 
+.elevation-scale {
+  margin-top: 18px;
+  color: var(--color-muted);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.elevation-unit {
+  margin-bottom: 4px;
+  text-align: right;
+}
+
+.elevation-gradient {
+  height: 13px;
+  border: 1px solid #c6d3cb;
+  border-radius: 3px;
+}
+
+.elevation-ticks {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 4px;
+}
+
 #counter {
   color: var(--color-muted);
   font-size: 12px;

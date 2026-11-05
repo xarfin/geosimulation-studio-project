@@ -21,6 +21,7 @@ viewer.scene.globe.depthTestAgainstTerrain = false;
 setStudyAreaFocus(() => focusOnStudyArea(viewer));
 const select = document.querySelector('#layerSelect');
 const errorMessage = document.querySelector('#layerError');
+const elevationScale = document.querySelector('#elevationScale');
 const objects = new Map();
 const pending = new Map();
 let selectedIndex = 0;
@@ -51,6 +52,7 @@ async function loadImagery(layer) {
 
 async function loadImage(layer) {
   const metadata = await readJson(layer.metadataUrl);
+  if (layer.id === 'ahn') renderElevationScale(metadata);
   const provider = await SingleTileImageryProvider.fromUrl(layer.url, {
     rectangle: Rectangle.fromDegrees(...metadata.bounds),
     credit: new Credit(layer.credit, true),
@@ -58,6 +60,18 @@ async function loadImage(layer) {
   const imagery = viewer.imageryLayers.addImageryProvider(provider);
   imagery.show = false;
   return imagery;
+}
+
+function renderElevationScale({ colourScale, units }) {
+  const { minimum, maximum, colours } = colourScale;
+  document.querySelector('#elevationUnit').textContent = units;
+  document.querySelector('#elevationGradient').style.background = `linear-gradient(to right, ${colours.join(', ')})`;
+  const ticks = colours.map((_, index) => {
+    const tick = document.createElement('span');
+    tick.textContent = Number((minimum + (maximum - minimum) * index / (colours.length - 1)).toFixed(2));
+    return tick;
+  });
+  document.querySelector('#elevationTicks').replaceChildren(...ticks);
 }
 
 async function loadGeoJson(layer) {
@@ -123,6 +137,7 @@ async function showLayer(index) {
   document.querySelector('#counter').textContent = (index + 1) + ' / ' + layers.length;
   document.querySelector('#previous').disabled = index === 0;
   document.querySelector('#next').disabled = index === layers.length - 1;
+  elevationScale.hidden = true;
   showError();
   viewer.selectedEntity = undefined;
   for (const object of objects.values()) object.show = false;
@@ -132,6 +147,7 @@ async function showLayer(index) {
     if (layer.id !== 'aerial') visible.unshift(layers[0]);
     await Promise.all(visible.map(loadLayer));
     if (version !== selectionVersion) return; // A newer selection takes priority.
+    elevationScale.hidden = layer.id !== 'ahn';
     for (const [id, object] of objects) object.show = visible.some((item) => item.id === id);
     resetView();
     viewer.scene.requestRender();

@@ -6,6 +6,7 @@ import { scenarioBuildings } from './indicators.js';
 import { setStudyAreaFocus } from '../ui/navigation.js';
 import { createStudyAreaClip } from '../map/study-area.js';
 import { addStudyAreaImagery } from '../map/imagery.js';
+import { useFlatTerrainFill } from '../map/flat-terrain-fill.js';
 
 const base = '/data/morphology/';
 
@@ -40,6 +41,7 @@ export async function createMorphologyMap() {
     sceneModePicker: false, navigationHelpButton: false,
     infoBox: false, selectionIndicator: false, requestRenderMode: true,
   });
+  useFlatTerrainFill(viewer.scene.globe);
   viewer.scene.globe.baseColor = Color.fromCssColorString('#dfe6dd');
   viewer.scene.backgroundColor = Color.fromCssColorString('#dfe6dd');
   viewer.scene.skyBox.show = false;

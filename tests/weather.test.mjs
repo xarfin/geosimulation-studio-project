@@ -1,3 +1,4 @@
+// These tests were AI-generated and human-checked.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {STATION, parseCoverage, summariseHistory} from '../server/weather-core.mjs';

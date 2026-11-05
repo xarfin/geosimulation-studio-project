@@ -146,6 +146,8 @@ The globe is clipped to this polygon, and `clipped/` contains matching display-o
 three building layers. Original overlays, footprints, heights and CSV results remain available on disk.
 The cards use the supplied development-site statistics; the area selector and full table were removed.
 Regenerate this display crop with `python scripts/prepare-morphology-area.py` (pyproj and Shapely).
+For the flat ellipsoid, a Cesium 1.146 workaround skips neighbour-height propagation into fill tiles
+at clipped edges. Satellite tiles and result images use their original loaders and pixels.
 
 ## Shared work
 
