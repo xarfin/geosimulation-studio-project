@@ -44,16 +44,13 @@ async function showResult() {
   $('#scenarioControl').hidden = !isWind;
   $('#scenarioSelect').disabled = !isWind;
   $('#windResults').hidden = !isWind;
-  $('#noiseResults').hidden = isWind;
+  $('#windLegendNote').hidden = !isWind;
   renderLegend(isWind ? results.legend : results.noise.legend);
   clearReading();
   if (isWind) {
-    $('#resultContext').textContent = 'Study-area results, with the same colour scale for all three wind scenarios.';
     for (const [id, key] of [['#windMean', 'mean'], ['#windP95', 'p95'], ['#windMax', 'max']]) {
       $(id).textContent = `${scenario.statistics[key].toFixed(2)} m/s`;
     }
-  } else {
-    $('#resultContext').textContent = 'Clipped to the study area. Colours and units are preserved from the supplied figure.';
   }
   showError();
   try {
@@ -70,7 +67,6 @@ async function start() {
   if (!response.ok) throw new Error(`Simulation metadata: HTTP ${response.status}`);
   results = await response.json();
   results.scenarios.forEach(scenario => $('#scenarioSelect').add(new Option(scenario.title, scenario.id)));
-  $('#noiseSource').href = base + results.noise.source;
   map = await createAnalysisMap((speed, longitude, latitude) => {
     $('#mapReading').textContent = speed === null
       ? 'No wind sample here: building interior or outside the sampled area.'

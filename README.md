@@ -2,6 +2,10 @@
 
 An interactive study of Schiehaven Noord in Rotterdam, built with CesiumJS and Vite. It brings together maps, 3D buildings and results for land-use scenarios, urban morphology, wind and noise, weather, demographics and road networks. Use the navigation at the top to switch between the nine pages.
 
+## Context
+
+We built this application for the final group project in the Geosimulation course, which uses spatial data and simulation to inform urban design. Our project compares two residential redevelopment layouts for Schiehaven Noord, considering green space, mobility and environmental conditions.
+
 ## Open and run
 
 1. Install **Node.js 24** (the version specified in `.node-version`). npm is included with Node.js.

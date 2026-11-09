@@ -15,7 +15,7 @@
       <aside class="app-panel environment-panel" id="pagePanel" aria-labelledby="pageTitle" tabindex="-1">
         <p class="eyebrow">Environmental analysis . Task 4.5</p>
         <h1 id="pageTitle">Wind &amp; noise</h1>
-        <p class="intro">Compare wind speeds at 1.5 m above the ground for the existing site and Designs A and B. Switch to Noise to view the supplied noise map. Use the opacity slider to see the satellite image underneath, or click the wind map to read a speed.</p>
+        <p class="intro">Compare wind speeds at 1.5 m above the ground for the existing site and Designs A and B. Switch to Noise to view the noise map. Use the opacity slider to see the satellite image underneath, or click the wind map to read a speed.</p>
         <div class="environment-controls">
           <label for="analysisSelect">Analysis</label>
           <select id="analysisSelect" disabled>
@@ -40,7 +40,7 @@
           <h2 id="legendTitle">Wind speed (m/s)</h2>
           <div id="legendGradient" class="legend-gradient"></div>
           <div id="legendTicks" class="legend-ticks"></div>
-          <p id="resultContext" class="muted"></p>
+          <p id="windLegendNote" class="muted" hidden>Study-area results, with the same colour scale for all three wind scenarios.</p>
         </section>
         <section id="windResults" aria-label="Wind results">
           <h2>Within the development site</h2>
@@ -51,11 +51,6 @@
           </div>
           <p class="map-reading" id="mapReading" aria-live="polite">Click the map to read wind speed.</p>
           <p class="muted">Sampled at 1.5 m above the model's flat ground. Reference wind: 10 m/s at 10 m, flowing west to east.</p>
-        </section>
-        <section id="noiseResults" hidden aria-label="Noise result information">
-          <p class="result-note">Approximate alignment from the supplied map's coordinate axes.</p>
-          <p>The original legend is <strong>Lw (dB), 0–9</strong>. The supplied image contains no numeric samples or separate results for the two designs.</p>
-          <a id="noiseSource" target="_blank" rel="noopener">View original noise figure</a>
         </section>
         <p id="analysisStatus" class="status error" role="alert" hidden></p>
         <section class="method-section" aria-labelledby="methodHeading">
